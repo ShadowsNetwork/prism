@@ -1,7 +1,7 @@
 [package]
 name = "module-cdp-engine-benchmarking"
 version = "0.6.2"
-authors = ["Acala Developers"]
+authors = ["Shadows Developers"]
 edition = "2018"
 
 [dependencies]
@@ -13,7 +13,7 @@ frame-benchmarking = { version = "2.0.0", default-features = false }
 orml-oracle = { path = "../../../orml/oracle", default-features = false }
 orml-traits = { path = "../../../orml/traits", default-features = false }
 prices = { package = "module-prices", path = "../../prices", default-features = false }
-primitives = { package = "acala-primitives", path = "../../../primitives", default-features = false }
+primitives = { package = "shadows-primitives", path = "../../../primitives", default-features = false }
 support = { package = "module-support", path = "../../support", default-features = false }
 cdp-engine = { package = "module-cdp-engine", path = "../../cdp_engine", default-features = false }
 loans = { package = "module-loans", path = "../../loans", default-features = false }
