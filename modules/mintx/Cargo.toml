@@ -1,0 +1,41 @@
+[package]
+name = "module-mintx"
+version = "0.1.0"
+authors = ["Shadows Developers"]
+edition = "20"
+
+[dependencies]
+serde = { version = "1.0.101", optional = true }
+codec = { package = "parity-scale-codec", version = "1.3.0", default-features = false }
+sp-runtime = { version = "2.0.0", default-features = false }
+frame-support = { version = "2.0.0", default-features = false }
+frame-system = { version = "2.0.0", default-features = false }
+sp-std = { version = "2.0.0", default-features = false }
+orml-tokens = { path = "../../orml/tokens", default-features = false }
+orml-utilities = { path = "../../orml/utilities", default-features = false }
+mintx-engine = { package = "module-mintx-engine", path = "../mintx_engine", default-features = false }
+support = { package = "module-support", path = "../support", default-features = false }
+primitives = { package = "shadows-primitives", path = "../../primitives", default-features = false }
+
+[dev-dependencies]
+sp-io = { version = "2.0.0", default-features = false }
+sp-core = { version = "2.0.0", default-features = false }
+pallet-balances = { version = "2.0.0", default-features = false }
+orml-currencies = { path = "../../orml/currencies", default-features = false }
+orml-traits = { path = "../../orml/traits", default-features = false }
+
+[features]
+default = ["std"]
+std = [
+	"serde",
+	"codec/std",
+	"sp-runtime/std",
+	"frame-support/std",
+	"frame-system/std",
+	"sp-std/std",
+	"orml-tokens/std",
+	"orml-utilities/std",
+	"mintx-engine/std",
+	"support/std",
+	"primitives/std",
+]

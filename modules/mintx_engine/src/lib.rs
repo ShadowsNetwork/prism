@@ -2,7 +2,7 @@
 //!
 //! ## Overview
 //!
-//! The core module of Honzon protocol. CDP engine is responsible for handle
+//! The core module of Mintx protocol. CDP engine is responsible for handle
 //! internal processes about CDPs, including liquidation, settlement and risk
 //! management.
 
@@ -55,9 +55,9 @@ pub trait WeightInfo {
 	fn settle() -> Weight;
 }
 
-const OFFCHAIN_WORKER_DATA: &[u8] = b"acala/cdp-engine/data/";
-const OFFCHAIN_WORKER_LOCK: &[u8] = b"acala/cdp-engine/lock/";
-const OFFCHAIN_WORKER_MAX_ITERATIONS: &[u8] = b"acala/cdp-engine/max-iterations/";
+const OFFCHAIN_WORKER_DATA: &[u8] = b"shadows/cdp-engine/data/";
+const OFFCHAIN_WORKER_LOCK: &[u8] = b"shadows/cdp-engine/lock/";
+const OFFCHAIN_WORKER_MAX_ITERATIONS: &[u8] = b"shadows/cdp-engine/max-iterations/";
 const LOCK_DURATION: u64 = 100;
 const DEFAULT_MAX_ITERATIONS: u32 = 1000;
 
