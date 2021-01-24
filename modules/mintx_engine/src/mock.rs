@@ -134,7 +134,7 @@ impl orml_currencies::Trait for Runtime {
 pub type Currencies = orml_currencies::Module<Runtime>;
 
 parameter_types! {
-	pub const LoansModuleId: ModuleId = ModuleId(*b"aca/loan");
+	pub const LoansModuleId: ModuleId = ModuleId(*b"dows/loan");
 }
 
 impl loans::Trait for Runtime {
@@ -223,7 +223,7 @@ impl AuctionManager<AccountId> for MockAuctionManager {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"dows/cdpt");
 }
 
 impl cdp_treasury::Trait for Runtime {
@@ -240,7 +240,7 @@ impl cdp_treasury::Trait for Runtime {
 pub type CDPTreasuryModule = cdp_treasury::Module<Runtime>;
 
 parameter_types! {
-	pub const DEXModuleId: ModuleId = ModuleId(*b"aca/dexm");
+	pub const DEXModuleId: ModuleId = ModuleId(*b"dows/dexm");
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
 	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(AUSD, BTC), TradingPair::new(AUSD, DOT)];
