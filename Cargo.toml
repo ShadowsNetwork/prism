@@ -2,7 +2,7 @@
 name = "shadows"
 version = "0.0.1"
 authors = ["Shadows Developers"]
-edition = "2020"
+edition = "2018"
 
 [[bin]]
 name = "shadows"

@@ -2,7 +2,7 @@
 name = "runtime-common"
 version = "0.0.1"
 authors = ["Shadows Developers"]
-edition = "2020"
+edition = "2018"
 
 [dependencies]
 module-support = { path = "../../modules/support", default-features = false }
