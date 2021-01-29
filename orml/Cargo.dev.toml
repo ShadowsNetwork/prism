@@ -1,0 +1,15 @@
+[workspace]
+members = [
+	"auction",
+	"authority",
+	"benchmarking",
+	"currencies",
+	"gradually-update",
+	"oracle",
+	"tokens",
+	"traits",
+	"utilities",
+	"vesting",
+	"rewards",
+  "nft",
+]
