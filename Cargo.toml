@@ -20,7 +20,7 @@ runtime-benchmarks = [
 ]
 
 [profile.release]
-# Shadows runtime requires unwinding.
+# Shadows runtime requires unwin1ding.
 panic = "unwind"
 
 [workspace]
