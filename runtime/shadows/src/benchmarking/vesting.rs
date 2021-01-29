@@ -1,7 +1,7 @@
 use super::utils::{dollars, lookup_of_account, set_aca_balance};
 use crate::{
-	ShadowsTreasuryModuleId, AccountId, AccountIdConversion, Currencies, CurrencyId, MinVestedTransfer,
-	NewAccountDeposit, Runtime, System, TokenSymbol, Vesting,
+	AccountId, AccountIdConversion, Currencies, CurrencyId, MinVestedTransfer, NewAccountDeposit, Runtime,
+	ShadowsTreasuryModuleId, System, TokenSymbol, Vesting,
 };
 
 use sp_std::prelude::*;

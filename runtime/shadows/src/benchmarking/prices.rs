@@ -1,4 +1,4 @@
-use crate::{ShadowsOracle, CollateralCurrencyIds, CurrencyId, Origin, Price, Prices, Runtime, TokenSymbol};
+use crate::{CollateralCurrencyIds, CurrencyId, Origin, Price, Prices, Runtime, ShadowsOracle, TokenSymbol};
 
 use frame_system::RawOrigin;
 use orml_benchmarking::runtime_benchmarks;

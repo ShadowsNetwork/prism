@@ -5,23 +5,23 @@
 
 use std::sync::Arc;
 
-use shadows_primitives::Block;
 use prometheus_endpoint::Registry;
 use sc_client_api::{ExecutorProvider, RemoteBackend};
 use sc_executor::native_executor_instance;
 use sc_finality_grandpa::FinalityProofProvider as GrandpaFinalityProofProvider;
 use sc_service::{config::Configuration, error::Error as ServiceError, PartialComponents, RpcHandlers, TaskManager};
+use shadows_primitives::Block;
 use sp_core::traits::BareCryptoStorePtr;
 use sp_inherents::InherentDataProviders;
 use sp_runtime::traits::{BlakeTwo256, Block as BlockT};
 
 pub use client::*;
-pub use shadows_runtime;
 pub use sc_executor::NativeExecutionDispatch;
 pub use sc_service::{
 	config::{DatabaseConfig, PrometheusConfig},
 	ChainSpec,
 };
+pub use shadows_runtime;
 pub use sp_api::ConstructRuntimeApi;
 
 pub mod chain_spec;

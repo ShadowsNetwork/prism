@@ -1,6 +1,6 @@
 use crate::{
-	ShadowsOracle, AccountId, Amount, CdpEngine, CollateralCurrencyIds, CurrencyId, ExchangeRate, Honzon,
-	MinimumDebitValue, Price, Rate, Ratio, Runtime, TokenSymbol,
+	AccountId, Amount, CdpEngine, CollateralCurrencyIds, CurrencyId, ExchangeRate, Honzon, MinimumDebitValue, Price,
+	Rate, Ratio, Runtime, ShadowsOracle, TokenSymbol,
 };
 
 use super::utils::set_balance;

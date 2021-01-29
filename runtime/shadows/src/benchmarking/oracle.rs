@@ -1,4 +1,6 @@
-use crate::{ShadowDataProvider, ShadowsOracle, CollateralCurrencyIds, FixedPointNumber, Origin, Price, Runtime, System};
+use crate::{
+	CollateralCurrencyIds, FixedPointNumber, Origin, Price, Runtime, ShadowDataProvider, ShadowsOracle, System,
+};
 
 use frame_support::traits::OnFinalize;
 use orml_benchmarking::runtime_benchmarks_instance;

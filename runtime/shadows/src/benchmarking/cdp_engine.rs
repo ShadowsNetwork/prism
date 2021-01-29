@@ -1,6 +1,7 @@
 use crate::{
-	ShadowsOracle, AccountId, Amount, Balance, CdpEngine, CollateralCurrencyIds, CurrencyId, Dex, EmergencyShutdown,
-	GetStableCurrencyId, MaxSlippageSwapWithDEX, MinimumDebitValue, Price, Rate, Ratio, Runtime, TokenSymbol, DOLLARS,
+	AccountId, Amount, Balance, CdpEngine, CollateralCurrencyIds, CurrencyId, Dex, EmergencyShutdown,
+	GetStableCurrencyId, MaxSlippageSwapWithDEX, MinimumDebitValue, Price, Rate, Ratio, Runtime, ShadowsOracle,
+	TokenSymbol, DOLLARS,
 };
 
 use super::utils::set_balance;

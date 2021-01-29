@@ -1,6 +1,6 @@
 use crate::{
-	ShadowsOracle, AccountId, AuctionId, AuctionManager, Balance, CdpTreasury, Currencies, CurrencyId, EmergencyShutdown,
-	GetNativeCurrencyId, GetStableCurrencyId, Price, Runtime, TokenSymbol, DOLLARS,
+	AccountId, AuctionId, AuctionManager, Balance, CdpTreasury, Currencies, CurrencyId, EmergencyShutdown,
+	GetNativeCurrencyId, GetStableCurrencyId, Price, Runtime, ShadowsOracle, TokenSymbol, DOLLARS,
 };
 
 use super::utils::set_balance;

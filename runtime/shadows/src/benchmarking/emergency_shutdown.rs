@@ -1,5 +1,5 @@
 use crate::{
-	ShadowsOracle, AccountId, Balance, CdpTreasury, CollateralCurrencyIds, EmergencyShutdown, Price, Runtime, DOLLARS,
+	AccountId, Balance, CdpTreasury, CollateralCurrencyIds, EmergencyShutdown, Price, Runtime, ShadowsOracle, DOLLARS,
 };
 
 use super::utils::set_balance;

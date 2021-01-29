@@ -1,8 +1,8 @@
-use shadows_primitives::AccountId;
 use hex_literal::hex;
 use sc_chain_spec::ChainType;
 use sc_telemetry::TelemetryEndpoints;
 use serde_json::map::Map;
+use shadows_primitives::AccountId;
 use sp_consensus_babe::AuthorityId as BabeId;
 use sp_core::{crypto::UncheckedInto, sr25519};
 use sp_finality_grandpa::AuthorityId as GrandpaId;
@@ -182,10 +182,10 @@ fn testnet_genesis(
 	enable_println: bool,
 ) -> shadows_runtime::GenesisConfig {
 	use shadows_runtime::{
-		get_all_module_accounts, ShadowsOracleConfig, BabeConfig, BalancesConfig, BandOracleConfig,
-		CdpEngineConfig, CdpTreasuryConfig, ContractsConfig, CurrencyId, GeneralCouncilMembershipConfig, GrandpaConfig,
-		HomaCouncilMembershipConfig, HonzonCouncilMembershipConfig, IndicesConfig, NewAccountDeposit,
-		OperatorMembershipShadowsConfig, OperatorMembershipBandConfig, PolkadotBridgeConfig, SessionConfig, StakerStatus,
+		get_all_module_accounts, BabeConfig, BalancesConfig, BandOracleConfig, CdpEngineConfig, CdpTreasuryConfig,
+		ContractsConfig, CurrencyId, GeneralCouncilMembershipConfig, GrandpaConfig, HomaCouncilMembershipConfig,
+		HonzonCouncilMembershipConfig, IndicesConfig, NewAccountDeposit, OperatorMembershipBandConfig,
+		OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig, ShadowsOracleConfig, StakerStatus,
 		StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig, TokenSymbol, TokensConfig,
 		VestingConfig, DOLLARS,
 	};
@@ -348,12 +348,12 @@ fn shadows_genesis(
 	enable_println: bool,
 ) -> shadows_runtime::GenesisConfig {
 	use shadows_runtime::{
-		get_all_module_accounts, ShadowsOracleConfig, BabeConfig, Balance,
-		BalancesConfig, BandOracleConfig, CdpEngineConfig, CdpTreasuryConfig, ContractsConfig, CurrencyId,
-		GeneralCouncilMembershipConfig, GrandpaConfig, HomaCouncilMembershipConfig, HonzonCouncilMembershipConfig,
-		IndicesConfig, NewAccountDeposit, OperatorMembershipShadowsConfig, OperatorMembershipBandConfig,
-		PolkadotBridgeConfig, SessionConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig,
-		TechnicalCommitteeMembershipConfig, TokenSymbol, TokensConfig, VestingConfig, CENTS, DOLLARS,
+		get_all_module_accounts, BabeConfig, Balance, BalancesConfig, BandOracleConfig, CdpEngineConfig,
+		CdpTreasuryConfig, ContractsConfig, CurrencyId, GeneralCouncilMembershipConfig, GrandpaConfig,
+		HomaCouncilMembershipConfig, HonzonCouncilMembershipConfig, IndicesConfig, NewAccountDeposit,
+		OperatorMembershipBandConfig, OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig,
+		ShadowsOracleConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig,
+		TokenSymbol, TokensConfig, VestingConfig, CENTS, DOLLARS,
 	};
 
 	let new_account_deposit = NewAccountDeposit::get();

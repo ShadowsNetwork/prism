@@ -74,8 +74,8 @@ pub use sp_runtime::{Perbill, Percent, Permill, Perquintill};
 pub use authority::AuthorityConfigImpl;
 pub use constants::{currency::*, fee::*, time::*};
 pub use primitives::{
-	AccountId, AccountIndex, Amount, AuctionId, AuthoritysOriginId, Balance, BlockNumber,
-	CurrencyId, DataProviderId, EraIndex, Hash, Moment, Nonce, Share, Signature, TokenSymbol, TradingPair,
+	AccountId, AccountIndex, Amount, AuctionId, AuthoritysOriginId, Balance, BlockNumber, CurrencyId, DataProviderId,
+	EraIndex, Hash, Moment, Nonce, Share, Signature, TokenSymbol, TradingPair,
 };
 pub use runtime_common::{ExchangeRate, Price, Rate, Ratio, TimeStampedPrice};
 
@@ -1111,7 +1111,6 @@ impl module_incentives::Trait for Runtime {
 	type ModuleId = IncentivesModuleId;
 	type WeightInfo = weights::incentives::WeightInfo<Runtime>;
 }
-
 
 parameter_types! {
 	pub const PolkadotBondingDuration: EraIndex = 7;

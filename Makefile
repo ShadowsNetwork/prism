@@ -40,18 +40,7 @@ GITHOOKS_DEST = $(patsubst githooks/%, .git/hooks/%, $(GITHOOKS_SRC))
 
 githooks: .git/hooks $(GITHOOKS_DEST)
 
-init: toolchain submodule build-full
 
-submodule:
-	git submodule update --init --recursive
-
-update-orml:
-	cd orml && git checkout master && git pull
-	git add orml
-
-update: update-orml
-	cargo update
-	make check
 
 build-wasm-shadows:
 	./scripts/build-only-wasm.sh shadows-runtime

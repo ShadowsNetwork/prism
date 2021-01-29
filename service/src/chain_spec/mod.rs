@@ -1,8 +1,8 @@
 //! Shadow chain configurations.
 
-use shadows_primitives::{AccountId, AccountPublic};
 use sc_chain_spec::ChainSpecExtension;
 use serde::{Deserialize, Serialize};
+use shadows_primitives::{AccountId, AccountPublic};
 use sp_consensus_babe::AuthorityId as BabeId;
 use sp_core::{sr25519, Pair, Public};
 use sp_finality_grandpa::AuthorityId as GrandpaId;

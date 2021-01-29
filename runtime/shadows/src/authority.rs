@@ -1,11 +1,11 @@
 //! An orml_authority trait implementation.
 
 use crate::{
-	ShadowTreasuryModuleId, AccountId, AccountIdConversion, AuthoritysOriginId, BadOrigin, BlockNumber, DSWFModuleId,
-	DispatchResult, EnsureRoot, EnsureRootOrHalfGeneralCouncil, EnsureRootOrHalfHomaCouncil,
-	EnsureRootOrHalfHonzonCouncil, EnsureRootOrOneThirdsTechnicalCommittee, EnsureRootOrThreeFourthsGeneralCouncil,
+	AccountId, AccountIdConversion, AuthoritysOriginId, BadOrigin, BlockNumber, DSWFModuleId, DispatchResult,
+	EnsureRoot, EnsureRootOrHalfGeneralCouncil, EnsureRootOrHalfHomaCouncil, EnsureRootOrHalfHonzonCouncil,
+	EnsureRootOrOneThirdsTechnicalCommittee, EnsureRootOrThreeFourthsGeneralCouncil,
 	EnsureRootOrTwoThirdsTechnicalCommittee, HomaTreasuryModuleId, HonzonTreasuryModuleId, OneDay, Origin,
-	OriginCaller, SevenDays, ZeroDay, HOURS,
+	OriginCaller, SevenDays, ShadowTreasuryModuleId, ZeroDay, HOURS,
 };
 pub use frame_support::traits::{schedule::Priority, EnsureOrigin, OriginTrait};
 use frame_system::ensure_root;
