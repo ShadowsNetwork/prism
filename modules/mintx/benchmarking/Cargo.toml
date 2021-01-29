@@ -2,7 +2,7 @@
 name = "module-honzon-benchmarking"
 version = "0.0.1"
 authors = ["Shadow Developers"]
-edition = "2020"
+edition = "2018"
 
 [dependencies]
 sp-runtime = { version = "2.0.0", default-features = false }
