@@ -115,7 +115,7 @@ fn open_account_failed_when_transfer_native() {
 #[test]
 fn open_account_successfully_when_transfer_non_native() {
 	ExtBuilder::default().build().execute_with(|| {
-		// add liquidity to dex
+		// add liquidity to exchange
 		assert_ok!(DEXModule::add_liquidity(Origin::signed(ALICE), DOS, AUSD, 10000, 100));
 		assert_ok!(DEXModule::add_liquidity(Origin::signed(ALICE), BTC, AUSD, 10, 200));
 
@@ -146,7 +146,7 @@ fn open_account_successfully_when_transfer_non_native() {
 #[test]
 fn open_account_failed_when_transfer_non_native() {
 	ExtBuilder::default().build().execute_with(|| {
-		// inject liquidity to dex
+		// inject liquidity to exchange
 		assert_ok!(DEXModule::add_liquidity(Origin::signed(ALICE), DOS, AUSD, 200, 100));
 		assert_eq!(DEXModule::get_liquidity_pool(DOS, AUSD), (200, 100));
 

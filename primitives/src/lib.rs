@@ -70,9 +70,11 @@ pub use sp_runtime::OpaqueExtrinsic as UncheckedExtrinsic;
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum TokenSymbol {
 	DOS = 0,
-	XUSD = 1,
+	AUSD = 1,
 	DOT = 2,
 	XBTC = 3,
+	LDOT = 4,
+	RENBTC = 5,
 }
 
 #[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug, PartialOrd, Ord)]
@@ -82,19 +84,14 @@ pub enum CurrencyId {
 	DEXShare(TokenSymbol, TokenSymbol),
 }
 
-#[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug, PartialOrd, Ord)]
-#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-pub enum AirDropCurrencyId {
-	KAR = 0,
-	DOS,
-}
+
 
 #[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug, PartialOrd, Ord)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum AuthoritysOriginId {
 	Root,
-	ShadowsTreasury,
-	MintxTreasury,
+	ShadowTreasury,
+	HonzonTreasury,
 	HomaTreasury,
 	DSWF,
 }
@@ -103,7 +100,7 @@ pub enum AuthoritysOriginId {
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum DataProviderId {
 	Aggregated = 0,
-	Shadows = 1,
+	Shadow = 1,
 	Band = 2,
 }
 

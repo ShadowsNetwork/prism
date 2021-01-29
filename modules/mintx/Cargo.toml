@@ -1,8 +1,8 @@
 [package]
-name = "module-mintx"
-version = "0.1.0"
-authors = ["Shadows Developers"]
-edition = "20"
+name = "module-honzon"
+version = "0.0.1"
+authors = ["Shadow Developers"]
+edition = "2020"
 
 [dependencies]
 serde = { version = "1.0.101", optional = true }
@@ -13,7 +13,8 @@ frame-system = { version = "2.0.0", default-features = false }
 sp-std = { version = "2.0.0", default-features = false }
 orml-tokens = { path = "../../orml/tokens", default-features = false }
 orml-utilities = { path = "../../orml/utilities", default-features = false }
-mintx-engine = { package = "module-mintx-engine", path = "../mintx_engine", default-features = false }
+cdp-engine = { package = "module-cdp-engine", path = "../cdp_engine", default-features = false }
+loans = { package = "module-loans", path = "../lend", default-features = false }
 support = { package = "module-support", path = "../support", default-features = false }
 primitives = { package = "shadows-primitives", path = "../../primitives", default-features = false }
 
@@ -23,6 +24,7 @@ sp-core = { version = "2.0.0", default-features = false }
 pallet-balances = { version = "2.0.0", default-features = false }
 orml-currencies = { path = "../../orml/currencies", default-features = false }
 orml-traits = { path = "../../orml/traits", default-features = false }
+cdp-treasury = { package = "module-cdp-treasury", path = "../cdp_treasury", default-features = false }
 
 [features]
 default = ["std"]
@@ -35,7 +37,8 @@ std = [
 	"sp-std/std",
 	"orml-tokens/std",
 	"orml-utilities/std",
-	"mintx-engine/std",
+	"loans/std",
+	"cdp-engine/std",
 	"support/std",
 	"primitives/std",
 ]

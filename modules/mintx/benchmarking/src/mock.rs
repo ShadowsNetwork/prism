@@ -107,7 +107,7 @@ impl orml_currencies::Trait for Runtime {
 pub type Currencies = orml_currencies::Module<Runtime>;
 
 parameter_types! {
-	pub const LoansModuleId: ModuleId = ModuleId(*b"dows/loan");
+	pub const LoansModuleId: ModuleId = ModuleId(*b"aca/loan");
 }
 
 impl loans::Trait for Runtime {
@@ -171,7 +171,7 @@ ord_parameter_types! {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"dows/cdpt");
+	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
 impl cdp_treasury::Trait for Runtime {
@@ -224,7 +224,7 @@ where
 	type Extrinsic = Extrinsic;
 }
 
-impl mintx::Trait for Runtime {
+impl honzon::Trait for Runtime {
 	type Event = ();
 }
 

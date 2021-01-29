@@ -15,7 +15,7 @@ use sp_runtime::{
 use sp_std::cell::RefCell;
 use support::{AuctionManager, ExchangeRate, Price, PriceProvider, Rate, Ratio};
 
-mod mintx {
+mod honzon {
 	pub use super::super::*;
 }
 
@@ -28,7 +28,7 @@ impl_outer_dispatch! {
 impl_outer_event! {
 	pub enum TestEvent for Runtime {
 		frame_system<T>,
-		mintx<T>,
+		honzon<T>,
 		cdp_engine<T>,
 		orml_tokens<T>,
 		loans<T>,
@@ -133,7 +133,7 @@ impl orml_currencies::Trait for Runtime {
 pub type Currencies = orml_currencies::Module<Runtime>;
 
 parameter_types! {
-	pub const LoansModuleId: ModuleId = ModuleId(*b"dows/loan");
+	pub const LoansModuleId: ModuleId = ModuleId(*b"aca/loan");
 }
 
 impl loans::Trait for Runtime {
@@ -228,7 +228,7 @@ ord_parameter_types! {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"dows/cdpt");
+	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
 impl cdp_treasury::Trait for Runtime {
@@ -288,7 +288,7 @@ impl Trait for Runtime {
 	type Event = TestEvent;
 	type WeightInfo = ();
 }
-pub type MintxModule = Module<Runtime>;
+pub type HonzonModule = Module<Runtime>;
 
 pub struct ExtBuilder {
 	endowed_accounts: Vec<(AccountId, CurrencyId, Balance)>,

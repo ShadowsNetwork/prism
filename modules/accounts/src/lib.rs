@@ -2,7 +2,7 @@
 //!
 //! ## Overview
 //!
-//! Accounts module is responsible for opening and closing accounts in Shadows,
+//! Accounts module is responsible for opening and closing accounts in Shadow,
 //! and charge fee and tip in different currencies
 
 #![cfg_attr(not(feature = "std"), no_std)]

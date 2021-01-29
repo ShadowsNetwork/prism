@@ -18,15 +18,15 @@ use sp_runtime::{
 };
 
 use cdp_engine::Module as CdpEngine;
-use mintx::Module as Mintx;
-use mintx::*;
+use honzon::Module as Honzon;
+use honzon::*;
 use orml_traits::{Change, DataFeeder, MultiCurrencyExtended};
 use primitives::{Amount, CurrencyId, TokenSymbol};
 use support::{ExchangeRate, Price, Rate, Ratio};
 
-pub struct Module<T: Trait>(mintx::Module<T>);
+pub struct Module<T: Trait>(honzon::Module<T>);
 
-pub trait Trait: mintx::Trait + orml_oracle::Trait<orml_oracle::Instance1> + prices::Trait {}
+pub trait Trait: honzon::Trait + orml_oracle::Trait<orml_oracle::Instance1> + prices::Trait {}
 
 const SEED: u32 = 0;
 
@@ -53,7 +53,7 @@ benchmarks! {
 
 		let caller: T::AccountId = account("caller", u, SEED);
 		let to: T::AccountId = account("to", u, SEED);
-		Mintx::<T>::authorize(
+		Honzon::<T>::authorize(
 			RawOrigin::Signed(caller.clone()).into(),
 			CurrencyId::Token(TokenSymbol::DOT),
 			to.clone()
@@ -72,7 +72,7 @@ benchmarks! {
 			let to: T::AccountId = account("to", i, SEED);
 
 			for j in 0 .. c {
-				Mintx::<T>::authorize(
+				Honzon::<T>::authorize(
 					RawOrigin::Signed(caller.clone()).into(),
 					currency_ids[j as usize],
 					to.clone(),
@@ -145,7 +145,7 @@ benchmarks! {
 		)?;
 
 		// initialize sender's loan
-		Mintx::<T>::adjust_loan(
+		Honzon::<T>::adjust_loan(
 			RawOrigin::Signed(sender.clone()).into(),
 			currency_id,
 			collateral_amount,
@@ -153,7 +153,7 @@ benchmarks! {
 		)?;
 
 		// authorize receiver
-		Mintx::<T>::authorize(
+		Honzon::<T>::authorize(
 			RawOrigin::Signed(sender.clone()).into(),
 			currency_id,
 			receiver.clone()
