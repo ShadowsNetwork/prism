@@ -1,5 +1,5 @@
 use crate::{
-	AccountId, Amount, Balance, CdpEngine, CollateralCurrencyIds, CurrencyId, Dex, EmergencyShutdown,
+	AccountId, Amount, Balance, CdpEngine, CollateralCurrencyIds, CurrencyId, EmergencyShutdown, Exchange,
 	GetStableCurrencyId, MaxSlippageSwapWithEXCHANGE, MinimumDebitValue, Price, Rate, Ratio, Runtime, ShadowsOracle,
 	TokenSymbol, DOLLARS,
 };
@@ -28,7 +28,7 @@ fn inject_liquidity(
 	set_balance(currency_id, &maker, max_other_currency_amount.unique_saturated_into());
 	set_balance(base_currency_id, &maker, max_amount.unique_saturated_into());
 
-	Dex::add_liquidity(
+	Exchange::add_liquidity(
 		RawOrigin::Signed(maker.clone()).into(),
 		base_currency_id,
 		currency_id,
@@ -156,7 +156,7 @@ runtime_benchmarks! {
 		)?;
 	}: liquidate(RawOrigin::None, currency_id, owner)
 	verify {
-		let (other_currency_amount, base_currency_amount) = Dex::get_liquidity_pool(currency_id, base_currency_id);
+		let (other_currency_amount, base_currency_amount) = Exchange::get_liquidity_pool(currency_id, base_currency_id);
 		assert!(other_currency_amount > collateral_amount_in_exchange);
 		assert!(base_currency_amount < base_amount_in_exchange);
 	}

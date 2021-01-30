@@ -16,7 +16,7 @@ use sp_runtime::{traits::UniqueSaturatedInto, DispatchError, FixedPointNumber};
 
 use cdp_engine::Module as CdpEngine;
 use cdp_engine::*;
-use exchange::Module as Dex;
+use exchange::Module as Exchange;
 use orml_traits::{Change, DataFeeder, MultiCurrencyExtended};
 use primitives::{Amount, Balance, CurrencyId, TokenSymbol};
 use support::{EXCHANGEManager, Price, Rate, Ratio};
@@ -63,7 +63,7 @@ fn inject_liquidity<T: Trait>(
 		max_other_currency_amount.unique_saturated_into(),
 	)?;
 
-	Dex::<T>::add_liquidity(
+	Exchange::<T>::add_liquidity(
 		RawOrigin::Signed(maker.clone()).into(),
 		base_currency_id,
 		currency_id,
@@ -195,7 +195,7 @@ benchmarks! {
 		)?;
 	}: liquidate(RawOrigin::None, currency_id, owner)
 	verify {
-		let (other_currency_amount, base_currency_amount) = Dex::<T>::get_liquidity_pool(base_currency_id, currency_id);
+		let (other_currency_amount, base_currency_amount) = Exchange::<T>::get_liquidity_pool(base_currency_id, currency_id);
 		assert!(other_currency_amount > collateral_amount_in_exchange);
 		assert!(base_currency_amount < base_amount_in_exchange);
 	}

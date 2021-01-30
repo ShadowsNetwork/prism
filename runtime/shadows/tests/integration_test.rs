@@ -27,7 +27,7 @@ const ALICE: [u8; 32] = [4u8; 32];
 const BOB: [u8; 32] = [5u8; 32];
 
 pub type OracleModule = orml_oracle::Module<Runtime, orml_oracle::Instance1>;
-pub type DexModule = module_exchange::Module<Runtime>;
+pub type ExchangeModule = module_exchange::Module<Runtime>;
 pub type CdpEngineModule = module_cdp_engine::Module<Runtime>;
 pub type LoansModule = module_loans::Module<Runtime>;
 pub type CdpTreasuryModule = module_cdp_treasury::Module<Runtime>;
@@ -286,7 +286,7 @@ fn liquidate_cdp() {
 				Price::saturating_from_rational(10000, 1)
 			)])); // 10000 usd
 
-			assert_ok!(DexModule::add_liquidity(
+			assert_ok!(ExchangeModule::add_liquidity(
 				origin_of(AccountId::from(BOB)),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				CurrencyId::Token(TokenSymbol::AUSD),
@@ -435,7 +435,7 @@ fn test_exchange_module() {
 			SystemModule::set_block_number(1);
 
 			assert_eq!(
-				DexModule::get_liquidity_pool(
+				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
 					CurrencyId::Token(TokenSymbol::AUSD)
 				),
@@ -454,7 +454,7 @@ fn test_exchange_module() {
 			);
 
 			assert_noop!(
-				DexModule::add_liquidity(
+				ExchangeModule::add_liquidity(
 					origin_of(AccountId::from(ALICE)),
 					CurrencyId::Token(TokenSymbol::XBTC),
 					CurrencyId::Token(TokenSymbol::AUSD),
@@ -464,7 +464,7 @@ fn test_exchange_module() {
 				module_exchange::Error::<Runtime>::InvalidLiquidityIncrement,
 			);
 
-			assert_ok!(DexModule::add_liquidity(
+			assert_ok!(ExchangeModule::add_liquidity(
 				origin_of(AccountId::from(ALICE)),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				CurrencyId::Token(TokenSymbol::AUSD),
@@ -485,7 +485,7 @@ fn test_exchange_module() {
 				.any(|record| record.event == add_liquidity_event));
 
 			assert_eq!(
-				DexModule::get_liquidity_pool(
+				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
 					CurrencyId::Token(TokenSymbol::AUSD)
 				),
@@ -502,7 +502,7 @@ fn test_exchange_module() {
 				),
 				10000000
 			);
-			assert_ok!(DexModule::add_liquidity(
+			assert_ok!(ExchangeModule::add_liquidity(
 				origin_of(AccountId::from(BOB)),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				CurrencyId::Token(TokenSymbol::AUSD),
@@ -510,7 +510,7 @@ fn test_exchange_module() {
 				1000
 			));
 			assert_eq!(
-				DexModule::get_liquidity_pool(
+				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
 					CurrencyId::Token(TokenSymbol::AUSD)
 				),
@@ -528,7 +528,7 @@ fn test_exchange_module() {
 				1000
 			);
 			assert_noop!(
-				DexModule::add_liquidity(
+				ExchangeModule::add_liquidity(
 					origin_of(AccountId::from(BOB)),
 					CurrencyId::Token(TokenSymbol::XBTC),
 					CurrencyId::Token(TokenSymbol::AUSD),
@@ -538,7 +538,7 @@ fn test_exchange_module() {
 				module_exchange::Error::<Runtime>::InvalidLiquidityIncrement,
 			);
 			assert_eq!(
-				DexModule::get_liquidity_pool(
+				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
 					CurrencyId::Token(TokenSymbol::AUSD)
 				),
@@ -555,7 +555,7 @@ fn test_exchange_module() {
 				),
 				1000
 			);
-			assert_ok!(DexModule::add_liquidity(
+			assert_ok!(ExchangeModule::add_liquidity(
 				origin_of(AccountId::from(BOB)),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				CurrencyId::Token(TokenSymbol::AUSD),
@@ -563,13 +563,13 @@ fn test_exchange_module() {
 				1000
 			));
 			assert_eq!(
-				DexModule::get_liquidity_pool(
+				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
 					CurrencyId::Token(TokenSymbol::AUSD)
 				),
 				(10002, 10002000)
 			);
-			assert_ok!(DexModule::add_liquidity(
+			assert_ok!(ExchangeModule::add_liquidity(
 				origin_of(AccountId::from(BOB)),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				CurrencyId::Token(TokenSymbol::AUSD),
@@ -577,7 +577,7 @@ fn test_exchange_module() {
 				1001
 			));
 			assert_eq!(
-				DexModule::get_liquidity_pool(
+				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
 					CurrencyId::Token(TokenSymbol::AUSD)
 				),

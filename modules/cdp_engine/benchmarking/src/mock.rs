@@ -180,7 +180,7 @@ impl cdp_treasury::Trait for Runtime {
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type AuctionManagerHandler = MockAuctionManager;
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
-	type EXCHANGE = DexModule;
+	type EXCHANGE = ExchangeModule;
 	type MaxAuctionsCount = MaxAuctionsCount;
 	type ModuleId = CDPTreasuryModuleId;
 }
@@ -201,7 +201,7 @@ impl exchange::Trait for Runtime {
 	type ModuleId = EXCHANGEModuleId;
 	type WeightInfo = ();
 }
-pub type DexModule = exchange::Module<Runtime>;
+pub type ExchangeModule = exchange::Module<Runtime>;
 
 parameter_types! {
 	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![DOS, DOT];
@@ -225,7 +225,7 @@ impl cdp_engine::Trait for Runtime {
 	type CDPTreasury = CDPTreasuryModule;
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
-	type EXCHANGE = DexModule;
+	type EXCHANGE = ExchangeModule;
 	type UnsignedPriority = UnsignedPriority;
 }
 pub type CDPEngineModule = cdp_engine::Module<Runtime>;

@@ -2,8 +2,8 @@
 //!
 //! ## Overview
 //!
-//! The data from Oracle cannot be used in business, ingester module will do some
-//! process and feed ingester for Shadows. Process include:
+//! The data from Oracle cannot be used in business, ingester module will do
+//! some process and feed ingester for Shadows. Process include:
 //!   - specify a fixed price for stable currency
 //!   - feed price in USD or related price bewteen two currencies
 //!   - lock/unlock the price data get from oracle

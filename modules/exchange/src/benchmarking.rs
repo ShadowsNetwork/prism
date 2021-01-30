@@ -3,7 +3,7 @@
 #![cfg(feature = "runtime-benchmarks")]
 
 use super::*;
-use crate::Module as Dex;
+use crate::Module as Exchange;
 use frame_benchmarking::{account, benchmarks};
 use frame_system::RawOrigin;
 use sp_runtime::traits::UniqueSaturatedInto;
@@ -27,7 +27,7 @@ fn inject_liquidity<T: Trait>(
 	T::Currency::update_balance(currency_id_a, &maker, max_amount_a.unique_saturated_into())?;
 	T::Currency::update_balance(currency_id_b, &maker, max_amount_b.unique_saturated_into())?;
 
-	Dex::<T>::add_liquidity(
+	Exchange::<T>::add_liquidity(
 		RawOrigin::Signed(maker.clone()).into(),
 		currency_id_a,
 		currency_id_b,

@@ -230,7 +230,7 @@ decl_event!(
 		SurplusAuctionDealt(AuctionId, Balance, AccountId, Balance),
 		/// Debit auction dealt. \[auction_id, debit_currency_amount, winner, payment_amount\]
 		DebitAuctionDealt(AuctionId, Balance, AccountId, Balance),
-		/// Dex take collateral auction. \[auction_id, collateral_type, collateral_amount, turnover\]
+		/// Exchange take collateral auction. \[auction_id, collateral_type, collateral_amount, turnover\]
 		EXCHANGETakeCollateralAuction(AuctionId, CurrencyId, Balance, Balance),
 	}
 );

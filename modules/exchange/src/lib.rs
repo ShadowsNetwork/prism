@@ -102,7 +102,7 @@ decl_error! {
 }
 
 decl_storage! {
-	trait Store for Module<T: Trait> as Dex {
+	trait Store for Module<T: Trait> as Exchange {
 		/// Liquidity pool for specific pair(a tuple consisting of two sorted CurrencyIds).
 		/// (CurrencyId_0, CurrencyId_1) -> (Amount_0, Amount_1)
 		LiquidityPool get(fn liquidity_pool): map hasher(twox_64_concat) TradingPair => (Balance, Balance);

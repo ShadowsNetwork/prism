@@ -107,7 +107,7 @@ impl Trait for Runtime {
 	type ModuleId = EXCHANGEModuleId;
 	type WeightInfo = ();
 }
-pub type DexModule = Module<Runtime>;
+pub type ExchangeModule = Module<Runtime>;
 
 pub struct ExtBuilder {
 	endowed_accounts: Vec<(AccountId, CurrencyId, Balance)>,

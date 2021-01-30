@@ -907,7 +907,7 @@ impl module_auction_manager::Trait for Runtime {
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
 	type CDPTreasury = CdpTreasury;
-	type EXCHANGE = Dex;
+	type EXCHANGE = Exchange;
 	type PriceSource = Prices;
 	type UnsignedPriority = AuctionManagerUnsignedPriority;
 	type EmergencyShutdown = EmergencyShutdown;
@@ -1004,7 +1004,7 @@ impl module_cdp_engine::Trait for Runtime {
 	type CDPTreasury = CdpTreasury;
 	type UpdateOrigin = EnsureRootOrHalfHonzonCouncil;
 	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
-	type EXCHANGE = Dex;
+	type EXCHANGE = Exchange;
 	type UnsignedPriority = CdpEngineUnsignedPriority;
 	type EmergencyShutdown = EmergencyShutdown;
 	type WeightInfo = weights::cdp_engine::WeightInfo<Runtime>;
@@ -1057,7 +1057,7 @@ impl module_cdp_treasury::Trait for Runtime {
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type AuctionManagerHandler = AuctionManager;
 	type UpdateOrigin = EnsureRootOrHalfHonzonCouncil;
-	type EXCHANGE = Dex;
+	type EXCHANGE = Exchange;
 	type MaxAuctionsCount = MaxAuctionsCount;
 	type ModuleId = CDPTreasuryModuleId;
 	type WeightInfo = weights::cdp_treasury::WeightInfo<Runtime>;
@@ -1074,7 +1074,7 @@ impl module_accounts::Trait for Runtime {
 	type NativeCurrencyId = GetNativeCurrencyId;
 	type StableCurrencyId = GetStableCurrencyId;
 	type Currency = Currencies;
-	type EXCHANGE = Dex;
+	type EXCHANGE = Exchange;
 	type OnCreatedAccount = frame_system::CallOnCreatedAccount<Runtime>;
 	type KillAccount = frame_system::CallKillAccount<Runtime>;
 	type NewAccountDeposit = NewAccountDeposit;
@@ -1098,7 +1098,7 @@ parameter_types! {
 impl module_incentives::Trait for Runtime {
 	type Event = Event;
 	type LoansIncentivePool = ZeroAccountId;
-	type DexIncentivePool = ZeroAccountId;
+	type ExchangeIncentivePool = ZeroAccountId;
 	type HomaIncentivePool = ZeroAccountId;
 	type AccumulatePeriod = AccumulatePeriod;
 	type IncentiveCurrencyId = GetNativeCurrencyId;
@@ -1106,7 +1106,7 @@ impl module_incentives::Trait for Runtime {
 	type UpdateOrigin = EnsureRootOrHalfHonzonCouncil;
 	type CDPTreasury = CdpTreasury;
 	type Currency = Currencies;
-	type EXCHANGE = Dex;
+	type EXCHANGE = Exchange;
 	type EmergencyShutdown = EmergencyShutdown;
 	type ModuleId = IncentivesModuleId;
 	type WeightInfo = weights::incentives::WeightInfo<Runtime>;
@@ -1358,7 +1358,7 @@ construct_runtime!(
 		Prices: module_prices::{Module, Storage, Call, Event},
 
 		// EXCHANGE
-		Dex: module_exchange::{Module, Storage, Call, Event<T>},
+		Exchange: module_exchange::{Module, Storage, Call, Event<T>},
 
 		// Honzon
 		AuctionManager: module_auction_manager::{Module, Storage, Call, Event<T>, ValidateUnsigned},
@@ -1690,7 +1690,7 @@ impl_runtime_apis! {
 			let mut batches = Vec::<BenchmarkBatch>::new();
 			let params = (&config, &whitelist);
 
-			add_benchmark!(params, batches, exchange, Dex);
+			add_benchmark!(params, batches, exchange, Exchange);
 			add_benchmark!(params, batches, nft, NftBench::<Runtime>);
 			orml_add_benchmark!(params, batches, auction_manager, benchmarking::auction_manager);
 			orml_add_benchmark!(params, batches, cdp_engine, benchmarking::cdp_engine);

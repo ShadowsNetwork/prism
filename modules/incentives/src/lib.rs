@@ -38,10 +38,10 @@ pub enum PoolId {
 	/// Rewards(DOS) pool for users who open CDP
 	Loans(CurrencyId),
 	/// Rewards(DOS) pool for market makers who provide exchange liquidity
-	DexIncentive(CurrencyId),
+	ExchangeIncentive(CurrencyId),
 	/// Rewards(AUSD) pool for liquidators who provide exchange liquidity to
 	/// participate automatic liquidation
-	DexSaving(CurrencyId),
+	ExchangeSaving(CurrencyId),
 	/// Rewards(DOS) pool for users who staking by Homa protocol
 	Homa,
 }
@@ -77,9 +77,9 @@ pub trait Trait:
 	/// The vault account to keep rewards for type LoansIncentive PoolId
 	type LoansIncentivePool: Get<Self::AccountId>;
 
-	/// The vault account to keep rewards for type DexIncentive and DexSaving
-	/// PoolId
-	type DexIncentivePool: Get<Self::AccountId>;
+	/// The vault account to keep rewards for type ExchangeIncentive and
+	/// ExchangeSaving PoolId
+	type ExchangeIncentivePool: Get<Self::AccountId>;
 
 	/// The vault account to keep rewards for type HomaIncentive PoolId
 	type HomaIncentivePool: Get<Self::AccountId>;
@@ -140,8 +140,8 @@ decl_module! {
 		/// The vault account to keep rewards for type LoansIncentive PoolId
 		const LoansIncentivePool: T::AccountId = T::LoansIncentivePool::get();
 
-		/// The vault account to keep rewards for type DexIncentive and DexSaving PoolId
-		const DexIncentivePool: T::AccountId = T::DexIncentivePool::get();
+		/// The vault account to keep rewards for type ExchangeIncentive and ExchangeSaving PoolId
+		const ExchangeIncentivePool: T::AccountId = T::ExchangeIncentivePool::get();
 
 		/// The vault account to keep rewards for type HomaIncentive PoolId
 		const HomaIncentivePool: T::AccountId = T::HomaIncentivePool::get();
@@ -188,8 +188,8 @@ decl_module! {
 				}
 
 				ensure!(
-					<orml_rewards::Module<T>>::share_and_withdrawn_reward(PoolId::DexIncentive(lp_currency_id), &who).0 >= amount
-					&& <orml_rewards::Module<T>>::share_and_withdrawn_reward(PoolId::DexSaving(lp_currency_id), &who).0 >= amount,
+					<orml_rewards::Module<T>>::share_and_withdrawn_reward(PoolId::ExchangeIncentive(lp_currency_id), &who).0 >= amount
+					&& <orml_rewards::Module<T>>::share_and_withdrawn_reward(PoolId::ExchangeSaving(lp_currency_id), &who).0 >= amount,
 					Error::<T>::NotEnough,
 				);
 				OnRemoveLiquidity::<T>::happened(&(who.clone(), lp_currency_id, amount));
@@ -283,8 +283,8 @@ pub struct OnAddLiquidity<T>(sp_std::marker::PhantomData<T>);
 impl<T: Trait> Happened<(T::AccountId, CurrencyId, Balance)> for OnAddLiquidity<T> {
 	fn happened(info: &(T::AccountId, CurrencyId, Balance)) {
 		let (who, currency_id, increase_share) = info;
-		<orml_rewards::Module<T>>::add_share(who, PoolId::DexIncentive(*currency_id), *increase_share);
-		<orml_rewards::Module<T>>::add_share(who, PoolId::DexSaving(*currency_id), *increase_share);
+		<orml_rewards::Module<T>>::add_share(who, PoolId::ExchangeIncentive(*currency_id), *increase_share);
+		<orml_rewards::Module<T>>::add_share(who, PoolId::ExchangeSaving(*currency_id), *increase_share);
 	}
 }
 
@@ -292,8 +292,8 @@ pub struct OnRemoveLiquidity<T>(sp_std::marker::PhantomData<T>);
 impl<T: Trait> Happened<(T::AccountId, CurrencyId, Balance)> for OnRemoveLiquidity<T> {
 	fn happened(info: &(T::AccountId, CurrencyId, Balance)) {
 		let (who, currency_id, decrease_share) = info;
-		<orml_rewards::Module<T>>::remove_share(who, PoolId::DexIncentive(*currency_id), *decrease_share);
-		<orml_rewards::Module<T>>::remove_share(who, PoolId::DexSaving(*currency_id), *decrease_share);
+		<orml_rewards::Module<T>>::remove_share(who, PoolId::ExchangeIncentive(*currency_id), *decrease_share);
+		<orml_rewards::Module<T>>::remove_share(who, PoolId::ExchangeSaving(*currency_id), *decrease_share);
 	}
 }
 
@@ -357,14 +357,14 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 							}
 						}
 
-						PoolId::DexIncentive(currency_id) => {
+						PoolId::ExchangeIncentive(currency_id) => {
 							let incentive_reward = Self::exchange_incentive_rewards(currency_id);
 
 							// TODO: transfer from RESERVED TREASURY instead of issuing
 							if !incentive_reward.is_zero()
 								&& T::Currency::deposit(
 									incentive_currency_id,
-									&T::DexIncentivePool::get(),
+									&T::ExchangeIncentivePool::get(),
 									incentive_reward,
 								)
 								.is_ok()
@@ -374,7 +374,7 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 							}
 						}
 
-						PoolId::DexSaving(currency_id) => {
+						PoolId::ExchangeSaving(currency_id) => {
 							let exchange_saving_rate = Self::exchange_saving_rates(currency_id);
 							if !exchange_saving_rate.is_zero() {
 								if let CurrencyId::EXCHANGEShare(token_symbol_a, token_symbol_b) = currency_id {
@@ -394,7 +394,7 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 										let saving_reward =
 											exchange_saving_rate.saturating_mul_int(saving_currency_amount);
 										if T::CDPTreasury::issue_debit(
-											&T::DexIncentivePool::get(),
+											&T::ExchangeIncentivePool::get(),
 											saving_reward,
 											false,
 										)
@@ -442,8 +442,8 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 	fn payout(who: &T::AccountId, pool_id: PoolId, amount: Balance) {
 		let (pool_account, currency_id) = match pool_id {
 			PoolId::Loans(_) => (T::LoansIncentivePool::get(), T::IncentiveCurrencyId::get()),
-			PoolId::DexIncentive(_) => (T::DexIncentivePool::get(), T::IncentiveCurrencyId::get()),
-			PoolId::DexSaving(_) => (T::DexIncentivePool::get(), T::SavingCurrencyId::get()),
+			PoolId::ExchangeIncentive(_) => (T::ExchangeIncentivePool::get(), T::IncentiveCurrencyId::get()),
+			PoolId::ExchangeSaving(_) => (T::ExchangeIncentivePool::get(), T::SavingCurrencyId::get()),
 			PoolId::Homa => (T::HomaIncentivePool::get(), T::IncentiveCurrencyId::get()),
 		};
 
