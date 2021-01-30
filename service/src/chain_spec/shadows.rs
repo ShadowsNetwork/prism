@@ -281,7 +281,7 @@ fn testnet_genesis(
 				.collect(),
 		}),
 		orml_vesting: Some(VestingConfig { vesting: vec![] }),
-		module_cdp_treasury: Some(CdpTreasuryConfig {
+		module_debt_treasury: Some(CdpTreasuryConfig {
 			collateral_auction_maximum_size: vec![
 				(CurrencyId::Token(TokenSymbol::DOT), DOLLARS), // (currency_id, max size of a collateral auction)
 				(CurrencyId::Token(TokenSymbol::XBTC), DOLLARS),
@@ -442,7 +442,7 @@ fn shadows_genesis(
 			],
 		}),
 		orml_vesting: Some(VestingConfig { vesting: vec![] }),
-		module_cdp_treasury: Some(CdpTreasuryConfig {
+		module_debt_treasury: Some(CdpTreasuryConfig {
 			collateral_auction_maximum_size: vec![
 				(CurrencyId::Token(TokenSymbol::DOT), DOLLARS), // (currency_id, max size of a collateral auction)
 				(CurrencyId::Token(TokenSymbol::XBTC), 5 * CENTS),

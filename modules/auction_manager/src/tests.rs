@@ -141,9 +141,9 @@ fn collateral_auction_bid_handler_work() {
 			Error::<Runtime>::AuctionNotExists,
 		);
 
-		assert_ok!(CDPTreasuryModule::deposit_collateral(&ALICE, BTC, 10));
+		assert_ok!(DEPTTreasuryModule::deposit_collateral(&ALICE, BTC, 10));
 		assert_ok!(AuctionManagerModule::new_collateral_auction(&ALICE, BTC, 10, 100));
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 0);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 0);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1000);
 		assert_eq!(System::refs(&BOB), 0);
 
@@ -155,7 +155,7 @@ fn collateral_auction_bid_handler_work() {
 			AuctionManagerModule::collateral_auction_bid_handler(1, 0, (BOB, 5), None).is_ok(),
 			true
 		);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 5);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 5);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 995);
 		assert_eq!(System::refs(&BOB), 1);
 		assert_eq!(System::refs(&CAROL), 0);
@@ -164,7 +164,7 @@ fn collateral_auction_bid_handler_work() {
 			AuctionManagerModule::collateral_auction_bid_handler(2, 0, (CAROL, 10), Some((BOB, 5))).is_ok(),
 			true
 		);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 10);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 10);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1000);
 		assert_eq!(Tokens::free_balance(AUSD, &CAROL), 990);
 		assert_eq!(System::refs(&BOB), 0);
@@ -175,7 +175,7 @@ fn collateral_auction_bid_handler_work() {
 			AuctionManagerModule::collateral_auction_bid_handler(3, 0, (BOB, 200), Some((CAROL, 10))).is_ok(),
 			true
 		);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 100);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 100);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 900);
 		assert_eq!(Tokens::free_balance(AUSD, &CAROL), 1000);
 		assert_eq!(System::refs(&BOB), 1);
@@ -195,7 +195,7 @@ fn debit_auction_bid_handler_work() {
 		assert_ok!(AuctionManagerModule::new_debit_auction(200, 100));
 		assert_eq!(AuctionManagerModule::total_debit_in_auction(), 100);
 		assert_eq!(AuctionManagerModule::debit_auctions(0).unwrap().amount, 200);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 0);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 0);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1000);
 		assert_eq!(System::refs(&BOB), 0);
 
@@ -208,7 +208,7 @@ fn debit_auction_bid_handler_work() {
 			true
 		);
 		assert_eq!(AuctionManagerModule::debit_auctions(0).unwrap().amount, 200);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 100);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 100);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 900);
 		assert_eq!(System::refs(&BOB), 1);
 		assert_eq!(System::refs(&CAROL), 0);
@@ -218,7 +218,7 @@ fn debit_auction_bid_handler_work() {
 			true
 		);
 		assert_eq!(AuctionManagerModule::debit_auctions(0).unwrap().amount, 100);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 100);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 100);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1000);
 		assert_eq!(Tokens::free_balance(AUSD, &CAROL), 900);
 		assert_eq!(System::refs(&BOB), 0);
@@ -323,9 +323,9 @@ fn bid_when_soft_cap_for_surplus_auction_work() {
 fn collateral_auction_end_handler_without_bid() {
 	ExtBuilder::default().build().execute_with(|| {
 		System::set_block_number(1);
-		assert_ok!(CDPTreasuryModule::deposit_collateral(&CAROL, BTC, 100));
+		assert_ok!(DEPTTreasuryModule::deposit_collateral(&CAROL, BTC, 100));
 		assert_ok!(AuctionManagerModule::new_collateral_auction(&ALICE, BTC, 100, 200));
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 100);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 100);
 		assert_eq!(AuctionManagerModule::total_target_in_auction(), 200);
 		assert_eq!(AuctionManagerModule::total_collateral_in_auction(BTC), 100);
 		assert_eq!(System::refs(&ALICE), 1);
@@ -337,7 +337,7 @@ fn collateral_auction_end_handler_without_bid() {
 			.iter()
 			.any(|record| record.event == auction_passed_event));
 
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 100);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 100);
 		assert_eq!(AuctionManagerModule::collateral_auctions(0), None);
 		assert_eq!(AuctionManagerModule::total_target_in_auction(), 0);
 		assert_eq!(AuctionManagerModule::total_collateral_in_auction(BTC), 0);
@@ -349,18 +349,18 @@ fn collateral_auction_end_handler_without_bid() {
 fn collateral_auction_end_handler_in_reverse_stage() {
 	ExtBuilder::default().build().execute_with(|| {
 		System::set_block_number(1);
-		assert_ok!(CDPTreasuryModule::deposit_collateral(&CAROL, BTC, 100));
+		assert_ok!(DEPTTreasuryModule::deposit_collateral(&CAROL, BTC, 100));
 		assert_ok!(AuctionManagerModule::new_collateral_auction(&ALICE, BTC, 100, 200));
 		assert_eq!(
 			AuctionManagerModule::collateral_auction_bid_handler(2, 0, (BOB, 400), None).is_ok(),
 			true
 		);
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 50);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 50);
 		assert_eq!(AuctionManagerModule::total_collateral_in_auction(BTC), 50);
 		assert_eq!(Tokens::free_balance(BTC, &ALICE), 1050);
 		assert_eq!(Tokens::free_balance(BTC, &BOB), 1000);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 800);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 200);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 200);
 		assert_eq!(System::refs(&ALICE), 1);
 		assert_eq!(System::refs(&BOB), 1);
 
@@ -371,13 +371,13 @@ fn collateral_auction_end_handler_in_reverse_stage() {
 			.iter()
 			.any(|record| record.event == auction_dealt_event));
 
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 0);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 0);
 		assert_eq!(AuctionManagerModule::collateral_auctions(0), None);
 		assert_eq!(AuctionManagerModule::total_collateral_in_auction(BTC), 0);
 		assert_eq!(Tokens::free_balance(BTC, &ALICE), 1050);
 		assert_eq!(Tokens::free_balance(BTC, &BOB), 1050);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 800);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 200);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 200);
 		assert_eq!(System::refs(&ALICE), 0);
 		assert_eq!(System::refs(&BOB), 0);
 	});
@@ -387,18 +387,18 @@ fn collateral_auction_end_handler_in_reverse_stage() {
 fn collateral_auction_end_handler_by_dealing_which_target_not_zero() {
 	ExtBuilder::default().build().execute_with(|| {
 		System::set_block_number(1);
-		assert_ok!(CDPTreasuryModule::deposit_collateral(&CAROL, BTC, 100));
+		assert_ok!(DEPTTreasuryModule::deposit_collateral(&CAROL, BTC, 100));
 		assert_ok!(AuctionManagerModule::new_collateral_auction(&ALICE, BTC, 100, 200));
 		assert_eq!(
 			AuctionManagerModule::collateral_auction_bid_handler(1, 0, (BOB, 100), None).is_ok(),
 			true
 		);
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 100);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 100);
 		assert_eq!(AuctionManagerModule::total_target_in_auction(), 200);
 		assert_eq!(AuctionManagerModule::total_collateral_in_auction(BTC), 100);
 		assert_eq!(Tokens::free_balance(BTC, &BOB), 1000);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 900);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 100);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 100);
 		assert_eq!(System::refs(&ALICE), 1);
 		assert_eq!(System::refs(&BOB), 1);
 
@@ -409,7 +409,7 @@ fn collateral_auction_end_handler_by_dealing_which_target_not_zero() {
 			.iter()
 			.any(|record| record.event == auction_dealt_event));
 
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 0);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 0);
 		assert_eq!(AuctionManagerModule::collateral_auctions(0), None);
 		assert_eq!(AuctionManagerModule::total_target_in_auction(), 0);
 		assert_eq!(AuctionManagerModule::total_collateral_in_auction(BTC), 0);
@@ -424,7 +424,7 @@ fn collateral_auction_end_handler_by_dealing_which_target_not_zero() {
 fn collateral_auction_end_handler_by_exchange_which_target_not_zero() {
 	ExtBuilder::default().build().execute_with(|| {
 		System::set_block_number(1);
-		assert_ok!(CDPTreasuryModule::deposit_collateral(&CAROL, BTC, 100));
+		assert_ok!(DEPTTreasuryModule::deposit_collateral(&CAROL, BTC, 100));
 		assert_ok!(AuctionManagerModule::new_collateral_auction(&ALICE, BTC, 100, 200));
 		assert_eq!(
 			AuctionManagerModule::collateral_auction_bid_handler(1, 0, (BOB, 20), None).is_ok(),
@@ -442,14 +442,14 @@ fn collateral_auction_end_handler_by_exchange_which_target_not_zero() {
 			500
 		);
 
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 100);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 100);
 		assert_eq!(AuctionManagerModule::total_target_in_auction(), 200);
 		assert_eq!(AuctionManagerModule::total_collateral_in_auction(BTC), 100);
 		assert_eq!(Tokens::free_balance(BTC, &BOB), 1000);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 980);
 		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 1000);
-		assert_eq!(CDPTreasuryModule::debit_pool(), 0);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 20);
+		assert_eq!(DEPTTreasuryModule::debit_pool(), 0);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 20);
 		assert_eq!(System::refs(&ALICE), 1);
 		assert_eq!(System::refs(&BOB), 1);
 
@@ -461,15 +461,15 @@ fn collateral_auction_end_handler_by_exchange_which_target_not_zero() {
 			.iter()
 			.any(|record| record.event == exchange_take_collateral_auction));
 
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 0);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 0);
 		assert_eq!(AuctionManagerModule::collateral_auctions(0), None);
 		assert_eq!(AuctionManagerModule::total_target_in_auction(), 0);
 		assert_eq!(AuctionManagerModule::total_collateral_in_auction(BTC), 0);
 		assert_eq!(Tokens::free_balance(BTC, &BOB), 1000);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1000);
 		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 1300);
-		assert_eq!(CDPTreasuryModule::debit_pool(), 320);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 520);
+		assert_eq!(DEPTTreasuryModule::debit_pool(), 320);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 520);
 		assert_eq!(System::refs(&ALICE), 0);
 		assert_eq!(System::refs(&BOB), 0);
 	});
@@ -546,13 +546,13 @@ fn surplus_auction_end_handler_without_bid() {
 fn surplus_auction_end_handler_with_bid() {
 	ExtBuilder::default().build().execute_with(|| {
 		System::set_block_number(1);
-		assert_ok!(CDPTreasuryModule::on_system_surplus(100));
+		assert_ok!(DEPTTreasuryModule::on_system_surplus(100));
 		assert_ok!(AuctionManagerModule::new_surplus_auction(100));
 		assert_eq!(
 			AuctionManagerModule::surplus_auction_bid_handler(1, 0, (BOB, 500), None).is_ok(),
 			true
 		);
-		assert_eq!(CDPTreasuryModule::debit_pool(), 0);
+		assert_eq!(DEPTTreasuryModule::debit_pool(), 0);
 		assert_eq!(AuctionManagerModule::total_surplus_in_auction(), 100);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1000);
 		assert_eq!(Tokens::free_balance(DOS, &BOB), 500);
@@ -566,7 +566,7 @@ fn surplus_auction_end_handler_with_bid() {
 			.iter()
 			.any(|record| record.event == surplus_auction_deal_event));
 
-		assert_eq!(CDPTreasuryModule::debit_pool(), 100);
+		assert_eq!(DEPTTreasuryModule::debit_pool(), 100);
 		assert_eq!(AuctionManagerModule::surplus_auctions(0), None);
 		assert_eq!(AuctionManagerModule::total_surplus_in_auction(), 0);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1100);
@@ -665,7 +665,7 @@ fn cancel_debit_auction_work() {
 #[test]
 fn cancel_collateral_auction_failed() {
 	ExtBuilder::default().build().execute_with(|| {
-		assert_ok!(CDPTreasuryModule::deposit_collateral(&CAROL, BTC, 10));
+		assert_ok!(DEPTTreasuryModule::deposit_collateral(&CAROL, BTC, 10));
 		assert_ok!(AuctionManagerModule::new_collateral_auction(&ALICE, BTC, 10, 100));
 		MockPriceSource::set_relative_price(None);
 		assert_noop!(
@@ -690,18 +690,18 @@ fn cancel_collateral_auction_failed() {
 fn cancel_collateral_auction_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		System::set_block_number(1);
-		assert_ok!(CDPTreasuryModule::deposit_collateral(&CAROL, BTC, 10));
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 10);
+		assert_ok!(DEPTTreasuryModule::deposit_collateral(&CAROL, BTC, 10));
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 10);
 		assert_ok!(AuctionManagerModule::new_collateral_auction(&ALICE, BTC, 10, 100));
 		assert_eq!(AuctionManagerModule::total_collateral_in_auction(BTC), 10);
 		assert_eq!(AuctionManagerModule::total_target_in_auction(), 100);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 0);
-		assert_eq!(CDPTreasuryModule::debit_pool(), 0);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 0);
+		assert_eq!(DEPTTreasuryModule::debit_pool(), 0);
 		assert_ok!(AuctionModule::bid(Origin::signed(BOB), 0, 80));
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 920);
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 10);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 80);
-		assert_eq!(CDPTreasuryModule::debit_pool(), 0);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 10);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 80);
+		assert_eq!(DEPTTreasuryModule::debit_pool(), 0);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 920);
 		assert_eq!(System::refs(&ALICE), 1);
 		assert_eq!(System::refs(&BOB), 1);
@@ -718,9 +718,9 @@ fn cancel_collateral_auction_work() {
 		assert_eq!(System::refs(&BOB), 0);
 		assert_eq!(AuctionManagerModule::total_collateral_in_auction(BTC), 0);
 		assert_eq!(AuctionManagerModule::total_target_in_auction(), 0);
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 10);
-		assert_eq!(CDPTreasuryModule::debit_pool(), 80);
-		assert_eq!(CDPTreasuryModule::surplus_pool(), 80);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 10);
+		assert_eq!(DEPTTreasuryModule::debit_pool(), 80);
+		assert_eq!(DEPTTreasuryModule::surplus_pool(), 80);
 		assert_eq!(AuctionManagerModule::collateral_auctions(0).is_some(), false);
 		assert_eq!(AuctionModule::auction_info(0).is_some(), false);
 	});

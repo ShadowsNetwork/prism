@@ -116,7 +116,7 @@ parameter_types! {
 	pub const ShadowTreasuryModuleId: ModuleId = ModuleId(*b"aca/trsy");
 	pub const LendModuleId: ModuleId = ModuleId(*b"aca/loan");
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
-	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 	pub const StakingPoolModuleId: ModuleId = ModuleId(*b"aca/stkp");
 	pub const MintxTreasuryModuleId: ModuleId = ModuleId(*b"aca/hztr");
 	pub const HomaTreasuryModuleId: ModuleId = ModuleId(*b"aca/hmtr");
@@ -132,7 +132,7 @@ pub fn get_all_module_accounts() -> Vec<AccountId> {
 		ShadowTreasuryModuleId::get().into_account(),
 		LendModuleId::get().into_account(),
 		EXCHANGEModuleId::get().into_account(),
-		CDPTreasuryModuleId::get().into_account(),
+		DEPTTreasuryModuleId::get().into_account(),
 		StakingPoolModuleId::get().into_account(),
 		MintxTreasuryModuleId::get().into_account(),
 		HomaTreasuryModuleId::get().into_account(),
@@ -906,7 +906,7 @@ impl module_auction_manager::Trait for Runtime {
 	type AuctionDurationSoftCap = AuctionDurationSoftCap;
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
-	type CDPTreasury = CdpTreasury;
+	type DEPTTreasury = CdpTreasury;
 	type EXCHANGE = Exchange;
 	type PriceSource = Ingester;
 	type UnsignedPriority = AuctionManagerUnsignedPriority;
@@ -919,7 +919,7 @@ impl module_lend::Trait for Runtime {
 	type Convert = module_debt_engine::DebitExchangeRateConvertor<Runtime>;
 	type Currency = Currencies;
 	type RiskManager = DebtEngine;
-	type CDPTreasury = CdpTreasury;
+	type DEPTTreasury = CdpTreasury;
 	type ModuleId = LendModuleId;
 	type OnUpdateLoan = module_incentives::OnUpdateLoan<Runtime>;
 }
@@ -1001,7 +1001,7 @@ impl module_debt_engine::Trait for Runtime {
 	type DefaultLiquidationPenalty = DefaultLiquidationPenalty;
 	type MinimumDebitValue = MinimumDebitValue;
 	type GetStableCurrencyId = GetStableCurrencyId;
-	type CDPTreasury = CdpTreasury;
+	type DEPTTreasury = CdpTreasury;
 	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
 	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
 	type EXCHANGE = Exchange;
@@ -1019,7 +1019,7 @@ impl module_emergency_shutdown::Trait for Runtime {
 	type Event = Event;
 	type CollateralCurrencyIds = CollateralCurrencyIds;
 	type PriceSource = Ingester;
-	type CDPTreasury = CdpTreasury;
+	type DEPTTreasury = CdpTreasury;
 	type AuctionManagerHandler = AuctionManager;
 	type ShutdownOrigin = EnsureRootOrHalfGeneralCouncil;
 	type WeightInfo = weights::emergency_shutdown::WeightInfo<Runtime>;
@@ -1051,7 +1051,7 @@ parameter_types! {
 	pub const MaxAuctionsCount: u32 = 100;
 }
 
-impl module_cdp_treasury::Trait for Runtime {
+impl module_debt_treasury::Trait for Runtime {
 	type Event = Event;
 	type Currency = Currencies;
 	type GetStableCurrencyId = GetStableCurrencyId;
@@ -1059,8 +1059,8 @@ impl module_cdp_treasury::Trait for Runtime {
 	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
 	type EXCHANGE = Exchange;
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = CDPTreasuryModuleId;
-	type WeightInfo = weights::cdp_treasury::WeightInfo<Runtime>;
+	type ModuleId = DEPTTreasuryModuleId;
+	type WeightInfo = weights::debt_treasury::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -1104,7 +1104,7 @@ impl module_incentives::Trait for Runtime {
 	type IncentiveCurrencyId = GetNativeCurrencyId;
 	type SavingCurrencyId = GetStableCurrencyId;
 	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
-	type CDPTreasury = CdpTreasury;
+	type DEPTTreasury = CdpTreasury;
 	type Currency = Currencies;
 	type EXCHANGE = Exchange;
 	type EmergencyShutdown = EmergencyShutdown;
@@ -1364,7 +1364,7 @@ construct_runtime!(
 		AuctionManager: module_auction_manager::{Module, Storage, Call, Event<T>, ValidateUnsigned},
 		Lend: module_lend::{Module, Storage, Call, Event<T>},
 		Mintx: module_mintx::{Module, Storage, Call, Event<T>},
-		CdpTreasury: module_cdp_treasury::{Module, Storage, Call, Config, Event},
+		CdpTreasury: module_debt_treasury::{Module, Storage, Call, Config, Event},
 		DebtEngine: module_debt_engine::{Module, Storage, Call, Event<T>, Config, ValidateUnsigned},
 		EmergencyShutdown: module_emergency_shutdown::{Module, Storage, Call, Event<T>},
 
@@ -1696,7 +1696,7 @@ impl_runtime_apis! {
 			orml_add_benchmark!(params, batches, debt_engine, benchmarking::debt_engine);
 			orml_add_benchmark!(params, batches, emergency_shutdown, benchmarking::emergency_shutdown);
 			orml_add_benchmark!(params, batches, mintx, benchmarking::mintx);
-			orml_add_benchmark!(params, batches, cdp_treasury, benchmarking::cdp_treasury);
+			orml_add_benchmark!(params, batches, debt_treasury, benchmarking::debt_treasury);
 			orml_add_benchmark!(params, batches, accounts, benchmarking::accounts);
 			orml_add_benchmark!(params, batches, incentives, benchmarking::incentives);
 			orml_add_benchmark!(params, batches, ingester, benchmarking::ingester);

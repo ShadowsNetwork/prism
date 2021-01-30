@@ -1,5 +1,5 @@
 [package]
-name = "module-cdp-treasury"
+name = "module-dept-treasury"
 version = "0.0.1"
 authors = ["Shadows Developers"]
 edition = "2018"

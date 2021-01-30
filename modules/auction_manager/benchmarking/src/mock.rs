@@ -133,7 +133,7 @@ impl auction_manager::Trait for Runtime {
 	type AuctionDurationSoftCap = AuctionDurationSoftCap;
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
-	type CDPTreasury = CDPTreasuryModule;
+	type DEPTTreasury = DEPTTreasuryModule;
 	type EXCHANGE = ();
 	type PriceSource = ingester::Module<Runtime>;
 	type UnsignedPriority = UnsignedPriority;
@@ -159,10 +159,10 @@ ord_parameter_types! {
 
 parameter_types! {
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
-impl cdp_treasury::Trait for Runtime {
+impl debt_treasury::Trait for Runtime {
 	type Event = ();
 	type Currency = Currencies;
 	type GetStableCurrencyId = GetStableCurrencyId;
@@ -170,10 +170,10 @@ impl cdp_treasury::Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type EXCHANGE = ();
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = CDPTreasuryModuleId;
+	type ModuleId = DEPTTreasuryModuleId;
 	type WeightInfo = ();
 }
-pub type CDPTreasuryModule = cdp_treasury::Module<Runtime>;
+pub type DEPTTreasuryModule = debt_treasury::Module<Runtime>;
 
 parameter_types! {
 	pub const MinimumPeriod: u64 = 5;
@@ -245,7 +245,7 @@ impl lend::Trait for Runtime {
 	type Convert = MockConvert;
 	type Currency = Tokens;
 	type RiskManager = ();
-	type CDPTreasury = CDPTreasuryModule;
+	type DEPTTreasury = DEPTTreasuryModule;
 	type ModuleId = LendModuleId;
 	type OnUpdateLoan = ();
 }
@@ -258,7 +258,7 @@ impl emergency_shutdown::Trait for Runtime {
 	type Event = ();
 	type CollateralCurrencyIds = CollateralCurrencyIds;
 	type PriceSource = ingester::Module<Runtime>;
-	type CDPTreasury = CDPTreasuryModule;
+	type DEPTTreasury = DEPTTreasuryModule;
 	type AuctionManagerHandler = AuctionManagerModule;
 	type ShutdownOrigin = EnsureRoot<AccountId>;
 	type WeightInfo = ();

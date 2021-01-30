@@ -115,7 +115,7 @@ impl lend::Trait for Runtime {
 	type Convert = debt_engine::DebitExchangeRateConvertor<Runtime>;
 	type Currency = Tokens;
 	type RiskManager = CDPEngineModule;
-	type CDPTreasury = CDPTreasuryModule;
+	type DEPTTreasury = DEPTTreasuryModule;
 	type ModuleId = LendModuleId;
 	type OnUpdateLoan = ();
 }
@@ -171,10 +171,10 @@ ord_parameter_types! {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
-impl cdp_treasury::Trait for Runtime {
+impl debt_treasury::Trait for Runtime {
 	type Event = ();
 	type Currency = Currencies;
 	type GetStableCurrencyId = GetStableCurrencyId;
@@ -182,9 +182,9 @@ impl cdp_treasury::Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type EXCHANGE = ();
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = CDPTreasuryModuleId;
+	type ModuleId = DEPTTreasuryModuleId;
 }
-pub type CDPTreasuryModule = cdp_treasury::Module<Runtime>;
+pub type DEPTTreasuryModule = debt_treasury::Module<Runtime>;
 
 parameter_types! {
 	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![DOS, DOT];
@@ -205,7 +205,7 @@ impl debt_engine::Trait for Runtime {
 	type DefaultLiquidationPenalty = DefaultLiquidationPenalty;
 	type MinimumDebitValue = MinimumDebitValue;
 	type GetStableCurrencyId = GetStableCurrencyId;
-	type CDPTreasury = CDPTreasuryModule;
+	type DEPTTreasury = DEPTTreasuryModule;
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
 	type EXCHANGE = ();

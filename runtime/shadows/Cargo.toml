@@ -75,7 +75,7 @@ orml-nft= { path = "../../orml/nft", default-features = false }
 module-accounts = { path = "../../modules/accounts", default-features = false }
 module-auction-manager = { path = "../../modules/auction_manager", default-features = false }
 module-debt-engine = { path = "../../modules/debt_engine", default-features = false }
-module-cdp-treasury = { path = "../../modules/cdp_treasury", default-features = false }
+module-dept-treasury = { path = "../../modules/debt_treasury", default-features = false }
 module-exchange = { path = "../../modules/exchange", default-features = false }
 module-emergency-shutdown = { path = "../../modules/emergency_shutdown", default-features = false }
 module-mintx = { path = "../../modules/mintx", default-features = false }
@@ -169,7 +169,7 @@ std = [
 	"module-accounts/std",
 	"module-auction-manager/std",
 	"module-debt-engine/std",
-	"module-cdp-treasury/std",
+	"module-dept-treasury/std",
 	"module-exchange/std",
 	"module-emergency-shutdown/std",
 	"module-mintx/std",
@@ -200,7 +200,7 @@ runtime-benchmarks = [
 
 	"module-auction-manager-benchmarking",
 	"module-debt-engine-benchmarking",
-	"module-cdp-treasury/runtime-benchmarks",
+	"module-dept-treasury/runtime-benchmarks",
 	"module-exchange/runtime-benchmarks",
 	"module-emergency-shutdown-benchmarking",
 	"module-mintx-benchmarking",

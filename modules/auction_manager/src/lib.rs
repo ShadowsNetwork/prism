@@ -43,7 +43,7 @@ use sp_std::{
 	prelude::*,
 };
 use support::{
-	AuctionManager, CDPTreasury, CDPTreasuryExtended, EXCHANGEManager, EmergencyShutdown, PriceProvider, Rate,
+	AuctionManager, DEPTTreasury, DEPTTreasuryExtended, EXCHANGEManager, EmergencyShutdown, PriceProvider, Rate,
 };
 
 mod default_weight;
@@ -187,7 +187,7 @@ pub trait Trait: SendTransactionTypes<Call<Self>> + system::Trait {
 	type Auction: Auction<Self::AccountId, Self::BlockNumber, AuctionId = AuctionId, Balance = Balance>;
 
 	/// CDP treasury to escrow assets related to auction
-	type CDPTreasury: CDPTreasuryExtended<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
+	type DEPTTreasury: DEPTTreasuryExtended<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
 
 	/// EXCHANGE to get exchange info
 	type EXCHANGE: EXCHANGEManager<Self::AccountId, CurrencyId, Balance>;
@@ -312,7 +312,7 @@ decl_module! {
 		/// # <weight>
 		/// - Preconditions:
 		/// 	- T::Currency is orml_currencies
-		/// 	- T::CDPTreasury is module_cdp_treasury
+		/// 	- T::DEPTTreasury is module_debt_treasury
 		/// 	- T::Auction is orml_auction
 		/// - Complexity: `O(1)`
 		/// - Db reads:
@@ -493,7 +493,7 @@ impl<T: Trait> Module<T> {
 		// if there's bid
 		if let Some((bidder, _)) = Self::get_last_bid(id) {
 			// refund stable token to the bidder
-			T::CDPTreasury::issue_debit(&bidder, debit_auction.fix, false)?;
+			T::DEPTTreasury::issue_debit(&bidder, debit_auction.fix, false)?;
 			// decrease account ref of bidder
 			system::Module::<T>::dec_ref(&bidder);
 		}
@@ -533,7 +533,7 @@ impl<T: Trait> Module<T> {
 		let refund_collateral_amount = collateral_auction.amount.saturating_sub(confiscate_collateral_amount);
 
 		// refund remain collateral to refund recipient from CDP treasury
-		T::CDPTreasury::withdraw_collateral(
+		T::DEPTTreasury::withdraw_collateral(
 			&collateral_auction.refund_recipient,
 			collateral_auction.currency_id,
 			refund_collateral_amount,
@@ -542,7 +542,7 @@ impl<T: Trait> Module<T> {
 		// if there's bid
 		if let Some((bidder, bid_price)) = last_bid {
 			// refund stable token to the bidder
-			T::CDPTreasury::issue_debit(&bidder, bid_price, false)?;
+			T::DEPTTreasury::issue_debit(&bidder, bid_price, false)?;
 
 			// decrease account ref of bidder
 			system::Module::<T>::dec_ref(&bidder);
@@ -650,7 +650,7 @@ impl<T: Trait> Module<T> {
 					}
 
 					// transfer remain payment from new bidder to CDP treasury
-					T::CDPTreasury::deposit_surplus(&new_bidder, payment)?;
+					T::DEPTTreasury::deposit_surplus(&new_bidder, payment)?;
 
 					// if collateral auction will be in reverse stage, refund collateral to it's
 					// origin from auction CDP treasury
@@ -659,7 +659,7 @@ impl<T: Trait> Module<T> {
 						let refund_collateral_amount = collateral_auction.amount.saturating_sub(new_collateral_amount);
 
 						if !refund_collateral_amount.is_zero() {
-							T::CDPTreasury::withdraw_collateral(
+							T::DEPTTreasury::withdraw_collateral(
 								&(collateral_auction.refund_recipient),
 								collateral_auction.currency_id,
 								refund_collateral_amount,
@@ -722,7 +722,7 @@ impl<T: Trait> Module<T> {
 						)?;
 					} else {
 						// there's no bid before, transfer stablecoin to CDP treasury
-						T::CDPTreasury::deposit_surplus(&new_bidder, debit_auction.fix)?;
+						T::DEPTTreasury::deposit_surplus(&new_bidder, debit_auction.fix)?;
 					}
 
 					Self::swap_bidders(&new_bidder, last_bidder);
@@ -803,7 +803,7 @@ impl<T: Trait> Module<T> {
 					.unwrap_or_default()
 			{
 				// try swap collateral in auction with EXCHANGE to get stable
-				if let Ok(stable_amount) = T::CDPTreasury::swap_exact_collateral_in_auction_to_stable(
+				if let Ok(stable_amount) = T::DEPTTreasury::swap_exact_collateral_in_auction_to_stable(
 					collateral_auction.currency_id,
 					collateral_auction.amount,
 					Zero::zero(),
@@ -815,7 +815,7 @@ impl<T: Trait> Module<T> {
 					// refund stable currency to the last bidder, it shouldn't fail and affect the
 					// process. but even it failed, just the winner did not get the bid price. it
 					// can be fixed by treasury council.
-					let _ = T::CDPTreasury::issue_debit(&bidder, bid_price, false);
+					let _ = T::DEPTTreasury::issue_debit(&bidder, bid_price, false);
 
 					if collateral_auction.in_reverse_stage(stable_amount) {
 						// refund extra stable currency to recipient
@@ -825,7 +825,8 @@ impl<T: Trait> Module<T> {
 						// it shouldn't fail and affect the process.
 						// but even it failed, just the winner did not get the refund amount. it can be
 						// fixed by treasury council.
-						let _ = T::CDPTreasury::issue_debit(&collateral_auction.refund_recipient, refund_amount, false);
+						let _ =
+							T::DEPTTreasury::issue_debit(&collateral_auction.refund_recipient, refund_amount, false);
 					}
 
 					<Module<T>>::deposit_event(RawEvent::EXCHANGETakeCollateralAuction(
@@ -841,7 +842,7 @@ impl<T: Trait> Module<T> {
 				// transfer collateral to winner from CDP treasury, it shouldn't fail and affect
 				// the process. but even it failed, just the winner did not get the amount. it
 				// can be fixed by treasury council.
-				let _ = T::CDPTreasury::withdraw_collateral(
+				let _ = T::DEPTTreasury::withdraw_collateral(
 					&bidder,
 					collateral_auction.currency_id,
 					collateral_auction.amount,
@@ -903,7 +904,7 @@ impl<T: Trait> Module<T> {
 			// deposit unbacked stable token to winner by CDP treasury, it shouldn't fail
 			// and affect the process. but even it failed, just the winner did not get the
 			// amount. it can be fixed by treasury council.
-			let _ = T::CDPTreasury::issue_debit(&bidder, surplus_auction.amount, false);
+			let _ = T::DEPTTreasury::issue_debit(&bidder, surplus_auction.amount, false);
 
 			<Module<T>>::deposit_event(RawEvent::SurplusAuctionDealt(
 				auction_id,

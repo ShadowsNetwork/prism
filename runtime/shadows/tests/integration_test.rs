@@ -6,7 +6,7 @@ use frame_support::{
 };
 use frame_system::RawOrigin;
 use module_debt_engine::LiquidationStrategy;
-use module_support::{CDPTreasury, EXCHANGEManager, Price, Rate, Ratio, RiskManager};
+use module_support::{DEPTTreasury, EXCHANGEManager, Price, Rate, Ratio, RiskManager};
 use orml_authority::DelayedOrigin;
 use orml_traits::{Change, MultiCurrency};
 use shadows_runtime::{
@@ -30,7 +30,7 @@ pub type OracleModule = orml_oracle::Module<Runtime, orml_oracle::Instance1>;
 pub type ExchangeModule = module_exchange::Module<Runtime>;
 pub type DebtEngineModule = module_debt_engine::Module<Runtime>;
 pub type LendModule = module_lend::Module<Runtime>;
-pub type CdpTreasuryModule = module_cdp_treasury::Module<Runtime>;
+pub type CdpTreasuryModule = module_debt_treasury::Module<Runtime>;
 pub type SystemModule = frame_system::Module<Runtime>;
 pub type EmergencyShutdownModule = module_emergency_shutdown::Module<Runtime>;
 pub type AuctionManagerModule = module_auction_manager::Module<Runtime>;
@@ -141,7 +141,7 @@ fn amount(amount: u128) -> u128 {
 }
 
 #[test]
-fn emergency_shutdown_and_cdp_treasury() {
+fn emergency_shutdown_and_debt_treasury() {
 	ExtBuilder::default()
 		.balances(vec![
 			(

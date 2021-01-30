@@ -150,7 +150,7 @@ where
 }
 
 /// An abstraction of cdp treasury for Mintx Protocol.
-pub trait CDPTreasury<AccountId> {
+pub trait DEPTTreasury<AccountId> {
 	type Balance;
 	type CurrencyId;
 
@@ -190,7 +190,7 @@ pub trait CDPTreasury<AccountId> {
 	fn withdraw_collateral(to: &AccountId, currency_id: Self::CurrencyId, amount: Self::Balance) -> DispatchResult;
 }
 
-pub trait CDPTreasuryExtended<AccountId>: CDPTreasury<AccountId> {
+pub trait DEPTTreasuryExtended<AccountId>: DEPTTreasury<AccountId> {
 	fn swap_exact_collateral_in_auction_to_stable(
 		currency_id: Self::CurrencyId,
 		supply_amount: Self::Balance,

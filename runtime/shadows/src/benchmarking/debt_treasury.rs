@@ -1,7 +1,7 @@
 use crate::{Balance, CdpTreasury, CollateralCurrencyIds, Currencies, CurrencyId, Runtime, DOLLARS};
 
 use frame_system::RawOrigin;
-use module_support::CDPTreasury;
+use module_support::DEPTTreasury;
 use orml_benchmarking::runtime_benchmarks;
 use orml_traits::MultiCurrency;
 use sp_std::prelude::*;
@@ -12,7 +12,7 @@ fn dollar(d: u32) -> Balance {
 }
 
 runtime_benchmarks! {
-	{ Runtime, module_cdp_treasury }
+	{ Runtime, module_debt_treasury }
 
 	_ {}
 

@@ -24,7 +24,7 @@ pub const BTC: CurrencyId = CurrencyId::Token(TokenSymbol::XBTC);
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct Runtime;
 
-mod cdp_treasury {
+mod debt_treasury {
 	pub use super::super::*;
 }
 
@@ -35,7 +35,7 @@ impl_outer_origin! {
 impl_outer_event! {
 	pub enum TestEvent for Runtime {
 		frame_system<T>,
-		cdp_treasury,
+		debt_treasury,
 		orml_tokens<T>,
 		pallet_balances<T>,
 		orml_currencies<T>,
@@ -198,7 +198,7 @@ ord_parameter_types! {
 }
 
 parameter_types! {
-	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
 thread_local! {
@@ -213,10 +213,10 @@ impl Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type EXCHANGE = EXCHANGEModule;
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = CDPTreasuryModuleId;
+	type ModuleId = DEPTTreasuryModuleId;
 	type WeightInfo = ();
 }
-pub type CDPTreasuryModule = Module<Runtime>;
+pub type DEPTTreasuryModule = Module<Runtime>;
 
 pub struct ExtBuilder {
 	endowed_accounts: Vec<(AccountId, CurrencyId, Balance)>,

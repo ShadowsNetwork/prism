@@ -44,7 +44,7 @@ impl_outer_event! {
 		pallet_balances<T>,
 		orml_currencies<T>,
 		exchange<T>,
-		cdp_treasury,
+		debt_treasury,
 	}
 }
 
@@ -142,7 +142,7 @@ impl lend::Trait for Runtime {
 	type Convert = DebitExchangeRateConvertor<Runtime>;
 	type Currency = Currencies;
 	type RiskManager = CDPEngineModule;
-	type CDPTreasury = CDPTreasuryModule;
+	type DEPTTreasury = DEPTTreasuryModule;
 	type ModuleId = LendModuleId;
 	type OnUpdateLoan = ();
 }
@@ -223,10 +223,10 @@ impl AuctionManager<AccountId> for MockAuctionManager {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
-impl cdp_treasury::Trait for Runtime {
+impl debt_treasury::Trait for Runtime {
 	type Event = TestEvent;
 	type Currency = Currencies;
 	type GetStableCurrencyId = GetStableCurrencyId;
@@ -234,10 +234,10 @@ impl cdp_treasury::Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type EXCHANGE = EXCHANGEModule;
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = CDPTreasuryModuleId;
+	type ModuleId = DEPTTreasuryModuleId;
 	type WeightInfo = ();
 }
-pub type CDPTreasuryModule = cdp_treasury::Module<Runtime>;
+pub type DEPTTreasuryModule = debt_treasury::Module<Runtime>;
 
 parameter_types! {
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
@@ -295,7 +295,7 @@ impl Trait for Runtime {
 	type DefaultLiquidationPenalty = DefaultLiquidationPenalty;
 	type MinimumDebitValue = MinimumDebitValue;
 	type GetStableCurrencyId = GetStableCurrencyId;
-	type CDPTreasury = CDPTreasuryModule;
+	type DEPTTreasury = DEPTTreasuryModule;
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
 	type EXCHANGE = EXCHANGEModule;

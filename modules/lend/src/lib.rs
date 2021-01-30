@@ -21,7 +21,7 @@ use sp_runtime::{
 	DispatchResult, ModuleId, RuntimeDebug,
 };
 use sp_std::{convert::TryInto, result};
-use support::{CDPTreasury, RiskManager};
+use support::{DEPTTreasury, RiskManager};
 
 mod mock;
 mod tests;
@@ -42,7 +42,7 @@ pub trait Trait: system::Trait {
 
 	/// CDP treasury for issuing/burning stable currency adjust debit value
 	/// adjustment
-	type CDPTreasury: CDPTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
+	type DEPTTreasury: DEPTTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
 
 	/// The loan's module id, keep all collaterals of CDPs.
 	type ModuleId: Get<ModuleId>;
@@ -128,11 +128,11 @@ impl<T: Trait> Module<T> {
 			let debit_adjustment = Self::amount_try_from_balance(debit_decrease)?;
 
 			// transfer collateral to cdp treasury
-			T::CDPTreasury::deposit_collateral(&Self::account_id(), currency_id, collateral_confiscate)?;
+			T::DEPTTreasury::deposit_collateral(&Self::account_id(), currency_id, collateral_confiscate)?;
 
 			// deposit debit to cdp treasury
 			let bad_debt_value = T::RiskManager::get_bad_debt_value(currency_id, debit_decrease);
-			T::CDPTreasury::on_system_debit(bad_debt_value)?;
+			T::DEPTTreasury::on_system_debit(bad_debt_value)?;
 
 			// update loan
 			Self::update_loan(
@@ -179,11 +179,11 @@ impl<T: Trait> Module<T> {
 				T::RiskManager::check_debit_cap(currency_id, Self::total_positions(currency_id).debit)?;
 
 				// issue debit with collateral backed by cdp treasury
-				T::CDPTreasury::issue_debit(who, T::Convert::convert((currency_id, debit_balance_adjustment)), true)?;
+				T::DEPTTreasury::issue_debit(who, T::Convert::convert((currency_id, debit_balance_adjustment)), true)?;
 			} else if debit_adjustment.is_negative() {
 				// repay debit
 				// burn debit by cdp treasury
-				T::CDPTreasury::burn_debit(who, T::Convert::convert((currency_id, debit_balance_adjustment)))?;
+				T::DEPTTreasury::burn_debit(who, T::Convert::convert((currency_id, debit_balance_adjustment)))?;
 			}
 
 			// ensure pass risk check

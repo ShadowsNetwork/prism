@@ -445,7 +445,7 @@ fn liquidate_unsafe_cdp_by_collateral_auction() {
 			.iter()
 			.any(|record| record.event == liquidate_unsafe_cdp_event));
 
-		assert_eq!(CDPTreasuryModule::debit_pool(), 50);
+		assert_eq!(DEPTTreasuryModule::debit_pool(), 50);
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 50);
 		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
@@ -561,8 +561,8 @@ fn settle_cdp_has_debit_work() {
 		);
 		assert_ok!(CDPEngineModule::adjust_position(&ALICE, BTC, 0, 50));
 		assert_eq!(LendModule::positions(BTC, ALICE).debit, 50);
-		assert_eq!(CDPTreasuryModule::debit_pool(), 0);
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 0);
+		assert_eq!(DEPTTreasuryModule::debit_pool(), 0);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 0);
 		assert_ok!(CDPEngineModule::settle_cdp_has_debit(ALICE, BTC));
 
 		let settle_cdp_in_debit_event = TestEvent::debt_engine(RawEvent::SettleCDPInDebit(BTC, ALICE));
@@ -571,8 +571,8 @@ fn settle_cdp_has_debit_work() {
 			.any(|record| record.event == settle_cdp_in_debit_event));
 
 		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
-		assert_eq!(CDPTreasuryModule::debit_pool(), 50);
-		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 50);
+		assert_eq!(DEPTTreasuryModule::debit_pool(), 50);
+		assert_eq!(DEPTTreasuryModule::total_collaterals(BTC), 50);
 
 		assert_noop!(
 			CDPEngineModule::settle(Origin::none(), BTC, ALICE),

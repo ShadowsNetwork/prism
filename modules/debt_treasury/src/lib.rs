@@ -22,7 +22,7 @@ use sp_runtime::{
 	traits::{AccountIdConversion, One, Zero},
 	DispatchError, DispatchResult, FixedPointNumber, ModuleId,
 };
-use support::{AuctionManager, CDPTreasury, CDPTreasuryExtended, EXCHANGEManager, Ratio};
+use support::{AuctionManager, DEPTTreasury, DEPTTreasuryExtended, EXCHANGEManager, Ratio};
 
 mod benchmarking;
 mod default_weight;
@@ -93,7 +93,7 @@ decl_error! {
 }
 
 decl_storage! {
-	trait Store for Module<T: Trait> as CDPTreasury {
+	trait Store for Module<T: Trait> as DEPTTreasury {
 		/// The maximum amount of collateral amount for sale per collateral auction
 		pub CollateralAuctionMaximumSize get(fn collateral_auction_maximum_size): map hasher(twox_64_concat) CurrencyId => Balance;
 
@@ -155,7 +155,7 @@ decl_module! {
 		pub fn auction_collateral(origin, currency_id: CurrencyId, amount: Balance, target: Balance, splited: bool) {
 			with_transaction_result(|| {
 				T::UpdateOrigin::ensure_origin(origin)?;
-				<Self as CDPTreasuryExtended<T::AccountId>>::create_collateral_auctions(
+				<Self as DEPTTreasuryExtended<T::AccountId>>::create_collateral_auctions(
 					currency_id,
 					amount,
 					target,
@@ -235,7 +235,7 @@ impl<T: Trait> Module<T> {
 	}
 }
 
-impl<T: Trait> CDPTreasury<T::AccountId> for Module<T> {
+impl<T: Trait> DEPTTreasury<T::AccountId> for Module<T> {
 	type Balance = Balance;
 	type CurrencyId = CurrencyId;
 
@@ -294,7 +294,7 @@ impl<T: Trait> CDPTreasury<T::AccountId> for Module<T> {
 	}
 }
 
-impl<T: Trait> CDPTreasuryExtended<T::AccountId> for Module<T> {
+impl<T: Trait> DEPTTreasuryExtended<T::AccountId> for Module<T> {
 	/// Swap exact amount of collateral in auction to stable,
 	/// return actual target stable amount
 	fn swap_exact_collateral_in_auction_to_stable(

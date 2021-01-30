@@ -88,7 +88,7 @@ decl_module! {
 		/// # <weight>
 		/// - Preconditions:
 		///     - T::Handler is module_auction_manager of Shadows
-		///     - Indirectly needs orml_currencies and module_cdp_treasury of Shadows
+		///     - Indirectly needs orml_currencies and module_debt_treasury of Shadows
 		/// - Complexity: `O(1)`
 		/// - Db reads:
 		///     - collateral auction:

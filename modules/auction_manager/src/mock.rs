@@ -50,7 +50,7 @@ impl_outer_event! {
 		auction_manager<T>,
 		orml_tokens<T>,
 		orml_auction<T>,
-		cdp_treasury,
+		debt_treasury,
 		exchange<T>,
 	}
 }
@@ -117,10 +117,10 @@ ord_parameter_types! {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
-impl cdp_treasury::Trait for Runtime {
+impl debt_treasury::Trait for Runtime {
 	type Event = TestEvent;
 	type Currency = Tokens;
 	type GetStableCurrencyId = GetStableCurrencyId;
@@ -128,10 +128,10 @@ impl cdp_treasury::Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type EXCHANGE = EXCHANGEModule;
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = CDPTreasuryModuleId;
+	type ModuleId = DEPTTreasuryModuleId;
 	type WeightInfo = ();
 }
-pub type CDPTreasuryModule = cdp_treasury::Module<Runtime>;
+pub type DEPTTreasuryModule = debt_treasury::Module<Runtime>;
 
 thread_local! {
 	static RELATIVE_PRICE: RefCell<Option<Price>> = RefCell::new(Some(Price::one()));
@@ -207,7 +207,7 @@ impl Trait for Runtime {
 	type AuctionDurationSoftCap = AuctionDurationSoftCap;
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
-	type CDPTreasury = CDPTreasuryModule;
+	type DEPTTreasury = DEPTTreasuryModule;
 	type EXCHANGE = EXCHANGEModule;
 	type PriceSource = MockPriceSource;
 	type UnsignedPriority = UnsignedPriority;

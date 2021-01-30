@@ -23,7 +23,7 @@ use orml_utilities::with_transaction_result;
 use primitives::{Balance, CurrencyId};
 use sp_runtime::{traits::Zero, FixedPointNumber};
 use sp_std::prelude::*;
-use support::{AuctionManager, CDPTreasury, EmergencyShutdown, PriceProvider, Ratio};
+use support::{AuctionManager, DEPTTreasury, EmergencyShutdown, PriceProvider, Ratio};
 
 mod default_weight;
 mod mock;
@@ -45,7 +45,7 @@ pub trait Trait: system::Trait + lend::Trait {
 	type PriceSource: PriceProvider<CurrencyId>;
 
 	/// CDP treasury to escrow collateral assets after settlement
-	type CDPTreasury: CDPTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
+	type DEPTTreasury: DEPTTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
 
 	/// Check the auction cancellation to decide whether to open the final
 	/// redemption
@@ -114,9 +114,9 @@ decl_module! {
 		///
 		/// # <weight>
 		/// - Preconditions:
-		/// 	- T::CDPTreasury is module_cdp_treasury
+		/// 	- T::DEPTTreasury is module_debt_treasury
 		/// 	- T::AuctionManagerHandler is module_auction_manager
-		/// 	- T::OnShutdown is (module_cdp_treasury, module_debt_engine, module_mintx, module_exchange)
+		/// 	- T::OnShutdown is (module_debt_treasury, module_debt_engine, module_mintx, module_exchange)
 		/// - Complexity: `O(1)`
 		/// - Db reads: `IsShutdown`, (length of collateral_ids) items in modules related to module_emergency_shutdown
 		/// - Db writes: `IsShutdown`, (4 + length of collateral_ids) items in modules related to module_emergency_shutdown
@@ -149,9 +149,9 @@ decl_module! {
 		///
 		/// # <weight>
 		/// - Preconditions:
-		/// 	- T::CDPTreasury is module_cdp_treasury
+		/// 	- T::DEPTTreasury is module_debt_treasury
 		/// 	- T::AuctionManagerHandler is module_auction_manager
-		/// 	- T::OnShutdown is (module_cdp_treasury, module_debt_engine, module_mintx, module_exchange)
+		/// 	- T::OnShutdown is (module_debt_treasury, module_debt_engine, module_mintx, module_exchange)
 		/// - Complexity: `O(1)`
 		/// - Db reads: `IsShutdown`, (2 + 2 * length of collateral_ids) items in modules related to module_emergency_shutdown
 		/// - Db writes: `CanRefund`
@@ -202,9 +202,9 @@ decl_module! {
 		///
 		/// # <weight>
 		/// - Preconditions:
-		/// 	- T::CDPTreasury is module_cdp_treasury
+		/// 	- T::DEPTTreasury is module_debt_treasury
 		/// 	- T::AuctionManagerHandler is module_auction_manager
-		/// 	- T::OnShutdown is (module_cdp_treasury, module_debt_engine, module_mintx, module_exchange)
+		/// 	- T::OnShutdown is (module_debt_treasury, module_debt_engine, module_mintx, module_exchange)
 		/// - Complexity: `O(1)`
 		/// - Db reads: `CanRefund`, (2 + 3 * length of collateral_ids) items in modules related to module_emergency_shutdown
 		/// - Db writes: (3 * length of collateral_ids) items in modules related to module_emergency_shutdown
@@ -217,20 +217,20 @@ decl_module! {
 				let who = ensure_signed(origin)?;
 				ensure!(Self::can_refund(), Error::<T>::CanNotRefund);
 
-				let refund_ratio: Ratio = <T as Trait>::CDPTreasury::get_debit_proportion(amount);
+				let refund_ratio: Ratio = <T as Trait>::DEPTTreasury::get_debit_proportion(amount);
 				let collateral_currency_ids = T::CollateralCurrencyIds::get();
 
 				// burn caller's stable currency by CDP treasury
-				<T as Trait>::CDPTreasury::burn_debit(&who, amount)?;
+				<T as Trait>::DEPTTreasury::burn_debit(&who, amount)?;
 
 				let mut refund_assets: Vec<(CurrencyId, Balance)> = vec![];
 				// refund collaterals to caller by CDP treasury
 				for currency_id in collateral_currency_ids {
 					let refund_amount = refund_ratio
-						.saturating_mul_int(<T as Trait>::CDPTreasury::get_total_collaterals(currency_id));
+						.saturating_mul_int(<T as Trait>::DEPTTreasury::get_total_collaterals(currency_id));
 
 					if !refund_amount.is_zero() {
-						<T as Trait>::CDPTreasury::withdraw_collateral(&who, currency_id, refund_amount)?;
+						<T as Trait>::DEPTTreasury::withdraw_collateral(&who, currency_id, refund_amount)?;
 						refund_assets.push((currency_id, refund_amount));
 					}
 				}
