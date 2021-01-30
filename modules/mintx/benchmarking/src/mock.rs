@@ -187,7 +187,7 @@ impl cdp_treasury::Trait for Runtime {
 pub type CDPTreasuryModule = cdp_treasury::Module<Runtime>;
 
 parameter_types! {
-	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![BTC, DOT];
+	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![DOS, DOT];
 	pub DefaultLiquidationRatio: Ratio = Ratio::saturating_from_rational(3, 2);
 	pub DefaultDebitExchangeRate: ExchangeRate = ExchangeRate::one();
 	pub DefaultLiquidationPenalty: Rate = Rate::saturating_from_rational(10, 100);

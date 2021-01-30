@@ -204,7 +204,7 @@ impl dex::Trait for Runtime {
 pub type DexModule = dex::Module<Runtime>;
 
 parameter_types! {
-	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![BTC, DOT];
+	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![DOS, DOT];
 	pub DefaultLiquidationRatio: Ratio = Ratio::saturating_from_rational(3, 2);
 	pub DefaultDebitExchangeRate: ExchangeRate = ExchangeRate::one();
 	pub DefaultLiquidationPenalty: Rate = Rate::saturating_from_rational(10, 100);
@@ -300,7 +300,7 @@ impl Convert<(CurrencyId, Balance), Balance> for MockConvert {
 }
 
 parameter_types! {
-	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![CurrencyId::Token(TokenSymbol::XBTC), CurrencyId::Token(TokenSymbol::DOT)];
+	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![CurrencyId::Token(TokenSymbol::DOS), CurrencyId::Token(TokenSymbol::DOT)];
 }
 
 impl emergency_shutdown::Trait for Runtime {

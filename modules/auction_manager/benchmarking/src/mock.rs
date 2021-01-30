@@ -251,7 +251,7 @@ impl loans::Trait for Runtime {
 }
 
 parameter_types! {
-	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![CurrencyId::Token(TokenSymbol::XBTC), CurrencyId::Token(TokenSymbol::DOT)];
+	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![CurrencyId::Token(TokenSymbol::DOS), CurrencyId::Token(TokenSymbol::DOT)];
 }
 
 impl emergency_shutdown::Trait for Runtime {
