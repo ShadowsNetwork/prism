@@ -18,7 +18,7 @@ use frame_system::{
 	self as system, ensure_none,
 	offchain::{SendTransactionTypes, SubmitTransaction},
 };
-use loans::Position;
+use lend::Position;
 use orml_traits::Change;
 use orml_utilities::{with_transaction_result, IterableStorageDoubleMapExtended, OffchainErr};
 use primitives::{Amount, Balance, CurrencyId};
@@ -61,9 +61,9 @@ const OFFCHAIN_WORKER_MAX_ITERATIONS: &[u8] = b"shadows/cdp-engine/max-iteration
 const LOCK_DURATION: u64 = 100;
 const DEFAULT_MAX_ITERATIONS: u32 = 1000;
 
-pub type LoansOf<T> = loans::Module<T>;
+pub type LendOf<T> = lend::Module<T>;
 
-pub trait Trait: SendTransactionTypes<Call<Self>> + system::Trait + loans::Trait {
+pub trait Trait: SendTransactionTypes<Call<Self>> + system::Trait + lend::Trait {
 	type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
 
 	/// The origin which may update risk management parameters. Root can always
@@ -417,7 +417,7 @@ decl_module! {
 				for currency_id in T::CollateralCurrencyIds::get() {
 					let debit_exchange_rate = Self::get_debit_exchange_rate(currency_id);
 					let stability_fee_rate = Self::get_stability_fee(currency_id);
-					let total_debits = <LoansOf<T>>::total_positions(currency_id).debit;
+					let total_debits = <LendOf<T>>::total_positions(currency_id).debit;
 					if !stability_fee_rate.is_zero() && !total_debits.is_zero() {
 						let debit_exchange_rate_increment = debit_exchange_rate.saturating_mul(stability_fee_rate);
 						let total_debit_value = Self::get_debit_value(currency_id, total_debits);
@@ -522,7 +522,7 @@ impl<T: Trait> Module<T> {
 
 		debug::debug!(target: "cdp-engine offchain worker", "max iterations is {:?}", max_iterations);
 
-		let mut map_iterator = <loans::Positions<T> as IterableStorageDoubleMapExtended<_, _, _>>::iter_prefix(
+		let mut map_iterator = <lend::Positions<T> as IterableStorageDoubleMapExtended<_, _, _>>::iter_prefix(
 			currency_id,
 			max_iterations,
 			start_key,
@@ -628,13 +628,13 @@ impl<T: Trait> Module<T> {
 			T::CollateralCurrencyIds::get().contains(&currency_id),
 			Error::<T>::InvalidCollateralType,
 		);
-		<LoansOf<T>>::adjust_position(who, currency_id, collateral_adjustment, debit_adjustment)?;
+		<LendOf<T>>::adjust_position(who, currency_id, collateral_adjustment, debit_adjustment)?;
 		Ok(())
 	}
 
 	// settle cdp has debit when emergency shutdown
 	pub fn settle_cdp_has_debit(who: T::AccountId, currency_id: CurrencyId) -> DispatchResult {
-		let Position { collateral, debit } = <LoansOf<T>>::positions(currency_id, &who);
+		let Position { collateral, debit } = <LendOf<T>>::positions(currency_id, &who);
 		ensure!(!debit.is_zero(), Error::<T>::NoDebitValue);
 
 		// confiscate collateral in cdp to cdp treasury
@@ -646,7 +646,7 @@ impl<T: Trait> Module<T> {
 			sp_std::cmp::min(settle_price.saturating_mul_int(bad_debt_value), collateral);
 
 		// confiscate collateral and all debit
-		<LoansOf<T>>::confiscate_collateral_and_debit(&who, currency_id, confiscate_collateral_amount, debit)?;
+		<LendOf<T>>::confiscate_collateral_and_debit(&who, currency_id, confiscate_collateral_amount, debit)?;
 
 		Self::deposit_event(RawEvent::SettleCDPInDebit(currency_id, who));
 		Ok(())
@@ -654,7 +654,7 @@ impl<T: Trait> Module<T> {
 
 	// liquidate unsafe cdp
 	pub fn liquidate_unsafe_cdp(who: T::AccountId, currency_id: CurrencyId) -> DispatchResult {
-		let Position { collateral, debit } = <LoansOf<T>>::positions(currency_id, &who);
+		let Position { collateral, debit } = <LendOf<T>>::positions(currency_id, &who);
 
 		// ensure the cdp is unsafe
 		ensure!(
@@ -663,7 +663,7 @@ impl<T: Trait> Module<T> {
 		);
 
 		// confiscate all collateral and debit of unsafe cdp to cdp treasury
-		<LoansOf<T>>::confiscate_collateral_and_debit(&who, currency_id, collateral, debit)?;
+		<LendOf<T>>::confiscate_collateral_and_debit(&who, currency_id, collateral, debit)?;
 
 		let bad_debt_value = Self::get_debit_value(currency_id, debit);
 		let target_stable_amount = Self::get_liquidation_penalty(currency_id).saturating_mul_acc_int(bad_debt_value);
@@ -770,7 +770,7 @@ impl<T: Trait> frame_support::unsigned::ValidateUnsigned for Module<T> {
 	fn validate_unsigned(_source: TransactionSource, call: &Self::Call) -> TransactionValidity {
 		match call {
 			Call::liquidate(currency_id, who) => {
-				let Position { collateral, debit } = <LoansOf<T>>::positions(currency_id, &who);
+				let Position { collateral, debit } = <LendOf<T>>::positions(currency_id, &who);
 				if !Self::is_cdp_unsafe(*currency_id, collateral, debit) || T::EmergencyShutdown::is_shutdown() {
 					return InvalidTransaction::Stale.into();
 				}
@@ -783,7 +783,7 @@ impl<T: Trait> frame_support::unsigned::ValidateUnsigned for Module<T> {
 					.build()
 			}
 			Call::settle(currency_id, who) => {
-				let Position { debit, .. } = <LoansOf<T>>::positions(currency_id, who);
+				let Position { debit, .. } = <LendOf<T>>::positions(currency_id, who);
 				if debit.is_zero() || !T::EmergencyShutdown::is_shutdown() {
 					return InvalidTransaction::Stale.into();
 				}

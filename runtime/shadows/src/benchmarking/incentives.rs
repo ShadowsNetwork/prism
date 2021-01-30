@@ -41,7 +41,7 @@ runtime_benchmarks! {
 
 	claim_rewards {
 		let caller: AccountId = account("caller", 0, SEED);
-		let pool_id = PoolId::Loans(CurrencyId::Token(TokenSymbol::DOT));
+		let pool_id = PoolId::Lend(CurrencyId::Token(TokenSymbol::DOT));
 
 		Rewards::add_share(&caller, pool_id, 100);
 		orml_rewards::Pools::<Runtime>::mutate(pool_id, |pool_info| {
@@ -49,7 +49,7 @@ runtime_benchmarks! {
 		});
 	}: _(RawOrigin::Signed(caller), pool_id)
 
-	update_loans_incentive_rewards {
+	update_lend_incentive_rewards {
 		let c in 0 .. CollateralCurrencyIds::get().len().saturating_sub(1) as u32;
 		let currency_ids = CollateralCurrencyIds::get();
 		let mut values = vec![];
@@ -136,9 +136,9 @@ mod tests {
 	}
 
 	#[test]
-	fn test_update_loans_incentive_rewards() {
+	fn test_update_lend_incentive_rewards() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(test_benchmark_update_loans_incentive_rewards());
+			assert_ok!(test_benchmark_update_lend_incentive_rewards());
 		});
 	}
 

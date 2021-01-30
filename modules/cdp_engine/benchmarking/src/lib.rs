@@ -111,7 +111,7 @@ benchmarks! {
 		let collateral_amount = (min_debit_value * 2).unique_saturated_into();
 
 		// set balance
-		<T as loans::Trait>::Currency::update_balance(currency_id, &owner, collateral_amount)?;
+		<T as lend::Trait>::Currency::update_balance(currency_id, &owner, collateral_amount)?;
 
 		// feed price
 		feed_price::<T>(currency_id, collateral_price)?;
@@ -164,7 +164,7 @@ benchmarks! {
 		inject_liquidity::<T>(funder.clone(), currency_id, base_amount_in_exchange, collateral_amount_in_exchange)?;
 
 		// set balance
-		<T as loans::Trait>::Currency::update_balance(currency_id, &owner, collateral_amount)?;
+		<T as lend::Trait>::Currency::update_balance(currency_id, &owner, collateral_amount)?;
 
 		// feed price
 		feed_price::<T>(currency_id, collateral_price)?;
@@ -213,7 +213,7 @@ benchmarks! {
 		let collateral_amount = (min_debit_value * 2).unique_saturated_into();
 
 		// set balance
-		<T as loans::Trait>::Currency::update_balance(currency_id, &owner, collateral_amount)?;
+		<T as lend::Trait>::Currency::update_balance(currency_id, &owner, collateral_amount)?;
 
 		// feed price
 		feed_price::<T>(currency_id, collateral_price)?;

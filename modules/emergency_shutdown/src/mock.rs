@@ -37,7 +37,7 @@ impl_outer_event! {
 		frame_system<T>,
 		emergency_shutdown<T>,
 		orml_tokens<T>,
-		loans<T>,
+		lend<T>,
 		pallet_balances<T>,
 		orml_currencies<T>,
 		cdp_treasury,
@@ -132,16 +132,16 @@ impl Convert<(CurrencyId, Balance), Balance> for MockConvert {
 }
 
 parameter_types! {
-	pub const LoansModuleId: ModuleId = ModuleId(*b"aca/loan");
+	pub const LendModuleId: ModuleId = ModuleId(*b"aca/loan");
 }
 
-impl loans::Trait for Runtime {
+impl lend::Trait for Runtime {
 	type Event = TestEvent;
 	type Convert = MockConvert;
 	type Currency = Tokens;
 	type RiskManager = ();
 	type CDPTreasury = CDPTreasuryModule;
-	type ModuleId = LoansModuleId;
+	type ModuleId = LendModuleId;
 	type OnUpdateLoan = ();
 }
 

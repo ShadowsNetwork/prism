@@ -114,7 +114,7 @@ impl_opaque_keys! {
 // Module accounts of runtime
 parameter_types! {
 	pub const ShadowTreasuryModuleId: ModuleId = ModuleId(*b"aca/trsy");
-	pub const LoansModuleId: ModuleId = ModuleId(*b"aca/loan");
+	pub const LendModuleId: ModuleId = ModuleId(*b"aca/loan");
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
 	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 	pub const StakingPoolModuleId: ModuleId = ModuleId(*b"aca/stkp");
@@ -130,7 +130,7 @@ parameter_types! {
 pub fn get_all_module_accounts() -> Vec<AccountId> {
 	vec![
 		ShadowTreasuryModuleId::get().into_account(),
-		LoansModuleId::get().into_account(),
+		LendModuleId::get().into_account(),
 		EXCHANGEModuleId::get().into_account(),
 		CDPTreasuryModuleId::get().into_account(),
 		StakingPoolModuleId::get().into_account(),
@@ -914,13 +914,13 @@ impl module_auction_manager::Trait for Runtime {
 	type WeightInfo = weights::auction_manager::WeightInfo<Runtime>;
 }
 
-impl module_loans::Trait for Runtime {
+impl module_lend::Trait for Runtime {
 	type Event = Event;
 	type Convert = module_cdp_engine::DebitExchangeRateConvertor<Runtime>;
 	type Currency = Currencies;
 	type RiskManager = CdpEngine;
 	type CDPTreasury = CdpTreasury;
-	type ModuleId = LoansModuleId;
+	type ModuleId = LendModuleId;
 	type OnUpdateLoan = module_incentives::OnUpdateLoan<Runtime>;
 }
 
@@ -1097,7 +1097,7 @@ parameter_types! {
 
 impl module_incentives::Trait for Runtime {
 	type Event = Event;
-	type LoansIncentivePool = ZeroAccountId;
+	type LendIncentivePool = ZeroAccountId;
 	type ExchangeIncentivePool = ZeroAccountId;
 	type HomaIncentivePool = ZeroAccountId;
 	type AccumulatePeriod = AccumulatePeriod;
@@ -1362,7 +1362,7 @@ construct_runtime!(
 
 		// Honzon
 		AuctionManager: module_auction_manager::{Module, Storage, Call, Event<T>, ValidateUnsigned},
-		Loans: module_loans::{Module, Storage, Call, Event<T>},
+		Lend: module_lend::{Module, Storage, Call, Event<T>},
 		Honzon: module_honzon::{Module, Storage, Call, Event<T>},
 		CdpTreasury: module_cdp_treasury::{Module, Storage, Call, Config, Event},
 		CdpEngine: module_cdp_engine::{Module, Storage, Call, Event<T>, Config, ValidateUnsigned},

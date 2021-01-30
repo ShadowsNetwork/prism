@@ -16,7 +16,7 @@ prices = { package = "module-prices", path = "../../ingester", default-features 
 primitives = { package = "shadows-primitives", path = "../../../primitives", default-features = false }
 support = { package = "module-support", path = "../../support", default-features = false }
 cdp-engine = { package = "module-cdp-engine", path = "../../cdp_engine", default-features = false }
-loans = { package = "module-loans", path = "../../lend", default-features = false }
+lend = { package = "module-lend", path = "../../lend", default-features = false }
 emergency-shutdown = { package = "module-emergency-shutdown", path = "../../emergency_shutdown", default-features = false }
 
 [dev-dependencies]
@@ -39,7 +39,7 @@ std = [
 	"frame-system/std",
 	"frame-benchmarking/std",
 	"cdp-engine/std",
-	"loans/std",
+	"lend/std",
 	"support/std",
 	"orml-oracle/std",
 	"orml-traits/std",

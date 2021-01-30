@@ -29,7 +29,7 @@ const BOB: [u8; 32] = [5u8; 32];
 pub type OracleModule = orml_oracle::Module<Runtime, orml_oracle::Instance1>;
 pub type ExchangeModule = module_exchange::Module<Runtime>;
 pub type CdpEngineModule = module_cdp_engine::Module<Runtime>;
-pub type LoansModule = module_loans::Module<Runtime>;
+pub type LendModule = module_lend::Module<Runtime>;
 pub type CdpTreasuryModule = module_cdp_treasury::Module<Runtime>;
 pub type SystemModule = frame_system::Module<Runtime>;
 pub type EmergencyShutdownModule = module_emergency_shutdown::Module<Runtime>;
@@ -319,19 +319,19 @@ fn liquidate_cdp() {
 			));
 
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
 				amount(500_000)
 			);
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).collateral,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).collateral,
 				amount(10)
 			);
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(BOB)).debit,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(BOB)).debit,
 				amount(50_000)
 			);
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(BOB)).collateral,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(BOB)).collateral,
 				amount(1)
 			);
 			assert_eq!(CdpTreasuryModule::debit_pool(), 0);
@@ -365,11 +365,11 @@ fn liquidate_cdp() {
 				.any(|record| record.event == liquidate_alice_xbtc_cdp_event));
 
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
 				0
 			);
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).collateral,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).collateral,
 				0
 			);
 			assert_eq!(AuctionManagerModule::collateral_auctions(0).is_some(), true);
@@ -393,11 +393,11 @@ fn liquidate_cdp() {
 				.any(|record| record.event == liquidate_bob_xbtc_cdp_event));
 
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(BOB)).debit,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(BOB)).debit,
 				0
 			);
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(BOB)).collateral,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(BOB)).collateral,
 				0
 			);
 			assert_eq!(CdpTreasuryModule::debit_pool(), amount(55_000));
@@ -637,11 +637,11 @@ fn test_honzon_module() {
 				amount(50)
 			);
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
 				amount(500)
 			);
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).collateral,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).collateral,
 				amount(100)
 			);
 			assert_eq!(
@@ -677,11 +677,11 @@ fn test_honzon_module() {
 				amount(50)
 			);
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
 				0
 			);
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).collateral,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).collateral,
 				0
 			);
 		});
@@ -770,11 +770,11 @@ fn test_cdp_engine_module() {
 				amount(900)
 			);
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
 				0
 			);
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).collateral,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).collateral,
 				amount(100)
 			);
 
@@ -801,7 +801,7 @@ fn test_cdp_engine_module() {
 				amount(100) as i128
 			));
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
 				amount(100)
 			);
 			assert_eq!(CdpTreasuryModule::debit_pool(), 0);
@@ -823,7 +823,7 @@ fn test_cdp_engine_module() {
 				.any(|record| record.event == settle_cdp_in_debit_event));
 
 			assert_eq!(
-				LoansModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
+				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
 				0
 			);
 			assert_eq!(CdpTreasuryModule::debit_pool(), amount(10));

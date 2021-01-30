@@ -130,7 +130,7 @@ decl_module! {
 				let to = ensure_signed(origin)?;
 				ensure!(!T::EmergencyShutdown::is_shutdown(), Error::<T>::AlreadyShutdown);
 				Self::check_authorization(&from, &to, currency_id)?;
-				<loans::Module<T>>::transfer_loan(&from, &to, currency_id)?;
+				<lend::Module<T>>::transfer_loan(&from, &to, currency_id)?;
 				Ok(())
 			})?;
 		}

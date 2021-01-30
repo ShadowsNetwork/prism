@@ -83,13 +83,13 @@ fn transfer_loan_from_should_work() {
 		assert_ok!(HonzonModule::adjust_loan(Origin::signed(ALICE), BTC, 100, 50));
 		assert_ok!(HonzonModule::authorize(Origin::signed(ALICE), BTC, BOB));
 		assert_ok!(HonzonModule::transfer_loan_from(Origin::signed(BOB), BTC, ALICE));
-		assert_eq!(LoansModule::positions(BTC, BOB).collateral, 100);
-		assert_eq!(LoansModule::positions(BTC, BOB).debit, 50);
+		assert_eq!(LendModule::positions(BTC, BOB).collateral, 100);
+		assert_eq!(LendModule::positions(BTC, BOB).debit, 50);
 	});
 }
 
 #[test]
-fn transfer_unauthorization_loans_should_not_work() {
+fn transfer_unauthorization_lend_should_not_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_noop!(
 			HonzonModule::transfer_loan_from(Origin::signed(ALICE), BTC, BOB),
@@ -111,8 +111,8 @@ fn adjust_loan_should_work() {
 			Change::NewValue(10000),
 		));
 		assert_ok!(HonzonModule::adjust_loan(Origin::signed(ALICE), DOS, 100, 50));
-		assert_eq!(LoansModule::positions(DOS, ALICE).collateral, 100);
-		assert_eq!(LoansModule::positions(DOS, ALICE).debit, 50);
+		assert_eq!(LendModule::positions(DOS, ALICE).collateral, 100);
+		assert_eq!(LendModule::positions(DOS, ALICE).debit, 50);
 	});
 }
 

@@ -79,7 +79,7 @@ module-cdp-treasury = { path = "../../modules/cdp_treasury", default-features = 
 module-exchange = { path = "../../modules/exchange", default-features = false }
 module-emergency-shutdown = { path = "../../modules/emergency_shutdown", default-features = false }
 module-honzon = { path = "../../modules/mintx", default-features = false }
-module-loans = { path = "../../modules/lend", default-features = false }
+module-lend = { path = "../../modules/lend", default-features = false }
 module-nft = { path = "../../modules/nft", default-features = false }
 module-prices = { path = "../../modules/ingester", default-features = false }
 module-incentives = { path = "../../modules/incentives", default-features = false }
@@ -173,7 +173,7 @@ std = [
 	"module-exchange/std",
 	"module-emergency-shutdown/std",
 	"module-honzon/std",
-	"module-loans/std",
+	"module-lend/std",
 	"module-nft/std",
 	"module-prices/std",
 	"module-incentives/std",

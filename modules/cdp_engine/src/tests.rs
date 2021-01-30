@@ -11,7 +11,7 @@ use sp_runtime::traits::BadOrigin;
 #[test]
 fn is_cdp_unsafe_work() {
 	fn is_user_safe(currency_id: CurrencyId, who: &AccountId) -> bool {
-		let Position { collateral, debit } = LoansModule::positions(currency_id, &who);
+		let Position { collateral, debit } = LendModule::positions(currency_id, &who);
 		CDPEngineModule::is_cdp_unsafe(currency_id, collateral, debit)
 	}
 
@@ -367,19 +367,19 @@ fn adjust_position_work() {
 		);
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 1000);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 0);
-		assert_eq!(LoansModule::positions(BTC, ALICE).debit, 0);
-		assert_eq!(LoansModule::positions(BTC, ALICE).collateral, 0);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 0);
 		assert_ok!(CDPEngineModule::adjust_position(&ALICE, BTC, 100, 50));
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 50);
-		assert_eq!(LoansModule::positions(BTC, ALICE).debit, 50);
-		assert_eq!(LoansModule::positions(BTC, ALICE).collateral, 100);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 50);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 100);
 		assert_eq!(CDPEngineModule::adjust_position(&ALICE, BTC, 0, 20).is_ok(), false);
 		assert_ok!(CDPEngineModule::adjust_position(&ALICE, BTC, 0, -20));
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 30);
-		assert_eq!(LoansModule::positions(BTC, ALICE).debit, 30);
-		assert_eq!(LoansModule::positions(BTC, ALICE).collateral, 100);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 30);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 100);
 	});
 }
 
@@ -417,8 +417,8 @@ fn liquidate_unsafe_cdp_by_collateral_auction() {
 		assert_ok!(CDPEngineModule::adjust_position(&ALICE, BTC, 100, 50));
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 50);
-		assert_eq!(LoansModule::positions(BTC, ALICE).debit, 50);
-		assert_eq!(LoansModule::positions(BTC, ALICE).collateral, 100);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 50);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 100);
 		assert_noop!(
 			CDPEngineModule::liquidate_unsafe_cdp(ALICE, BTC),
 			Error::<Runtime>::MustBeUnsafe,
@@ -448,8 +448,8 @@ fn liquidate_unsafe_cdp_by_collateral_auction() {
 		assert_eq!(CDPTreasuryModule::debit_pool(), 50);
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 50);
-		assert_eq!(LoansModule::positions(BTC, ALICE).debit, 0);
-		assert_eq!(LoansModule::positions(BTC, ALICE).collateral, 0);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 0);
 
 		mock_shutdown();
 		assert_noop!(
@@ -553,14 +553,14 @@ fn settle_cdp_has_debit_work() {
 		));
 		assert_ok!(CDPEngineModule::adjust_position(&ALICE, BTC, 100, 0));
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
-		assert_eq!(LoansModule::positions(BTC, ALICE).debit, 0);
-		assert_eq!(LoansModule::positions(BTC, ALICE).collateral, 100);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 100);
 		assert_noop!(
 			CDPEngineModule::settle_cdp_has_debit(ALICE, BTC),
 			Error::<Runtime>::NoDebitValue,
 		);
 		assert_ok!(CDPEngineModule::adjust_position(&ALICE, BTC, 0, 50));
-		assert_eq!(LoansModule::positions(BTC, ALICE).debit, 50);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 50);
 		assert_eq!(CDPTreasuryModule::debit_pool(), 0);
 		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 0);
 		assert_ok!(CDPEngineModule::settle_cdp_has_debit(ALICE, BTC));
@@ -570,7 +570,7 @@ fn settle_cdp_has_debit_work() {
 			.iter()
 			.any(|record| record.event == settle_cdp_in_debit_event));
 
-		assert_eq!(LoansModule::positions(BTC, ALICE).debit, 0);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
 		assert_eq!(CDPTreasuryModule::debit_pool(), 50);
 		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 50);
 

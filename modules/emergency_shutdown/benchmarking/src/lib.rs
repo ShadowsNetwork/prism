@@ -23,7 +23,7 @@ use support::{CDPTreasury, Price};
 pub struct Module<T: Trait>(emergency_shutdown::Module<T>);
 
 pub trait Trait:
-	emergency_shutdown::Trait + orml_oracle::Trait<orml_oracle::Instance1> + prices::Trait + loans::Trait
+	emergency_shutdown::Trait + orml_oracle::Trait<orml_oracle::Instance1> + prices::Trait + lend::Trait
 {
 }
 
@@ -65,7 +65,7 @@ benchmarks! {
 		let caller: T::AccountId = account("caller", u, SEED);
 		let currency_ids = <T as emergency_shutdown::Trait>::CollateralCurrencyIds::get();
 		for currency_id in currency_ids {
-			<T as loans::Trait>::Currency::update_balance(currency_id, &funder, dollar(100).unique_saturated_into())?;
+			<T as lend::Trait>::Currency::update_balance(currency_id, &funder, dollar(100).unique_saturated_into())?;
 			<T as emergency_shutdown::Trait>::CDPTreasury::deposit_collateral(&funder, currency_id, dollar(100))?;
 		}
 		<T as emergency_shutdown::Trait>::CDPTreasury::issue_debit(&caller, dollar(1000), true)?;

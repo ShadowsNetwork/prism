@@ -40,7 +40,7 @@ impl_outer_event! {
 		frame_system<T>,
 		cdp_engine<T>,
 		orml_tokens<T>,
-		loans<T>,
+		lend<T>,
 		pallet_balances<T>,
 		orml_currencies<T>,
 		exchange<T>,
@@ -134,19 +134,19 @@ impl orml_currencies::Trait for Runtime {
 pub type Currencies = orml_currencies::Module<Runtime>;
 
 parameter_types! {
-	pub const LoansModuleId: ModuleId = ModuleId(*b"aca/loan");
+	pub const LendModuleId: ModuleId = ModuleId(*b"aca/loan");
 }
 
-impl loans::Trait for Runtime {
+impl lend::Trait for Runtime {
 	type Event = TestEvent;
 	type Convert = DebitExchangeRateConvertor<Runtime>;
 	type Currency = Currencies;
 	type RiskManager = CDPEngineModule;
 	type CDPTreasury = CDPTreasuryModule;
-	type ModuleId = LoansModuleId;
+	type ModuleId = LendModuleId;
 	type OnUpdateLoan = ();
 }
-pub type LoansModule = loans::Module<Runtime>;
+pub type LendModule = lend::Module<Runtime>;
 
 thread_local! {
 	static RELATIVE_PRICE: RefCell<Option<Price>> = RefCell::new(Some(Price::one()));

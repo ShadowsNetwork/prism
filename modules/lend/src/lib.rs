@@ -61,7 +61,7 @@ pub struct Position {
 }
 
 decl_storage! {
-	trait Store for Module<T: Trait> as Loans {
+	trait Store for Module<T: Trait> as Lend {
 		/// The collateralized debit positions, map from
 		/// Owner -> CollateralType -> Position
 		pub Positions get(fn positions): double_map hasher(twox_64_concat) CurrencyId, hasher(twox_64_concat) T::AccountId => Position;

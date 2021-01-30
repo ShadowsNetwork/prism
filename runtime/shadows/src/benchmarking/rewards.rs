@@ -18,7 +18,7 @@ runtime_benchmarks! {
 
 		for i in 0 .. c {
 			let currency_id = currency_ids[i as usize];
-			let pool_id = PoolId::Loans(currency_id);
+			let pool_id = PoolId::Lend(currency_id);
 
 			orml_rewards::Pools::<Runtime>::mutate(pool_id, |pool_info| {
 				pool_info.total_rewards += 100;

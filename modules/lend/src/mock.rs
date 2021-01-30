@@ -24,14 +24,14 @@ pub const BTC: CurrencyId = CurrencyId::Token(TokenSymbol::XBTC);
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct Runtime;
 
-mod loans {
+mod lend {
 	pub use super::super::*;
 }
 
 impl_outer_event! {
 	pub enum TestEvent for Runtime {
 		frame_system<T>,
-		loans<T>,
+		lend<T>,
 		orml_tokens<T>,
 		pallet_balances<T>,
 		orml_currencies<T>,
@@ -222,7 +222,7 @@ impl RiskManager<AccountId, CurrencyId, Balance, Balance> for MockRiskManager {
 }
 
 parameter_types! {
-	pub const LoansModuleId: ModuleId = ModuleId(*b"aca/loan");
+	pub const LendModuleId: ModuleId = ModuleId(*b"aca/loan");
 }
 
 impl Trait for Runtime {
@@ -231,10 +231,10 @@ impl Trait for Runtime {
 	type Currency = Currencies;
 	type RiskManager = MockRiskManager;
 	type CDPTreasury = CDPTreasuryModule;
-	type ModuleId = LoansModuleId;
+	type ModuleId = LendModuleId;
 	type OnUpdateLoan = ();
 }
-pub type LoansModule = Module<Runtime>;
+pub type LendModule = Module<Runtime>;
 
 pub struct ExtBuilder {
 	endowed_accounts: Vec<(AccountId, CurrencyId, Balance)>,

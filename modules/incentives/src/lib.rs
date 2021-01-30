@@ -26,7 +26,7 @@ pub trait WeightInfo {
 	fn deposit_exchange_share() -> Weight;
 	fn withdraw_exchange_share() -> Weight;
 	fn claim_rewards() -> Weight;
-	fn update_loans_incentive_rewards(c: u32) -> Weight;
+	fn update_lend_incentive_rewards(c: u32) -> Weight;
 	fn update_exchange_incentive_rewards(c: u32) -> Weight;
 	fn update_homa_incentive_reward() -> Weight;
 	fn update_exchange_saving_rates(c: u32) -> Weight;
@@ -36,7 +36,7 @@ pub trait WeightInfo {
 #[derive(Encode, Decode, Copy, Clone, PartialEq, Eq, RuntimeDebug)]
 pub enum PoolId {
 	/// Rewards(DOS) pool for users who open CDP
-	Loans(CurrencyId),
+	Lend(CurrencyId),
 	/// Rewards(DOS) pool for market makers who provide exchange liquidity
 	ExchangeIncentive(CurrencyId),
 	/// Rewards(AUSD) pool for liquidators who provide exchange liquidity to
@@ -74,8 +74,8 @@ pub trait Trait:
 {
 	type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
 
-	/// The vault account to keep rewards for type LoansIncentive PoolId
-	type LoansIncentivePool: Get<Self::AccountId>;
+	/// The vault account to keep rewards for type LendIncentive PoolId
+	type LendIncentivePool: Get<Self::AccountId>;
 
 	/// The vault account to keep rewards for type ExchangeIncentive and
 	/// ExchangeSaving PoolId
@@ -118,7 +118,7 @@ pub trait Trait:
 decl_storage! {
 	trait Store for Module<T: Trait> as Incentives {
 		/// Mapping from collateral currency type to its lend incentive reward amount per period
-		pub LoansIncentiveRewards get(fn loans_incentive_rewards): map hasher(twox_64_concat) CurrencyId => Balance;
+		pub LendIncentiveRewards get(fn lend_incentive_rewards): map hasher(twox_64_concat) CurrencyId => Balance;
 
 		/// Mapping from exchange liquidity currency type to its lend incentive reward amount per period
 		pub EXCHANGEIncentiveRewards get(fn exchange_incentive_rewards): map hasher(twox_64_concat) CurrencyId => Balance;
@@ -137,8 +137,8 @@ decl_module! {
 
 		fn deposit_event() = default;
 
-		/// The vault account to keep rewards for type LoansIncentive PoolId
-		const LoansIncentivePool: T::AccountId = T::LoansIncentivePool::get();
+		/// The vault account to keep rewards for type LendIncentive PoolId
+		const LendIncentivePool: T::AccountId = T::LendIncentivePool::get();
 
 		/// The vault account to keep rewards for type ExchangeIncentive and ExchangeSaving PoolId
 		const ExchangeIncentivePool: T::AccountId = T::ExchangeIncentivePool::get();
@@ -213,15 +213,15 @@ decl_module! {
 			})?;
 		}
 
-		#[weight = <T as Trait>::WeightInfo::update_loans_incentive_rewards(updates.len() as u32)]
-		pub fn update_loans_incentive_rewards(
+		#[weight = <T as Trait>::WeightInfo::update_lend_incentive_rewards(updates.len() as u32)]
+		pub fn update_lend_incentive_rewards(
 			origin,
 			updates: Vec<(CurrencyId, Balance)>,
 		) {
 			with_transaction_result(|| {
 				T::UpdateOrigin::ensure_origin(origin)?;
 				for (currency_id, amount) in updates {
-					LoansIncentiveRewards::insert(currency_id, amount);
+					LendIncentiveRewards::insert(currency_id, amount);
 				}
 				Ok(())
 			})?;
@@ -311,7 +311,7 @@ impl<T: Trait> Happened<(T::AccountId, CurrencyId, Amount, Balance)> for OnUpdat
 				previous_amount.saturating_sub(adjustment_abs)
 			};
 
-			<orml_rewards::Module<T>>::set_share(who, PoolId::Loans(*currency_id), new_share_amount);
+			<orml_rewards::Module<T>>::set_share(who, PoolId::Lend(*currency_id), new_share_amount);
 		}
 	}
 }
@@ -340,14 +340,14 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 			for (pool_id, pool_info) in orml_rewards::Pools::<T>::iter() {
 				if !pool_info.total_shares.is_zero() {
 					match pool_id {
-						PoolId::Loans(currency_id) => {
-							let incentive_reward = Self::loans_incentive_rewards(currency_id);
+						PoolId::Lend(currency_id) => {
+							let incentive_reward = Self::lend_incentive_rewards(currency_id);
 
 							// TODO: transfer from RESERVED TREASURY instead of issuing
 							if !incentive_reward.is_zero()
 								&& T::Currency::deposit(
 									incentive_currency_id,
-									&T::LoansIncentivePool::get(),
+									&T::LendIncentivePool::get(),
 									incentive_reward,
 								)
 								.is_ok()
@@ -441,7 +441,7 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 
 	fn payout(who: &T::AccountId, pool_id: PoolId, amount: Balance) {
 		let (pool_account, currency_id) = match pool_id {
-			PoolId::Loans(_) => (T::LoansIncentivePool::get(), T::IncentiveCurrencyId::get()),
+			PoolId::Lend(_) => (T::LendIncentivePool::get(), T::IncentiveCurrencyId::get()),
 			PoolId::ExchangeIncentive(_) => (T::ExchangeIncentivePool::get(), T::IncentiveCurrencyId::get()),
 			PoolId::ExchangeSaving(_) => (T::ExchangeIncentivePool::get(), T::SavingCurrencyId::get()),
 			PoolId::Homa => (T::HomaIncentivePool::get(), T::IncentiveCurrencyId::get()),

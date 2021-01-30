@@ -14,7 +14,7 @@ sp-std = { version = "2.0.0", default-features = false }
 orml-tokens = { path = "../../orml/tokens", default-features = false }
 orml-utilities = { path = "../../orml/utilities", default-features = false }
 cdp-engine = { package = "module-cdp-engine", path = "../cdp_engine", default-features = false }
-loans = { package = "module-loans", path = "../lend", default-features = false }
+lend = { package = "module-lend", path = "../lend", default-features = false }
 support = { package = "module-support", path = "../support", default-features = false }
 primitives = { package = "shadows-primitives", path = "../../primitives", default-features = false }
 
@@ -37,7 +37,7 @@ std = [
 	"sp-std/std",
 	"orml-tokens/std",
 	"orml-utilities/std",
-	"loans/std",
+	"lend/std",
 	"cdp-engine/std",
 	"support/std",
 	"primitives/std",

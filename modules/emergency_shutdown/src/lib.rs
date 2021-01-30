@@ -35,7 +35,7 @@ pub trait WeightInfo {
 	fn refund_collaterals(c: u32) -> Weight;
 }
 
-pub trait Trait: system::Trait + loans::Trait {
+pub trait Trait: system::Trait + lend::Trait {
 	type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
 
 	/// The list of valid collateral currency types
@@ -184,7 +184,7 @@ decl_module! {
 					);
 					// there's on debit in CDP
 					ensure!(
-						<loans::Module<T>>::total_positions(currency_id).debit.is_zero(),
+						<lend::Module<T>>::total_positions(currency_id).debit.is_zero(),
 						Error::<T>::ExistUnhandledDebit,
 					);
 				}

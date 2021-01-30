@@ -97,7 +97,7 @@ benchmarks! {
 		let collateral_amount = (min_debit_value * 10 * 2).unique_saturated_into();
 
 		// set balance
-		<T as loans::Trait>::Currency::update_balance(currency_id, &caller, collateral_amount)?;
+		<T as lend::Trait>::Currency::update_balance(currency_id, &caller, collateral_amount)?;
 
 		// feed price
 		feed_price::<T>(currency_id, collateral_price)?;
@@ -128,7 +128,7 @@ benchmarks! {
 		let collateral_amount = (min_debit_value * 10 * 2).unique_saturated_into();
 
 		// set balance
-		<T as loans::Trait>::Currency::update_balance(currency_id, &sender, collateral_amount)?;
+		<T as lend::Trait>::Currency::update_balance(currency_id, &sender, collateral_amount)?;
 
 		// feed price
 		feed_price::<T>(currency_id, Price::one())?;

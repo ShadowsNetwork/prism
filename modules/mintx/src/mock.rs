@@ -31,7 +31,7 @@ impl_outer_event! {
 		honzon<T>,
 		cdp_engine<T>,
 		orml_tokens<T>,
-		loans<T>,
+		lend<T>,
 		pallet_balances<T>,
 		orml_currencies<T>,
 		cdp_treasury,
@@ -133,19 +133,19 @@ impl orml_currencies::Trait for Runtime {
 pub type Currencies = orml_currencies::Module<Runtime>;
 
 parameter_types! {
-	pub const LoansModuleId: ModuleId = ModuleId(*b"aca/loan");
+	pub const LendModuleId: ModuleId = ModuleId(*b"aca/loan");
 }
 
-impl loans::Trait for Runtime {
+impl lend::Trait for Runtime {
 	type Event = TestEvent;
 	type Convert = cdp_engine::DebitExchangeRateConvertor<Runtime>;
 	type Currency = Tokens;
 	type RiskManager = CDPEngineModule;
 	type CDPTreasury = CDPTreasuryModule;
-	type ModuleId = LoansModuleId;
+	type ModuleId = LendModuleId;
 	type OnUpdateLoan = ();
 }
-pub type LoansModule = loans::Module<Runtime>;
+pub type LendModule = lend::Module<Runtime>;
 
 pub struct MockPriceSource;
 impl PriceProvider<CurrencyId> for MockPriceSource {

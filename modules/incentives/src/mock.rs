@@ -207,7 +207,7 @@ impl orml_rewards::Trait for Runtime {
 pub type RewardsModule = orml_rewards::Module<Runtime>;
 
 parameter_types! {
-	pub const LoansIncentivePool: AccountId = 10;
+	pub const LendIncentivePool: AccountId = 10;
 	pub const ExchangeIncentivePool: AccountId = 11;
 	pub const HomaIncentivePool: AccountId = 12;
 	pub const AccumulatePeriod: BlockNumber = 10;
@@ -222,7 +222,7 @@ ord_parameter_types! {
 
 impl Trait for Runtime {
 	type Event = TestEvent;
-	type LoansIncentivePool = LoansIncentivePool;
+	type LendIncentivePool = LendIncentivePool;
 	type ExchangeIncentivePool = ExchangeIncentivePool;
 	type HomaIncentivePool = HomaIncentivePool;
 	type AccumulatePeriod = AccumulatePeriod;
