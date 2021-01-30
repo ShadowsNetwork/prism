@@ -184,7 +184,7 @@ fn testnet_genesis(
 	use shadows_runtime::{
 		get_all_module_accounts, BabeConfig, BalancesConfig, BandOracleConfig, CdpEngineConfig, CdpTreasuryConfig,
 		ContractsConfig, CurrencyId, GeneralCouncilMembershipConfig, GrandpaConfig, HomaCouncilMembershipConfig,
-		HonzonCouncilMembershipConfig, IndicesConfig, NewAccountDeposit, OperatorMembershipBandConfig,
+		IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit, OperatorMembershipBandConfig,
 		OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig, ShadowsOracleConfig, StakerStatus,
 		StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig, TokenSymbol, TokensConfig,
 		VestingConfig, DOLLARS,
@@ -240,7 +240,7 @@ fn testnet_genesis(
 			phantom: Default::default(),
 		}),
 		pallet_collective_Instance2: Some(Default::default()),
-		pallet_membership_Instance2: Some(HonzonCouncilMembershipConfig {
+		pallet_membership_Instance2: Some(MintxCouncilMembershipConfig {
 			members: vec![root_key.clone()],
 			phantom: Default::default(),
 		}),
@@ -350,7 +350,7 @@ fn shadows_genesis(
 	use shadows_runtime::{
 		get_all_module_accounts, BabeConfig, Balance, BalancesConfig, BandOracleConfig, CdpEngineConfig,
 		CdpTreasuryConfig, ContractsConfig, CurrencyId, GeneralCouncilMembershipConfig, GrandpaConfig,
-		HomaCouncilMembershipConfig, HonzonCouncilMembershipConfig, IndicesConfig, NewAccountDeposit,
+		HomaCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
 		OperatorMembershipBandConfig, OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig,
 		ShadowsOracleConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig,
 		TokenSymbol, TokensConfig, VestingConfig, CENTS, DOLLARS,
@@ -406,7 +406,7 @@ fn shadows_genesis(
 			phantom: Default::default(),
 		}),
 		pallet_collective_Instance2: Some(Default::default()),
-		pallet_membership_Instance2: Some(HonzonCouncilMembershipConfig {
+		pallet_membership_Instance2: Some(MintxCouncilMembershipConfig {
 			members: vec![root_key.clone()],
 			phantom: Default::default(),
 		}),

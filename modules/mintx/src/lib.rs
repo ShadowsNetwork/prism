@@ -1,8 +1,8 @@
-//! # Honzon Module
+//! # Mintx Module
 //!
 //! ## Overview
 //!
-//! The entry of the Honzon protocol for users, user can manipulate their CDP
+//! The entry of the Mintx protocol for users, user can manipulate their CDP
 //! position to loan/payback, and can also authorize others to manage the their
 //! CDP under specific collateral type.
 //!
@@ -37,7 +37,7 @@ pub trait Trait: system::Trait + cdp_engine::Trait {
 }
 
 decl_storage! {
-	trait Store for Module<T: Trait> as Honzon {
+	trait Store for Module<T: Trait> as Mintx {
 		/// The authorization relationship map from
 		/// Authorizer -> (CollateralType, Authorizee) -> Authorized
 		pub Authorization get(fn authorization): double_map hasher(twox_64_concat) T::AccountId, hasher(blake2_128_concat) (CurrencyId, T::AccountId) => bool;

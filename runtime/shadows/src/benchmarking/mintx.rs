@@ -1,5 +1,5 @@
 use crate::{
-	AccountId, Amount, CdpEngine, CollateralCurrencyIds, CurrencyId, ExchangeRate, Honzon, MinimumDebitValue, Price,
+	AccountId, Amount, CdpEngine, CollateralCurrencyIds, CurrencyId, ExchangeRate, MinimumDebitValue, Mintx, Price,
 	Rate, Ratio, Runtime, ShadowsOracle, TokenSymbol,
 };
 
@@ -30,7 +30,7 @@ runtime_benchmarks! {
 	unauthorize {
 		let caller: AccountId = account("caller", 0, SEED);
 		let to: AccountId = account("to", 0, SEED);
-		Honzon::authorize(
+		Mintx::authorize(
 			RawOrigin::Signed(caller.clone()).into(),
 			CurrencyId::Token(TokenSymbol::DOT),
 			to.clone()
@@ -45,7 +45,7 @@ runtime_benchmarks! {
 		let to: AccountId = account("to", 0, SEED);
 
 		for i in 0 .. c {
-			Honzon::authorize(
+			Mintx::authorize(
 				RawOrigin::Signed(caller.clone()).into(),
 				currency_ids[i as usize],
 				to.clone(),
@@ -113,7 +113,7 @@ runtime_benchmarks! {
 		)?;
 
 		// initialize sender's loan
-		Honzon::adjust_loan(
+		Mintx::adjust_loan(
 			RawOrigin::Signed(sender.clone()).into(),
 			currency_id,
 			collateral_amount.try_into().unwrap(),
@@ -121,7 +121,7 @@ runtime_benchmarks! {
 		)?;
 
 		// authorize receiver
-		Honzon::authorize(
+		Mintx::authorize(
 			RawOrigin::Signed(sender.clone()).into(),
 			currency_id,
 			receiver.clone()

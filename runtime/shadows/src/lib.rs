@@ -118,7 +118,7 @@ parameter_types! {
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
 	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 	pub const StakingPoolModuleId: ModuleId = ModuleId(*b"aca/stkp");
-	pub const HonzonTreasuryModuleId: ModuleId = ModuleId(*b"aca/hztr");
+	pub const MintxTreasuryModuleId: ModuleId = ModuleId(*b"aca/hztr");
 	pub const HomaTreasuryModuleId: ModuleId = ModuleId(*b"aca/hmtr");
 	pub const IncentivesModuleId: ModuleId = ModuleId(*b"aca/inct");
 	// Decentralized Sovereign Wealth Fund
@@ -134,7 +134,7 @@ pub fn get_all_module_accounts() -> Vec<AccountId> {
 		EXCHANGEModuleId::get().into_account(),
 		CDPTreasuryModuleId::get().into_account(),
 		StakingPoolModuleId::get().into_account(),
-		HonzonTreasuryModuleId::get().into_account(),
+		MintxTreasuryModuleId::get().into_account(),
 		HomaTreasuryModuleId::get().into_account(),
 		IncentivesModuleId::get().into_account(),
 		DSWFModuleId::get().into_account(),
@@ -309,10 +309,10 @@ type EnsureRootOrHalfGeneralCouncil = EnsureOneOf<
 	pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, GeneralCouncilInstance>,
 >;
 
-type EnsureRootOrHalfHonzonCouncil = EnsureOneOf<
+type EnsureRootOrHalfMintxCouncil = EnsureOneOf<
 	AccountId,
 	EnsureRoot<AccountId>,
-	pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, HonzonCouncilInstance>,
+	pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, MintxCouncilInstance>,
 >;
 
 type EnsureRootOrHalfHomaCouncil = EnsureOneOf<
@@ -376,33 +376,33 @@ impl pallet_membership::Trait<GeneralCouncilMembershipInstance> for Runtime {
 }
 
 parameter_types! {
-	pub const HonzonCouncilMotionDuration: BlockNumber = 0;
-	pub const HonzonCouncilMaxProposals: u32 = 100;
-	pub const HonzonCouncilMaxMembers: u32 = 100;
+	pub const MintxCouncilMotionDuration: BlockNumber = 0;
+	pub const MintxCouncilMaxProposals: u32 = 100;
+	pub const MintxCouncilMaxMembers: u32 = 100;
 }
 
-type HonzonCouncilInstance = pallet_collective::Instance2;
-impl pallet_collective::Trait<HonzonCouncilInstance> for Runtime {
+type MintxCouncilInstance = pallet_collective::Instance2;
+impl pallet_collective::Trait<MintxCouncilInstance> for Runtime {
 	type Origin = Origin;
 	type Proposal = Call;
 	type Event = Event;
-	type MotionDuration = HonzonCouncilMotionDuration;
-	type MaxProposals = HonzonCouncilMaxProposals;
-	type MaxMembers = HonzonCouncilMaxMembers;
+	type MotionDuration = MintxCouncilMotionDuration;
+	type MaxProposals = MintxCouncilMaxProposals;
+	type MaxMembers = MintxCouncilMaxMembers;
 	type DefaultVote = pallet_collective::PrimeDefaultVote;
 	type WeightInfo = ();
 }
 
-type HonzonCouncilMembershipInstance = pallet_membership::Instance2;
-impl pallet_membership::Trait<HonzonCouncilMembershipInstance> for Runtime {
+type MintxCouncilMembershipInstance = pallet_membership::Instance2;
+impl pallet_membership::Trait<MintxCouncilMembershipInstance> for Runtime {
 	type Event = Event;
 	type AddOrigin = EnsureRootOrTwoThirdsGeneralCouncil;
 	type RemoveOrigin = EnsureRootOrTwoThirdsGeneralCouncil;
 	type SwapOrigin = EnsureRootOrTwoThirdsGeneralCouncil;
 	type ResetOrigin = EnsureRootOrTwoThirdsGeneralCouncil;
 	type PrimeOrigin = EnsureRootOrTwoThirdsGeneralCouncil;
-	type MembershipInitialized = HonzonCouncil;
-	type MembershipChanged = HonzonCouncil;
+	type MembershipInitialized = MintxCouncil;
+	type MembershipChanged = MintxCouncil;
 }
 
 parameter_types! {
@@ -1002,7 +1002,7 @@ impl module_cdp_engine::Trait for Runtime {
 	type MinimumDebitValue = MinimumDebitValue;
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type CDPTreasury = CdpTreasury;
-	type UpdateOrigin = EnsureRootOrHalfHonzonCouncil;
+	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
 	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
 	type EXCHANGE = Exchange;
 	type UnsignedPriority = CdpEngineUnsignedPriority;
@@ -1056,7 +1056,7 @@ impl module_cdp_treasury::Trait for Runtime {
 	type Currency = Currencies;
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type AuctionManagerHandler = AuctionManager;
-	type UpdateOrigin = EnsureRootOrHalfHonzonCouncil;
+	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
 	type EXCHANGE = Exchange;
 	type MaxAuctionsCount = MaxAuctionsCount;
 	type ModuleId = CDPTreasuryModuleId;
@@ -1103,7 +1103,7 @@ impl module_incentives::Trait for Runtime {
 	type AccumulatePeriod = AccumulatePeriod;
 	type IncentiveCurrencyId = GetNativeCurrencyId;
 	type SavingCurrencyId = GetStableCurrencyId;
-	type UpdateOrigin = EnsureRootOrHalfHonzonCouncil;
+	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
 	type CDPTreasury = CdpTreasury;
 	type Currency = Currencies;
 	type EXCHANGE = Exchange;
@@ -1332,8 +1332,8 @@ construct_runtime!(
 		// Governance
 		GeneralCouncil: pallet_collective::<Instance1>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
 		GeneralCouncilMembership: pallet_membership::<Instance1>::{Module, Call, Storage, Event<T>, Config<T>},
-		HonzonCouncil: pallet_collective::<Instance2>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
-		HonzonCouncilMembership: pallet_membership::<Instance2>::{Module, Call, Storage, Event<T>, Config<T>},
+		MintxCouncil: pallet_collective::<Instance2>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
+		MintxCouncilMembership: pallet_membership::<Instance2>::{Module, Call, Storage, Event<T>, Config<T>},
 		HomaCouncil: pallet_collective::<Instance3>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
 		HomaCouncilMembership: pallet_membership::<Instance3>::{Module, Call, Storage, Event<T>, Config<T>},
 		TechnicalCommittee: pallet_collective::<Instance4>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
@@ -1360,10 +1360,10 @@ construct_runtime!(
 		// EXCHANGE
 		Exchange: module_exchange::{Module, Storage, Call, Event<T>},
 
-		// Honzon
+		// Mintx
 		AuctionManager: module_auction_manager::{Module, Storage, Call, Event<T>, ValidateUnsigned},
 		Lend: module_lend::{Module, Storage, Call, Event<T>},
-		Honzon: module_mintx::{Module, Storage, Call, Event<T>},
+		Mintx: module_mintx::{Module, Storage, Call, Event<T>},
 		CdpTreasury: module_cdp_treasury::{Module, Storage, Call, Config, Event},
 		CdpEngine: module_cdp_engine::{Module, Storage, Call, Event<T>, Config, ValidateUnsigned},
 		EmergencyShutdown: module_emergency_shutdown::{Module, Storage, Call, Event<T>},

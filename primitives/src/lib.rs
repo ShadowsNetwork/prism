@@ -89,7 +89,7 @@ pub enum CurrencyId {
 pub enum AuthoritysOriginId {
 	Root,
 	ShadowTreasury,
-	HonzonTreasury,
+	MintxTreasury,
 	HomaTreasury,
 	DSWF,
 }

@@ -288,7 +288,7 @@ impl Trait for Runtime {
 	type Event = TestEvent;
 	type WeightInfo = ();
 }
-pub type HonzonModule = Module<Runtime>;
+pub type MintxModule = Module<Runtime>;
 
 pub struct ExtBuilder {
 	endowed_accounts: Vec<(AccountId, CurrencyId, Balance)>,

@@ -18,7 +18,7 @@ use sp_runtime::{
 };
 
 use cdp_engine::Module as CdpEngine;
-use mintx::Module as Honzon;
+use mintx::Module as Mintx;
 use mintx::*;
 use orml_traits::{Change, DataFeeder, MultiCurrencyExtended};
 use primitives::{Amount, CurrencyId, TokenSymbol};
@@ -53,7 +53,7 @@ benchmarks! {
 
 		let caller: T::AccountId = account("caller", u, SEED);
 		let to: T::AccountId = account("to", u, SEED);
-		Honzon::<T>::authorize(
+		Mintx::<T>::authorize(
 			RawOrigin::Signed(caller.clone()).into(),
 			CurrencyId::Token(TokenSymbol::DOT),
 			to.clone()
@@ -72,7 +72,7 @@ benchmarks! {
 			let to: T::AccountId = account("to", i, SEED);
 
 			for j in 0 .. c {
-				Honzon::<T>::authorize(
+				Mintx::<T>::authorize(
 					RawOrigin::Signed(caller.clone()).into(),
 					currency_ids[j as usize],
 					to.clone(),
@@ -145,7 +145,7 @@ benchmarks! {
 		)?;
 
 		// initialize sender's loan
-		Honzon::<T>::adjust_loan(
+		Mintx::<T>::adjust_loan(
 			RawOrigin::Signed(sender.clone()).into(),
 			currency_id,
 			collateral_amount,
@@ -153,7 +153,7 @@ benchmarks! {
 		)?;
 
 		// authorize receiver
-		Honzon::<T>::authorize(
+		Mintx::<T>::authorize(
 			RawOrigin::Signed(sender.clone()).into(),
 			currency_id,
 			receiver.clone()

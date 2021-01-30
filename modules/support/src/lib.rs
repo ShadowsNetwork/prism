@@ -149,7 +149,7 @@ where
 	}
 }
 
-/// An abstraction of cdp treasury for Honzon Protocol.
+/// An abstraction of cdp treasury for Mintx Protocol.
 pub trait CDPTreasury<AccountId> {
 	type Balance;
 	type CurrencyId;
