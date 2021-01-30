@@ -115,7 +115,7 @@ impl_opaque_keys! {
 parameter_types! {
 	pub const ShadowTreasuryModuleId: ModuleId = ModuleId(*b"aca/trsy");
 	pub const LoansModuleId: ModuleId = ModuleId(*b"aca/loan");
-	pub const DEXModuleId: ModuleId = ModuleId(*b"aca/dexm");
+	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
 	pub const CDPTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 	pub const StakingPoolModuleId: ModuleId = ModuleId(*b"aca/stkp");
 	pub const HonzonTreasuryModuleId: ModuleId = ModuleId(*b"aca/hztr");
@@ -131,7 +131,7 @@ pub fn get_all_module_accounts() -> Vec<AccountId> {
 	vec![
 		ShadowTreasuryModuleId::get().into_account(),
 		LoansModuleId::get().into_account(),
-		DEXModuleId::get().into_account(),
+		EXCHANGEModuleId::get().into_account(),
 		CDPTreasuryModuleId::get().into_account(),
 		StakingPoolModuleId::get().into_account(),
 		HonzonTreasuryModuleId::get().into_account(),
@@ -907,7 +907,7 @@ impl module_auction_manager::Trait for Runtime {
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
 	type CDPTreasury = CdpTreasury;
-	type DEX = Dex;
+	type EXCHANGE = Dex;
 	type PriceSource = Prices;
 	type UnsignedPriority = AuctionManagerUnsignedPriority;
 	type EmergencyShutdown = EmergencyShutdown;
@@ -988,7 +988,7 @@ parameter_types! {
 	pub DefaultDebitExchangeRate: ExchangeRate = ExchangeRate::saturating_from_rational(1, 10);
 	pub DefaultLiquidationPenalty: Rate = Rate::saturating_from_rational(5, 100);
 	pub const MinimumDebitValue: Balance = DOLLARS;
-	pub MaxSlippageSwapWithDEX: Ratio = Ratio::saturating_from_rational(5, 100);
+	pub MaxSlippageSwapWithEXCHANGE: Ratio = Ratio::saturating_from_rational(5, 100);
 	pub const CdpEngineUnsignedPriority: TransactionPriority = TransactionPriority::max_value();
 }
 
@@ -1003,8 +1003,8 @@ impl module_cdp_engine::Trait for Runtime {
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type CDPTreasury = CdpTreasury;
 	type UpdateOrigin = EnsureRootOrHalfHonzonCouncil;
-	type MaxSlippageSwapWithDEX = MaxSlippageSwapWithDEX;
-	type DEX = Dex;
+	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
+	type EXCHANGE = Dex;
 	type UnsignedPriority = CdpEngineUnsignedPriority;
 	type EmergencyShutdown = EmergencyShutdown;
 	type WeightInfo = weights::cdp_engine::WeightInfo<Runtime>;
@@ -1037,14 +1037,14 @@ parameter_types! {
 	];
 }
 
-impl module_dex::Trait for Runtime {
+impl module_exchange::Trait for Runtime {
 	type Event = Event;
 	type Currency = Currencies;
 	type EnabledTradingPairs = EnabledTradingPairs;
 	type GetExchangeFee = GetExchangeFee;
 	type TradingPathLimit = TradingPathLimit;
-	type ModuleId = DEXModuleId;
-	type WeightInfo = weights::dex::WeightInfo<Runtime>;
+	type ModuleId = EXCHANGEModuleId;
+	type WeightInfo = weights::exchange::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -1057,7 +1057,7 @@ impl module_cdp_treasury::Trait for Runtime {
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type AuctionManagerHandler = AuctionManager;
 	type UpdateOrigin = EnsureRootOrHalfHonzonCouncil;
-	type DEX = Dex;
+	type EXCHANGE = Dex;
 	type MaxAuctionsCount = MaxAuctionsCount;
 	type ModuleId = CDPTreasuryModuleId;
 	type WeightInfo = weights::cdp_treasury::WeightInfo<Runtime>;
@@ -1074,12 +1074,12 @@ impl module_accounts::Trait for Runtime {
 	type NativeCurrencyId = GetNativeCurrencyId;
 	type StableCurrencyId = GetStableCurrencyId;
 	type Currency = Currencies;
-	type DEX = Dex;
+	type EXCHANGE = Dex;
 	type OnCreatedAccount = frame_system::CallOnCreatedAccount<Runtime>;
 	type KillAccount = frame_system::CallKillAccount<Runtime>;
 	type NewAccountDeposit = NewAccountDeposit;
 	type TreasuryModuleId = ShadowTreasuryModuleId;
-	type MaxSlippageSwapWithDEX = MaxSlippageSwapWithDEX;
+	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
 	type WeightInfo = weights::accounts::WeightInfo<Runtime>;
 }
 
@@ -1106,7 +1106,7 @@ impl module_incentives::Trait for Runtime {
 	type UpdateOrigin = EnsureRootOrHalfHonzonCouncil;
 	type CDPTreasury = CdpTreasury;
 	type Currency = Currencies;
-	type DEX = Dex;
+	type EXCHANGE = Dex;
 	type EmergencyShutdown = EmergencyShutdown;
 	type ModuleId = IncentivesModuleId;
 	type WeightInfo = weights::incentives::WeightInfo<Runtime>;
@@ -1357,8 +1357,8 @@ construct_runtime!(
 		// Shadow Core
 		Prices: module_prices::{Module, Storage, Call, Event},
 
-		// DEX
-		Dex: module_dex::{Module, Storage, Call, Event<T>},
+		// EXCHANGE
+		Dex: module_exchange::{Module, Storage, Call, Event<T>},
 
 		// Honzon
 		AuctionManager: module_auction_manager::{Module, Storage, Call, Event<T>, ValidateUnsigned},
@@ -1690,7 +1690,7 @@ impl_runtime_apis! {
 			let mut batches = Vec::<BenchmarkBatch>::new();
 			let params = (&config, &whitelist);
 
-			add_benchmark!(params, batches, dex, Dex);
+			add_benchmark!(params, batches, exchange, Dex);
 			add_benchmark!(params, batches, nft, NftBench::<Runtime>);
 			orml_add_benchmark!(params, batches, auction_manager, benchmarking::auction_manager);
 			orml_add_benchmark!(params, batches, cdp_engine, benchmarking::cdp_engine);

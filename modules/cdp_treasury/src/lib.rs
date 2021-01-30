@@ -22,7 +22,7 @@ use sp_runtime::{
 	traits::{AccountIdConversion, One, Zero},
 	DispatchError, DispatchResult, FixedPointNumber, ModuleId,
 };
-use support::{AuctionManager, CDPTreasury, CDPTreasuryExtended, DEXManager, Ratio};
+use support::{AuctionManager, CDPTreasury, CDPTreasuryExtended, EXCHANGEManager, Ratio};
 
 mod benchmarking;
 mod default_weight;
@@ -55,7 +55,7 @@ pub trait Trait: system::Trait {
 
 	/// Dex manager is used to swap confiscated collateral assets to stable
 	/// currency
-	type DEX: DEXManager<Self::AccountId, CurrencyId, Balance>;
+	type EXCHANGE: EXCHANGEManager<Self::AccountId, CurrencyId, Balance>;
 
 	/// The cap of lots number when create collateral auction on a liquidation
 	/// or to create debit/surplus auction on block end.
@@ -309,7 +309,7 @@ impl<T: Trait> CDPTreasuryExtended<T::AccountId> for Module<T> {
 			Error::<T>::CollateralNotEnough,
 		);
 
-		T::DEX::swap_with_exact_supply(
+		T::EXCHANGE::swap_with_exact_supply(
 			&Self::account_id(),
 			&[currency_id, T::GetStableCurrencyId::get()],
 			supply_amount,
@@ -331,7 +331,7 @@ impl<T: Trait> CDPTreasuryExtended<T::AccountId> for Module<T> {
 			Error::<T>::CollateralNotEnough,
 		);
 
-		T::DEX::swap_with_exact_target(
+		T::EXCHANGE::swap_with_exact_target(
 			&Self::account_id(),
 			&[currency_id, T::GetStableCurrencyId::get()],
 			target_amount,

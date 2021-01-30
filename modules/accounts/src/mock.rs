@@ -43,7 +43,7 @@ impl_outer_event! {
 		orml_tokens<T>,
 		pallet_balances<T>,
 		orml_currencies<T>,
-		dex<T>,
+		exchange<T>,
 	}
 }
 
@@ -144,28 +144,28 @@ ord_parameter_types! {
 }
 
 parameter_types! {
-	pub const DEXModuleId: ModuleId = ModuleId(*b"aca/dexm");
+	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
 	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(AUSD, DOS), TradingPair::new(AUSD, BTC)];
 }
 
-impl dex::Trait for Runtime {
+impl exchange::Trait for Runtime {
 	type Event = TestEvent;
 	type Currency = Currencies;
 	type EnabledTradingPairs = EnabledTradingPairs;
 	type GetExchangeFee = GetExchangeFee;
 	type TradingPathLimit = TradingPathLimit;
-	type ModuleId = DEXModuleId;
+	type ModuleId = EXCHANGEModuleId;
 	type WeightInfo = ();
 }
-pub type DEXModule = dex::Module<Runtime>;
+pub type EXCHANGEModule = exchange::Module<Runtime>;
 
 parameter_types! {
 	pub AllNonNativeCurrencyIds: Vec<CurrencyId> = vec![AUSD, BTC];
 	pub const NewAccountDeposit: Balance = 100;
 	pub const TreasuryModuleId: ModuleId = ModuleId(*b"py/trsry");
-	pub MaxSlippageSwapWithDEX: Ratio = Ratio::one();
+	pub MaxSlippageSwapWithEXCHANGE: Ratio = Ratio::one();
 	pub const StableCurrencyId: CurrencyId = AUSD;
 }
 
@@ -174,12 +174,12 @@ impl Trait for Runtime {
 	type NativeCurrencyId = GetNativeCurrencyId;
 	type StableCurrencyId = StableCurrencyId;
 	type Currency = Currencies;
-	type DEX = DEXModule;
+	type EXCHANGE = EXCHANGEModule;
 	type OnCreatedAccount = frame_system::CallOnCreatedAccount<Runtime>;
 	type KillAccount = frame_system::CallKillAccount<Runtime>;
 	type NewAccountDeposit = NewAccountDeposit;
 	type TreasuryModuleId = TreasuryModuleId;
-	type MaxSlippageSwapWithDEX = MaxSlippageSwapWithDEX;
+	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
 	type WeightInfo = ();
 }
 pub type Accounts = Module<Runtime>;

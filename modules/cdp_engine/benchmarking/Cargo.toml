@@ -17,7 +17,7 @@ primitives = { package = "shadows-primitives", path = "../../../primitives", def
 support = { package = "module-support", path = "../../support", default-features = false }
 cdp-engine = { package = "module-cdp-engine", path = "../../cdp_engine", default-features = false }
 loans = { package = "module-loans", path = "../../lend", default-features = false }
-dex = { package = "module-dex", path = "../../exchange", default-features = false }
+exchange = { package = "module-exchange", path = "../../exchange", default-features = false }
 emergency_shutdown = { package = "module-emergency-shutdown", path = "../../emergency_shutdown", default-features = false }
 
 [dev-dependencies]
@@ -45,6 +45,6 @@ std = [
 	"orml-oracle/std",
 	"orml-traits/std",
 	"prices/std",
-	"dex/std",
+	"exchange/std",
 	"emergency_shutdown/std",
 ]

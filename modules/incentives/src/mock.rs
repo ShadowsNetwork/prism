@@ -12,7 +12,7 @@ use primitives::TokenSymbol;
 use sp_core::H256;
 use sp_runtime::{testing::Header, traits::IdentityLookup, Perbill};
 use sp_std::cell::RefCell;
-pub use support::{CDPTreasury, DEXManager, Price, Ratio};
+pub use support::{CDPTreasury, EXCHANGEManager, Price, Ratio};
 
 pub type AccountId = u128;
 pub type BlockNumber = u64;
@@ -23,8 +23,8 @@ pub const DOS: CurrencyId = CurrencyId::Token(TokenSymbol::DOS);
 pub const AUSD: CurrencyId = CurrencyId::Token(TokenSymbol::AUSD);
 pub const BTC: CurrencyId = CurrencyId::Token(TokenSymbol::XBTC);
 pub const DOT: CurrencyId = CurrencyId::Token(TokenSymbol::DOT);
-pub const BTC_AUSD_LP: CurrencyId = CurrencyId::DEXShare(TokenSymbol::XBTC, TokenSymbol::AUSD);
-pub const DOT_AUSD_LP: CurrencyId = CurrencyId::DEXShare(TokenSymbol::DOT, TokenSymbol::AUSD);
+pub const BTC_AUSD_LP: CurrencyId = CurrencyId::EXCHANGEShare(TokenSymbol::XBTC, TokenSymbol::AUSD);
+pub const DOT_AUSD_LP: CurrencyId = CurrencyId::EXCHANGEShare(TokenSymbol::DOT, TokenSymbol::AUSD);
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct Runtime;
@@ -141,8 +141,8 @@ impl CDPTreasury<AccountId> for MockCDPTreasury {
 	}
 }
 
-pub struct MockDEX;
-impl DEXManager<AccountId, CurrencyId, Balance> for MockDEX {
+pub struct MockEXCHANGE;
+impl EXCHANGEManager<AccountId, CurrencyId, Balance> for MockEXCHANGE {
 	fn get_liquidity_pool(currency_id_a: CurrencyId, currency_id_b: CurrencyId) -> (Balance, Balance) {
 		match (currency_id_a, currency_id_b) {
 			(AUSD, BTC) => (500, 100),
@@ -231,7 +231,7 @@ impl Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<Four, AccountId>;
 	type CDPTreasury = MockCDPTreasury;
 	type Currency = TokensModule;
-	type DEX = MockDEX;
+	type EXCHANGE = MockEXCHANGE;
 	type EmergencyShutdown = MockEmergencyShutdown;
 	type ModuleId = IncentivesModuleId;
 	type WeightInfo = ();

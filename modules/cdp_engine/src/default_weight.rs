@@ -21,7 +21,7 @@ impl crate::WeightInfo for () {
 			.saturating_add(DbWeight::get().reads(26 as Weight))
 			.saturating_add(DbWeight::get().writes(15 as Weight))
 	}
-	fn liquidate_by_dex() -> Weight {
+	fn liquidate_by_exchange() -> Weight {
 		(847_136_000 as Weight)
 			.saturating_add(DbWeight::get().reads(26 as Weight))
 			.saturating_add(DbWeight::get().writes(15 as Weight))

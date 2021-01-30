@@ -39,7 +39,7 @@ impl_outer_event! {
 		orml_tokens<T>,
 		pallet_balances<T>,
 		orml_currencies<T>,
-		dex<T>,
+		exchange<T>,
 	}
 }
 
@@ -123,19 +123,19 @@ parameter_types! {
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
 	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(AUSD, BTC)];
-	pub const DEXModuleId: ModuleId = ModuleId(*b"aca/dexm");
+	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
 }
 
-impl dex::Trait for Runtime {
+impl exchange::Trait for Runtime {
 	type Event = TestEvent;
 	type Currency = Currencies;
 	type EnabledTradingPairs = EnabledTradingPairs;
 	type GetExchangeFee = GetExchangeFee;
 	type TradingPathLimit = TradingPathLimit;
-	type ModuleId = DEXModuleId;
+	type ModuleId = EXCHANGEModuleId;
 	type WeightInfo = ();
 }
-pub type DEXModule = dex::Module<Runtime>;
+pub type EXCHANGEModule = exchange::Module<Runtime>;
 
 thread_local! {
 	pub static TOTAL_COLLATERAL_AUCTION: RefCell<u32> = RefCell::new(0);
@@ -211,7 +211,7 @@ impl Trait for Runtime {
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type AuctionManagerHandler = MockAuctionManager;
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
-	type DEX = DEXModule;
+	type EXCHANGE = EXCHANGEModule;
 	type MaxAuctionsCount = MaxAuctionsCount;
 	type ModuleId = CDPTreasuryModuleId;
 	type WeightInfo = ();

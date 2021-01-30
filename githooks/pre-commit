@@ -10,3 +10,4 @@ if [ ! -z "${files}" ]; then
     git add $(echo "$files" | paste -s -d " " -)
 fi
 
+

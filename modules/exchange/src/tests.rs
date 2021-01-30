@@ -176,7 +176,7 @@ fn add_liquidity_work() {
 		assert_eq!(Tokens::free_balance(AUSD, &DexModule::account_id()), 0);
 		assert_eq!(Tokens::free_balance(DOT, &DexModule::account_id()), 0);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_dex_share_currency_id().unwrap(), &ALICE),
+			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
 			0
 		);
 		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 1_000_000_000_000_000_000);
@@ -189,7 +189,7 @@ fn add_liquidity_work() {
 			5_000_000_000_000,
 			1_000_000_000_000
 		));
-		let add_liquidity_event_1 = TestEvent::dex(RawEvent::AddLiquidity(
+		let add_liquidity_event_1 = TestEvent::exchange(RawEvent::AddLiquidity(
 			ALICE,
 			AUSD,
 			5_000_000_000_000,
@@ -208,13 +208,13 @@ fn add_liquidity_work() {
 		assert_eq!(Tokens::free_balance(AUSD, &DexModule::account_id()), 5_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &DexModule::account_id()), 1_000_000_000_000);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_dex_share_currency_id().unwrap(), &ALICE),
+			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
 			5_000_000_000_000
 		);
 		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 999_995_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &ALICE), 999_999_000_000_000_000);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_dex_share_currency_id().unwrap(), &BOB),
+			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &BOB),
 			0
 		);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1_000_000_000_000_000_000);
@@ -227,7 +227,7 @@ fn add_liquidity_work() {
 			50_000_000_000_000,
 			8_000_000_000_000
 		));
-		let add_liquidity_event_2 = TestEvent::dex(RawEvent::AddLiquidity(
+		let add_liquidity_event_2 = TestEvent::exchange(RawEvent::AddLiquidity(
 			BOB,
 			AUSD,
 			40_000_000_000_000,
@@ -246,7 +246,7 @@ fn add_liquidity_work() {
 		assert_eq!(Tokens::free_balance(AUSD, &DexModule::account_id()), 45_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &DexModule::account_id()), 9_000_000_000_000);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_dex_share_currency_id().unwrap(), &BOB),
+			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &BOB),
 			40_000_000_000_000
 		);
 		assert_eq!(Tokens::free_balance(AUSD, &BOB), 999_960_000_000_000_000);
@@ -269,7 +269,7 @@ fn remove_liquidity_work() {
 		assert_noop!(
 			DexModule::remove_liquidity(
 				Origin::signed(ALICE),
-				AUSD_DOT_PAIR.get_dex_share_currency_id().unwrap(),
+				AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(),
 				DOT,
 				100_000_000
 			),
@@ -283,7 +283,7 @@ fn remove_liquidity_work() {
 		assert_eq!(Tokens::free_balance(AUSD, &DexModule::account_id()), 5_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &DexModule::account_id()), 1_000_000_000_000);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_dex_share_currency_id().unwrap(), &ALICE),
+			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
 			5_000_000_000_000
 		);
 		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 999_995_000_000_000_000);
@@ -295,7 +295,7 @@ fn remove_liquidity_work() {
 			DOT,
 			4_000_000_000_000
 		));
-		let remove_liquidity_event_1 = TestEvent::dex(RawEvent::RemoveLiquidity(
+		let remove_liquidity_event_1 = TestEvent::exchange(RawEvent::RemoveLiquidity(
 			ALICE,
 			AUSD,
 			4_000_000_000_000,
@@ -314,7 +314,7 @@ fn remove_liquidity_work() {
 		assert_eq!(Tokens::free_balance(AUSD, &DexModule::account_id()), 1_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &DexModule::account_id()), 200_000_000_000);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_dex_share_currency_id().unwrap(), &ALICE),
+			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
 			1_000_000_000_000
 		);
 		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 999_999_000_000_000_000);
@@ -326,7 +326,7 @@ fn remove_liquidity_work() {
 			DOT,
 			1_000_000_000_000
 		));
-		let remove_liquidity_event_2 = TestEvent::dex(RawEvent::RemoveLiquidity(
+		let remove_liquidity_event_2 = TestEvent::exchange(RawEvent::RemoveLiquidity(
 			ALICE,
 			AUSD,
 			1_000_000_000_000,
@@ -342,7 +342,7 @@ fn remove_liquidity_work() {
 		assert_eq!(Tokens::free_balance(AUSD, &DexModule::account_id()), 0);
 		assert_eq!(Tokens::free_balance(DOT, &DexModule::account_id()), 0);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_dex_share_currency_id().unwrap(), &ALICE),
+			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
 			0
 		);
 		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 1_000_000_000_000_000_000);
@@ -418,7 +418,7 @@ fn do_swap_with_exact_supply_work() {
 			200_000_000_000_000,
 			None
 		));
-		let swap_event_1 = TestEvent::dex(RawEvent::Swap(
+		let swap_event_1 = TestEvent::exchange(RawEvent::Swap(
 			BOB,
 			vec![DOT, AUSD],
 			100_000_000_000_000,
@@ -451,7 +451,7 @@ fn do_swap_with_exact_supply_work() {
 			1,
 			None
 		));
-		let swap_event_2 = TestEvent::dex(RawEvent::Swap(
+		let swap_event_2 = TestEvent::exchange(RawEvent::Swap(
 			BOB,
 			vec![DOT, AUSD, XBTC],
 			200_000_000_000_000,
@@ -553,7 +553,7 @@ fn do_swap_with_exact_target_work() {
 			200_000_000_000_000,
 			None
 		));
-		let swap_event_1 = TestEvent::dex(RawEvent::Swap(
+		let swap_event_1 = TestEvent::exchange(RawEvent::Swap(
 			BOB,
 			vec![DOT, AUSD],
 			101_010_101_010_102,
@@ -586,7 +586,7 @@ fn do_swap_with_exact_target_work() {
 			2_000_000_000_000_000,
 			None
 		));
-		let swap_event_2 = TestEvent::dex(RawEvent::Swap(
+		let swap_event_2 = TestEvent::exchange(RawEvent::Swap(
 			BOB,
 			vec![DOT, AUSD, XBTC],
 			137_654_580_386_993,

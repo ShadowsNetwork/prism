@@ -6,12 +6,12 @@
 use frame_support::weights::{constants::RocksDbWeight as DbWeight, Weight};
 
 impl crate::WeightInfo for () {
-	fn deposit_dex_share() -> Weight {
+	fn deposit_exchange_share() -> Weight {
 		(219_025_000 as Weight)
 			.saturating_add(DbWeight::get().reads(7 as Weight))
 			.saturating_add(DbWeight::get().writes(6 as Weight))
 	}
-	fn withdraw_dex_share() -> Weight {
+	fn withdraw_exchange_share() -> Weight {
 		(373_854_000 as Weight)
 			.saturating_add(DbWeight::get().reads(6 as Weight))
 			.saturating_add(DbWeight::get().writes(6 as Weight))
@@ -26,7 +26,7 @@ impl crate::WeightInfo for () {
 			.saturating_add((5_495_000 as Weight).saturating_mul(c as Weight))
 			.saturating_add(DbWeight::get().writes((1 as Weight).saturating_mul(c as Weight)))
 	}
-	fn update_dex_incentive_rewards(c: u32) -> Weight {
+	fn update_exchange_incentive_rewards(c: u32) -> Weight {
 		(4_846_000 as Weight)
 			.saturating_add((4_851_000 as Weight).saturating_mul(c as Weight))
 			.saturating_add(DbWeight::get().writes((1 as Weight).saturating_mul(c as Weight)))
@@ -34,7 +34,7 @@ impl crate::WeightInfo for () {
 	fn update_homa_incentive_reward() -> Weight {
 		(5_934_000 as Weight).saturating_add(DbWeight::get().writes(1 as Weight))
 	}
-	fn update_dex_saving_rates(c: u32) -> Weight {
+	fn update_exchange_saving_rates(c: u32) -> Weight {
 		(3_896_000 as Weight)
 			.saturating_add((5_340_000 as Weight).saturating_mul(c as Weight))
 			.saturating_add(DbWeight::get().writes((1 as Weight).saturating_mul(c as Weight)))

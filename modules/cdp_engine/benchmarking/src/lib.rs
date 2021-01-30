@@ -16,15 +16,19 @@ use sp_runtime::{traits::UniqueSaturatedInto, DispatchError, FixedPointNumber};
 
 use cdp_engine::Module as CdpEngine;
 use cdp_engine::*;
-use dex::Module as Dex;
+use exchange::Module as Dex;
 use orml_traits::{Change, DataFeeder, MultiCurrencyExtended};
 use primitives::{Amount, Balance, CurrencyId, TokenSymbol};
-use support::{DEXManager, Price, Rate, Ratio};
+use support::{EXCHANGEManager, Price, Rate, Ratio};
 
 pub struct Module<T: Trait>(cdp_engine::Module<T>);
 
 pub trait Trait:
-	cdp_engine::Trait + orml_oracle::Trait<orml_oracle::Instance1> + prices::Trait + dex::Trait + emergency_shutdown::Trait
+	cdp_engine::Trait
+	+ orml_oracle::Trait<orml_oracle::Instance1>
+	+ prices::Trait
+	+ exchange::Trait
+	+ emergency_shutdown::Trait
 {
 }
 
@@ -52,8 +56,8 @@ fn inject_liquidity<T: Trait>(
 	let base_currency_id = <T as cdp_engine::Trait>::GetStableCurrencyId::get();
 
 	// set balance
-	<T as dex::Trait>::Currency::update_balance(currency_id, &maker, max_amount.unique_saturated_into())?;
-	<T as dex::Trait>::Currency::update_balance(
+	<T as exchange::Trait>::Currency::update_balance(currency_id, &maker, max_amount.unique_saturated_into())?;
+	<T as exchange::Trait>::Currency::update_balance(
 		base_currency_id,
 		&maker,
 		max_other_currency_amount.unique_saturated_into(),
@@ -139,7 +143,7 @@ benchmarks! {
 	}: liquidate(RawOrigin::None, currency_id, owner)
 
 	// `liquidate` by exchange
-	liquidate_by_dex {
+	liquidate_by_exchange {
 		let u in 0 .. 1000;
 
 		let owner: T::AccountId = account("owner", u, SEED);
@@ -153,11 +157,11 @@ benchmarks! {
 		let min_debit_amount: Amount = min_debit_amount.unique_saturated_into();
 		let collateral_amount = (min_debit_value * 2).unique_saturated_into();
 
-		let max_slippage_swap_with_dex = <T as cdp_engine::Trait>::MaxSlippageSwapWithDEX::get();
-		let collateral_amount_in_dex = max_slippage_swap_with_dex.reciprocal().unwrap().saturating_mul_int(min_debit_value * 10);
-		let base_amount_in_dex = collateral_amount_in_dex * 2;
+		let max_slippage_swap_with_exchange = <T as cdp_engine::Trait>::MaxSlippageSwapWithEXCHANGE::get();
+		let collateral_amount_in_exchange = max_slippage_swap_with_exchange.reciprocal().unwrap().saturating_mul_int(min_debit_value * 10);
+		let base_amount_in_exchange = collateral_amount_in_exchange * 2;
 
-		inject_liquidity::<T>(funder.clone(), currency_id, base_amount_in_dex, collateral_amount_in_dex)?;
+		inject_liquidity::<T>(funder.clone(), currency_id, base_amount_in_exchange, collateral_amount_in_exchange)?;
 
 		// set balance
 		<T as loans::Trait>::Currency::update_balance(currency_id, &owner, collateral_amount)?;
@@ -192,8 +196,8 @@ benchmarks! {
 	}: liquidate(RawOrigin::None, currency_id, owner)
 	verify {
 		let (other_currency_amount, base_currency_amount) = Dex::<T>::get_liquidity_pool(base_currency_id, currency_id);
-		assert!(other_currency_amount > collateral_amount_in_dex);
-		assert!(base_currency_amount < base_amount_in_dex);
+		assert!(other_currency_amount > collateral_amount_in_exchange);
+		assert!(base_currency_amount < base_amount_in_exchange);
 	}
 
 	settle {
@@ -261,9 +265,9 @@ mod tests {
 	}
 
 	#[test]
-	fn liquidate_by_dex() {
+	fn liquidate_by_exchange() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(test_benchmark_liquidate_by_dex::<Runtime>());
+			assert_ok!(test_benchmark_liquidate_by_exchange::<Runtime>());
 		});
 	}
 

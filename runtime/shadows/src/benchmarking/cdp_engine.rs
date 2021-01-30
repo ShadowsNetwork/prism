@@ -1,6 +1,6 @@
 use crate::{
 	AccountId, Amount, Balance, CdpEngine, CollateralCurrencyIds, CurrencyId, Dex, EmergencyShutdown,
-	GetStableCurrencyId, MaxSlippageSwapWithDEX, MinimumDebitValue, Price, Rate, Ratio, Runtime, ShadowsOracle,
+	GetStableCurrencyId, MaxSlippageSwapWithEXCHANGE, MinimumDebitValue, Price, Rate, Ratio, Runtime, ShadowsOracle,
 	TokenSymbol, DOLLARS,
 };
 
@@ -8,7 +8,7 @@ use super::utils::set_balance;
 use core::convert::TryInto;
 use frame_benchmarking::account;
 use frame_system::RawOrigin;
-use module_support::DEXManager;
+use module_support::EXCHANGEManager;
 use orml_benchmarking::runtime_benchmarks;
 use orml_traits::Change;
 use sp_runtime::{traits::UniqueSaturatedInto, FixedPointNumber};
@@ -107,7 +107,7 @@ runtime_benchmarks! {
 	}: liquidate(RawOrigin::None, currency_id, owner)
 
 	// `liquidate` by exchange
-	liquidate_by_dex {
+	liquidate_by_exchange {
 		let owner: AccountId = account("owner", 0, SEED);
 		let funder: AccountId = account("funder", 0, SEED);
 		let currency_id: CurrencyId = CollateralCurrencyIds::get()[0];
@@ -118,11 +118,11 @@ runtime_benchmarks! {
 		let min_debit_amount: Amount = min_debit_amount.unique_saturated_into();
 		let collateral_amount = (min_debit_value * 2).unique_saturated_into();
 		let base_currency_id = GetStableCurrencyId::get();
-		let max_slippage_swap_with_dex = MaxSlippageSwapWithDEX::get();
-		let collateral_amount_in_dex = max_slippage_swap_with_dex.reciprocal().unwrap().saturating_mul_int(min_debit_value * 10);
-		let base_amount_in_dex = collateral_amount_in_dex * 2;
+		let max_slippage_swap_with_exchange = MaxSlippageSwapWithEXCHANGE::get();
+		let collateral_amount_in_exchange = max_slippage_swap_with_exchange.reciprocal().unwrap().saturating_mul_int(min_debit_value * 10);
+		let base_amount_in_exchange = collateral_amount_in_exchange * 2;
 
-		inject_liquidity(funder.clone(), currency_id, base_amount_in_dex, collateral_amount_in_dex)?;
+		inject_liquidity(funder.clone(), currency_id, base_amount_in_exchange, collateral_amount_in_exchange)?;
 
 		// set balance
 		set_balance(currency_id, &owner, collateral_amount);
@@ -157,8 +157,8 @@ runtime_benchmarks! {
 	}: liquidate(RawOrigin::None, currency_id, owner)
 	verify {
 		let (other_currency_amount, base_currency_amount) = Dex::get_liquidity_pool(currency_id, base_currency_id);
-		assert!(other_currency_amount > collateral_amount_in_dex);
-		assert!(base_currency_amount < base_amount_in_dex);
+		assert!(other_currency_amount > collateral_amount_in_exchange);
+		assert!(base_currency_amount < base_amount_in_exchange);
 	}
 
 	settle {
@@ -230,9 +230,9 @@ mod tests {
 	}
 
 	#[test]
-	fn test_liquidate_by_dex() {
+	fn test_liquidate_by_exchange() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(test_benchmark_liquidate_by_dex());
+			assert_ok!(test_benchmark_liquidate_by_exchange());
 		});
 	}
 

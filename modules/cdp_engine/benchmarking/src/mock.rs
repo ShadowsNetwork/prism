@@ -180,7 +180,7 @@ impl cdp_treasury::Trait for Runtime {
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type AuctionManagerHandler = MockAuctionManager;
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
-	type DEX = DexModule;
+	type EXCHANGE = DexModule;
 	type MaxAuctionsCount = MaxAuctionsCount;
 	type ModuleId = CDPTreasuryModuleId;
 }
@@ -189,19 +189,19 @@ pub type CDPTreasuryModule = cdp_treasury::Module<Runtime>;
 parameter_types! {
 	pub const GetBaseCurrencyId: CurrencyId = AUSD;
 	pub GetExchangeFee: Rate = Rate::saturating_from_rational(1, 1000);
-	pub const DEXModuleId: ModuleId = ModuleId(*b"aca/dexm");
+	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
 }
 
-impl dex::Trait for Runtime {
+impl exchange::Trait for Runtime {
 	type Event = ();
 	type Currency = Currencies;
 	type EnabledCurrencyIds = CollateralCurrencyIds;
 	type GetBaseCurrencyId = GetBaseCurrencyId;
 	type GetExchangeFee = GetExchangeFee;
-	type ModuleId = DEXModuleId;
+	type ModuleId = EXCHANGEModuleId;
 	type WeightInfo = ();
 }
-pub type DexModule = dex::Module<Runtime>;
+pub type DexModule = exchange::Module<Runtime>;
 
 parameter_types! {
 	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![DOS, DOT];
@@ -209,7 +209,7 @@ parameter_types! {
 	pub DefaultDebitExchangeRate: ExchangeRate = ExchangeRate::one();
 	pub DefaultLiquidationPenalty: Rate = Rate::saturating_from_rational(10, 100);
 	pub const MinimumDebitValue: Balance = 2;
-	pub MaxSlippageSwapWithDEX: Ratio = Ratio::saturating_from_rational(50, 100);
+	pub MaxSlippageSwapWithEXCHANGE: Ratio = Ratio::saturating_from_rational(50, 100);
 	pub const UnsignedPriority: u64 = 1 << 20;
 }
 
@@ -224,8 +224,8 @@ impl cdp_engine::Trait for Runtime {
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type CDPTreasury = CDPTreasuryModule;
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
-	type MaxSlippageSwapWithDEX = MaxSlippageSwapWithDEX;
-	type DEX = DexModule;
+	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
+	type EXCHANGE = DexModule;
 	type UnsignedPriority = UnsignedPriority;
 }
 pub type CDPEngineModule = cdp_engine::Module<Runtime>;

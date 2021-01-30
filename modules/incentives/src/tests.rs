@@ -10,7 +10,7 @@ use orml_traits::MultiCurrency;
 use sp_runtime::{traits::BadOrigin, FixedPointNumber};
 
 #[test]
-fn deposit_dex_share_works() {
+fn deposit_exchange_share_works() {
 	ExtBuilder::default().build().execute_with(|| {
 		System::set_block_number(1);
 		assert_ok!(TokensModule::deposit(BTC_AUSD_LP, &ALICE, 10000));
@@ -44,15 +44,16 @@ fn deposit_dex_share_works() {
 			(0, 0)
 		);
 
-		assert_ok!(IncentivesModule::deposit_dex_share(
+		assert_ok!(IncentivesModule::deposit_exchange_share(
 			Origin::signed(ALICE),
 			BTC_AUSD_LP,
 			10000
 		));
-		let deposit_dex_share_event = TestEvent::incentives(RawEvent::DepositDEXShare(ALICE, BTC_AUSD_LP, 10000));
+		let deposit_exchange_share_event =
+			TestEvent::incentives(RawEvent::DepositEXCHANGEShare(ALICE, BTC_AUSD_LP, 10000));
 		assert!(System::events()
 			.iter()
-			.any(|record| record.event == deposit_dex_share_event));
+			.any(|record| record.event == deposit_exchange_share_event));
 
 		assert_eq!(TokensModule::free_balance(BTC_AUSD_LP, &ALICE), 0);
 		assert_eq!(
@@ -87,17 +88,17 @@ fn deposit_dex_share_works() {
 }
 
 #[test]
-fn withdraw_dex_share_works() {
+fn withdraw_exchange_share_works() {
 	ExtBuilder::default().build().execute_with(|| {
 		System::set_block_number(1);
 		assert_ok!(TokensModule::deposit(BTC_AUSD_LP, &ALICE, 10000));
 
 		assert_noop!(
-			IncentivesModule::withdraw_dex_share(Origin::signed(BOB), BTC_AUSD_LP, 10000),
+			IncentivesModule::withdraw_exchange_share(Origin::signed(BOB), BTC_AUSD_LP, 10000),
 			Error::<Runtime>::NotEnough,
 		);
 
-		assert_ok!(IncentivesModule::deposit_dex_share(
+		assert_ok!(IncentivesModule::deposit_exchange_share(
 			Origin::signed(ALICE),
 			BTC_AUSD_LP,
 			10000
@@ -132,15 +133,16 @@ fn withdraw_dex_share_works() {
 			(10000, 0)
 		);
 
-		assert_ok!(IncentivesModule::withdraw_dex_share(
+		assert_ok!(IncentivesModule::withdraw_exchange_share(
 			Origin::signed(ALICE),
 			BTC_AUSD_LP,
 			8000
 		));
-		let withdraw_dex_share_event = TestEvent::incentives(RawEvent::WithdrawDEXShare(ALICE, BTC_AUSD_LP, 8000));
+		let withdraw_exchange_share_event =
+			TestEvent::incentives(RawEvent::WithdrawEXCHANGEShare(ALICE, BTC_AUSD_LP, 8000));
 		assert!(System::events()
 			.iter()
-			.any(|record| record.event == withdraw_dex_share_event));
+			.any(|record| record.event == withdraw_exchange_share_event));
 
 		assert_eq!(TokensModule::free_balance(BTC_AUSD_LP, &ALICE), 8000);
 		assert_eq!(
@@ -200,32 +202,32 @@ fn update_loans_incentive_rewards_works() {
 }
 
 #[test]
-fn update_dex_incentive_rewards_works() {
+fn update_exchange_incentive_rewards_works() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_noop!(
-			IncentivesModule::update_dex_incentive_rewards(Origin::signed(ALICE), vec![]),
+			IncentivesModule::update_exchange_incentive_rewards(Origin::signed(ALICE), vec![]),
 			BadOrigin
 		);
 		assert_noop!(
-			IncentivesModule::update_dex_incentive_rewards(Origin::signed(4), vec![(BTC, 200), (DOT, 1000)],),
+			IncentivesModule::update_exchange_incentive_rewards(Origin::signed(4), vec![(BTC, 200), (DOT, 1000)],),
 			Error::<Runtime>::InvalidCurrencyId
 		);
 
-		assert_eq!(IncentivesModule::dex_incentive_rewards(BTC_AUSD_LP), 0);
-		assert_eq!(IncentivesModule::dex_incentive_rewards(DOT_AUSD_LP), 0);
+		assert_eq!(IncentivesModule::exchange_incentive_rewards(BTC_AUSD_LP), 0);
+		assert_eq!(IncentivesModule::exchange_incentive_rewards(DOT_AUSD_LP), 0);
 
-		assert_ok!(IncentivesModule::update_dex_incentive_rewards(
+		assert_ok!(IncentivesModule::update_exchange_incentive_rewards(
 			Origin::signed(4),
 			vec![(BTC_AUSD_LP, 200), (DOT_AUSD_LP, 1000)],
 		));
-		assert_eq!(IncentivesModule::dex_incentive_rewards(BTC_AUSD_LP), 200);
-		assert_eq!(IncentivesModule::dex_incentive_rewards(DOT_AUSD_LP), 1000);
+		assert_eq!(IncentivesModule::exchange_incentive_rewards(BTC_AUSD_LP), 200);
+		assert_eq!(IncentivesModule::exchange_incentive_rewards(DOT_AUSD_LP), 1000);
 
-		assert_ok!(IncentivesModule::update_dex_incentive_rewards(
+		assert_ok!(IncentivesModule::update_exchange_incentive_rewards(
 			Origin::signed(4),
 			vec![(BTC_AUSD_LP, 100), (BTC_AUSD_LP, 300), (BTC_AUSD_LP, 500),],
 		));
-		assert_eq!(IncentivesModule::dex_incentive_rewards(BTC_AUSD_LP), 500);
+		assert_eq!(IncentivesModule::exchange_incentive_rewards(BTC_AUSD_LP), 500);
 	});
 }
 
@@ -244,25 +246,25 @@ fn update_homa_incentive_reward_works() {
 }
 
 #[test]
-fn update_dex_saving_rates_works() {
+fn update_exchange_saving_rates_works() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_noop!(
-			IncentivesModule::update_dex_saving_rates(Origin::signed(ALICE), vec![]),
+			IncentivesModule::update_exchange_saving_rates(Origin::signed(ALICE), vec![]),
 			BadOrigin
 		);
 
 		assert_noop!(
-			IncentivesModule::update_dex_saving_rates(
+			IncentivesModule::update_exchange_saving_rates(
 				Origin::signed(4),
 				vec![(BTC, Rate::saturating_from_rational(1, 10000)),],
 			),
 			Error::<Runtime>::InvalidCurrencyId
 		);
 
-		assert_eq!(IncentivesModule::dex_saving_rates(BTC_AUSD_LP), Rate::zero());
-		assert_eq!(IncentivesModule::dex_saving_rates(DOT_AUSD_LP), Rate::zero());
+		assert_eq!(IncentivesModule::exchange_saving_rates(BTC_AUSD_LP), Rate::zero());
+		assert_eq!(IncentivesModule::exchange_saving_rates(DOT_AUSD_LP), Rate::zero());
 
-		assert_ok!(IncentivesModule::update_dex_saving_rates(
+		assert_ok!(IncentivesModule::update_exchange_saving_rates(
 			Origin::signed(4),
 			vec![
 				(BTC_AUSD_LP, Rate::saturating_from_rational(1, 10000)),
@@ -270,15 +272,15 @@ fn update_dex_saving_rates_works() {
 			],
 		));
 		assert_eq!(
-			IncentivesModule::dex_saving_rates(BTC_AUSD_LP),
+			IncentivesModule::exchange_saving_rates(BTC_AUSD_LP),
 			Rate::saturating_from_rational(1, 10000)
 		);
 		assert_eq!(
-			IncentivesModule::dex_saving_rates(DOT_AUSD_LP),
+			IncentivesModule::exchange_saving_rates(DOT_AUSD_LP),
 			Rate::saturating_from_rational(1, 5000)
 		);
 
-		assert_ok!(IncentivesModule::update_dex_saving_rates(
+		assert_ok!(IncentivesModule::update_exchange_saving_rates(
 			Origin::signed(4),
 			vec![
 				(BTC_AUSD_LP, Rate::saturating_from_rational(1, 20000)),
@@ -287,7 +289,7 @@ fn update_dex_saving_rates_works() {
 			],
 		));
 		assert_eq!(
-			IncentivesModule::dex_saving_rates(BTC_AUSD_LP),
+			IncentivesModule::exchange_saving_rates(BTC_AUSD_LP),
 			Rate::saturating_from_rational(1, 40000)
 		);
 	});
@@ -569,12 +571,12 @@ fn accumulate_reward_works() {
 			Origin::signed(4),
 			vec![(BTC, 1000), (DOT, 2000),],
 		));
-		assert_ok!(IncentivesModule::update_dex_incentive_rewards(
+		assert_ok!(IncentivesModule::update_exchange_incentive_rewards(
 			Origin::signed(4),
 			vec![(BTC_AUSD_LP, 100), (DOT_AUSD_LP, 200),],
 		));
 		assert_ok!(IncentivesModule::update_homa_incentive_reward(Origin::signed(4), 30));
-		assert_ok!(IncentivesModule::update_dex_saving_rates(
+		assert_ok!(IncentivesModule::update_exchange_saving_rates(
 			Origin::signed(4),
 			vec![
 				(BTC_AUSD_LP, Rate::saturating_from_rational(1, 100)),

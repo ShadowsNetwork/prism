@@ -8,7 +8,7 @@ use frame_support::weights::{constants::RocksDbWeight as DbWeight, Weight};
 use sp_std::marker::PhantomData;
 
 pub struct WeightInfo<T>(PhantomData<T>);
-impl<T: frame_system::Trait> module_dex::WeightInfo for WeightInfo<T> {
+impl<T: frame_system::Trait> module_exchange::WeightInfo for WeightInfo<T> {
 	fn add_liquidity() -> Weight {
 		(362_483_000 as Weight)
 			.saturating_add(DbWeight::get().reads(11 as Weight))

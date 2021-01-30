@@ -12,7 +12,7 @@ use orml_benchmarking::runtime_benchmarks;
 use sp_std::prelude::*;
 
 const SEED: u32 = 0;
-const BTC_AUSD_LP: CurrencyId = CurrencyId::DEXShare(TokenSymbol::XBTC, TokenSymbol::AUSD);
+const BTC_AUSD_LP: CurrencyId = CurrencyId::EXCHANGEShare(TokenSymbol::XBTC, TokenSymbol::AUSD);
 
 fn dollar(d: u32) -> Balance {
 	let d: Balance = d.into();
@@ -24,15 +24,15 @@ runtime_benchmarks! {
 
 	_ {}
 
-	deposit_dex_share {
+	deposit_exchange_share {
 		let caller: AccountId = account("caller", 0, SEED);
 		set_balance(BTC_AUSD_LP, &caller, dollar(10000));
 	}: _(RawOrigin::Signed(caller), BTC_AUSD_LP, dollar(10000))
 
-	withdraw_dex_share {
+	withdraw_exchange_share {
 		let caller: AccountId = account("caller", 0, SEED);
 		set_balance(BTC_AUSD_LP, &caller, dollar(10000));
-		Incentives::deposit_dex_share(
+		Incentives::deposit_exchange_share(
 			RawOrigin::Signed(caller.clone()).into(),
 			BTC_AUSD_LP,
 			dollar(10000)
@@ -60,7 +60,7 @@ runtime_benchmarks! {
 		}
 	}: _(RawOrigin::Root, values)
 
-	update_dex_incentive_rewards {
+	update_exchange_incentive_rewards {
 		let c in 0 .. CollateralCurrencyIds::get().len().saturating_sub(1) as u32;
 		let currency_ids = CollateralCurrencyIds::get();
 		let caller: AccountId = account("caller", 0, SEED);
@@ -71,7 +71,7 @@ runtime_benchmarks! {
 			let currency_id = currency_ids[i as usize];
 			let lp_share_currency_id = match (currency_id, base_currency_id) {
 				(CurrencyId::Token(other_currency_symbol), CurrencyId::Token(base_currency_symbol)) => {
-					CurrencyId::DEXShare(other_currency_symbol, base_currency_symbol)
+					CurrencyId::EXCHANGEShare(other_currency_symbol, base_currency_symbol)
 				}
 				_ => return Err("invalid currency id"),
 			};
@@ -82,7 +82,7 @@ runtime_benchmarks! {
 	update_homa_incentive_reward {
 	}: _(RawOrigin::Root, dollar(100))
 
-	update_dex_saving_rates {
+	update_exchange_saving_rates {
 		let c in 0 .. CollateralCurrencyIds::get().len().saturating_sub(1) as u32;
 		let currency_ids = CollateralCurrencyIds::get();
 		let caller: AccountId = account("caller", 0, SEED);
@@ -93,7 +93,7 @@ runtime_benchmarks! {
 			let currency_id = currency_ids[i as usize];
 			let lp_share_currency_id = match (currency_id, base_currency_id) {
 				(CurrencyId::Token(other_currency_symbol), CurrencyId::Token(base_currency_symbol)) => {
-					CurrencyId::DEXShare(other_currency_symbol, base_currency_symbol)
+					CurrencyId::EXCHANGEShare(other_currency_symbol, base_currency_symbol)
 				}
 				_ => return Err("invalid currency id"),
 			};
@@ -115,16 +115,16 @@ mod tests {
 	}
 
 	#[test]
-	fn test_deposit_dex_share() {
+	fn test_deposit_exchange_share() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(test_benchmark_deposit_dex_share());
+			assert_ok!(test_benchmark_deposit_exchange_share());
 		});
 	}
 
 	#[test]
-	fn test_withdraw_dex_share() {
+	fn test_withdraw_exchange_share() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(test_benchmark_withdraw_dex_share());
+			assert_ok!(test_benchmark_withdraw_exchange_share());
 		});
 	}
 
@@ -143,9 +143,9 @@ mod tests {
 	}
 
 	#[test]
-	fn test_update_dex_incentive_rewards() {
+	fn test_update_exchange_incentive_rewards() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(test_benchmark_update_dex_incentive_rewards());
+			assert_ok!(test_benchmark_update_exchange_incentive_rewards());
 		});
 	}
 
@@ -157,9 +157,9 @@ mod tests {
 	}
 
 	#[test]
-	fn test_update_dex_saving_rates() {
+	fn test_update_exchange_saving_rates() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(test_benchmark_update_dex_saving_rates());
+			assert_ok!(test_benchmark_update_exchange_saving_rates());
 		});
 	}
 }

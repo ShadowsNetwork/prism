@@ -1,4 +1,4 @@
-//! DEX module benchmarking.
+//! EXCHANGE module benchmarking.
 
 #![cfg(feature = "runtime-benchmarks")]
 

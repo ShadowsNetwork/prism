@@ -1,12 +1,12 @@
-//! # DEX Module
+//! # EXCHANGE Module
 //!
 //! ## Overview
 //!
 //! Built-in decentralized exchange modules in Shadowse network, the swap
 //! mechanism refers to the design of Uniswap V2. In addition to being used for
-//! trading, DEX also participates in CDP liquidation, which is faster than
+//! trading, EXCHANGE also participates in CDP liquidation, which is faster than
 //! liquidation by auction when the liquidity is sufficient. And providing
-//! market making liquidity for DEX will also receive stable currency as
+//! market making liquidity for EXCHANGE will also receive stable currency as
 //! additional reward for its participation in the CDP liquidation.
 
 #![cfg_attr(not(feature = "std"), no_std)]
@@ -21,7 +21,7 @@ use sp_runtime::{
 	DispatchError, DispatchResult, FixedPointNumber, ModuleId,
 };
 use sp_std::{prelude::*, vec};
-use support::{DEXManager, Price, Ratio};
+use support::{EXCHANGEManager, Price, Ratio};
 
 mod benchmarking;
 mod default_weight;
@@ -53,7 +53,7 @@ pub trait Trait: system::Trait {
 	/// The limit for length of trading path
 	type TradingPathLimit: Get<usize>;
 
-	/// The DEX's module id, keep all assets in DEX.
+	/// The EXCHANGE's module id, keep all assets in EXCHANGE.
 	type ModuleId: Get<ModuleId>;
 
 	/// Weight information for the extrinsics in this module.
@@ -124,10 +124,10 @@ decl_module! {
 		/// The limit for length of trading path
 		const TradingPathLimit: u32 = T::TradingPathLimit::get() as u32;
 
-		/// The DEX's module id, keep all assets in DEX.
+		/// The EXCHANGE's module id, keep all assets in EXCHANGE.
 		const ModuleId: ModuleId = T::ModuleId::get();
 
-		/// Trading with DEX, swap with exact supply amount
+		/// Trading with EXCHANGE, swap with exact supply amount
 		///
 		/// - `path`: trading path.
 		/// - `supply_amount`: exact supply amount.
@@ -146,7 +146,7 @@ decl_module! {
 			})?;
 		}
 
-		/// Trading with DEX, swap with exact target amount
+		/// Trading with EXCHANGE, swap with exact target amount
 		///
 		/// - `path`: trading path.
 		/// - `target_amount`: exact target amount.
@@ -187,7 +187,7 @@ decl_module! {
 				ensure!(T::EnabledTradingPairs::get().contains(&trading_pair), Error::<T>::TradingPairNotAllowed);
 
 				LiquidityPool::try_mutate(trading_pair, |(pool_0, pool_1)| -> DispatchResult {
-					let lp_share_currency_id = trading_pair.get_dex_share_currency_id().ok_or(Error::<T>::InvalidCurrencyId)?;
+					let lp_share_currency_id = trading_pair.get_exchange_share_currency_id().ok_or(Error::<T>::InvalidCurrencyId)?;
 					let total_shares = T::Currency::total_issuance(lp_share_currency_id);
 					let (max_amount_0, max_amount_1) = if currency_id_a == trading_pair.0 {
 						(max_amount_a, max_amount_b)
@@ -261,7 +261,7 @@ decl_module! {
 				let trading_pair = TradingPair::new(currency_id_a, currency_id_b);
 
 				LiquidityPool::try_mutate(trading_pair, |(pool_0, pool_1)| -> DispatchResult {
-					let lp_share_currency_id = trading_pair.get_dex_share_currency_id().ok_or(Error::<T>::InvalidCurrencyId)?;
+					let lp_share_currency_id = trading_pair.get_exchange_share_currency_id().ok_or(Error::<T>::InvalidCurrencyId)?;
 					let total_shares = T::Currency::total_issuance(lp_share_currency_id);
 					let proportion = Ratio::checked_from_rational(remove_share, total_shares).unwrap_or_default();
 					let pool_0_decrement = proportion.saturating_mul_int(*pool_0);
@@ -516,7 +516,7 @@ impl<T: Trait> Module<T> {
 	}
 }
 
-impl<T: Trait> DEXManager<T::AccountId, CurrencyId, Balance> for Module<T> {
+impl<T: Trait> EXCHANGEManager<T::AccountId, CurrencyId, Balance> for Module<T> {
 	fn get_liquidity_pool(currency_id_a: CurrencyId, currency_id_b: CurrencyId) -> (Balance, Balance) {
 		Self::get_liquidity(currency_id_a, currency_id_b)
 	}

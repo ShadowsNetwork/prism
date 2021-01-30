@@ -9,4 +9,3 @@ if [ ! -z "${files}" ]; then
     "$REPO_ROOT_DIR/scripts/run.sh" "+nightly fmt"
     git add $(echo "$files" | paste -s -d " " -)
 fi
-

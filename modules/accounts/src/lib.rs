@@ -35,7 +35,7 @@ use sp_runtime::{
 };
 use sp_std::convert::Infallible;
 use sp_std::{prelude::*, vec};
-use support::{DEXManager, Ratio};
+use support::{EXCHANGEManager, Ratio};
 
 mod default_weight;
 mod mock;
@@ -66,8 +66,8 @@ pub trait Trait: system::Trait + pallet_transaction_payment::Trait + orml_curren
 	type Currency: MultiLockableCurrency<Self::AccountId, Moment = Self::BlockNumber, CurrencyId = CurrencyId, Balance = Balance>
 		+ MultiReservableCurrency<Self::AccountId, CurrencyId = CurrencyId, Balance = Balance>;
 
-	/// DEX to exchange currencies.
-	type DEX: DEXManager<Self::AccountId, CurrencyId, Balance>;
+	/// EXCHANGE to exchange currencies.
+	type EXCHANGE: EXCHANGEManager<Self::AccountId, CurrencyId, Balance>;
 
 	/// Handler to trigger events when opening accounts
 
@@ -87,8 +87,9 @@ pub trait Trait: system::Trait + pallet_transaction_payment::Trait + orml_curren
 	/// The treasury module account id to recycle assets.
 	type TreasuryModuleId: Get<ModuleId>;
 
-	/// The max slippage allowed when swap open account deposit or fee with DEX
-	type MaxSlippageSwapWithDEX: Get<Ratio>;
+	/// The max slippage allowed when swap open account deposit or fee with
+	/// EXCHANGE
+	type MaxSlippageSwapWithEXCHANGE: Get<Ratio>;
 
 	/// Weight information for the extrinsics in this module.
 	type WeightInfo: WeightInfo;
@@ -129,8 +130,8 @@ decl_module! {
 		/// The treasury module account id to recycle assets.
 		const TreasuryModuleId: ModuleId = T::TreasuryModuleId::get();
 
-		/// The max slippage allowed when swap open account deposit or fee with DEX
-		const MaxSlippageSwapWithDEX: Ratio = T::MaxSlippageSwapWithDEX::get();
+		/// The max slippage allowed when swap open account deposit or fee with EXCHANGE
+		const MaxSlippageSwapWithEXCHANGE: Ratio = T::MaxSlippageSwapWithEXCHANGE::get();
 
 		/// Kill self account from system.
 		///
@@ -253,15 +254,15 @@ impl<T: Trait> OnReceived<T::AccountId, CurrencyId, Balance> for Module<T> {
 			// If swap failed, will leave some dust storage is not a critical issue,
 			// just open account without reserve NewAccountDeposit.
 			// Don't recycle non-native to avoid unreasonable loss
-			// due to insufficient liquidity of DEX, can try to open this
+			// due to insufficient liquidity of EXCHANGE, can try to open this
 			// account again later. If want to recycle dust non-native,
 			// should handle by the currencies module.
-			let _ = T::DEX::swap_with_exact_target(
+			let _ = T::EXCHANGE::swap_with_exact_target(
 				who,
 				&trading_path,
 				T::NewAccountDeposit::get(),
 				<T as Trait>::Currency::free_balance(currency_id, who),
-				Some(T::MaxSlippageSwapWithDEX::get()),
+				Some(T::MaxSlippageSwapWithEXCHANGE::get()),
 			);
 		}
 	}
@@ -405,12 +406,13 @@ where
 				.is_ok()
 			});
 
-		// try to use non-native currency to swap native currency by exchange with DEX
+		// try to use non-native currency to swap native currency by exchange with
+		// EXCHANGE
 		if !native_is_enough {
 			let native_currency_id = T::NativeCurrencyId::get();
 			let stable_currency_id = T::StableCurrencyId::get();
 			let other_currency_ids = T::AllNonNativeCurrencyIds::get();
-			let price_impact_limit = Some(T::MaxSlippageSwapWithDEX::get());
+			let price_impact_limit = Some(T::MaxSlippageSwapWithEXCHANGE::get());
 			// Note: in fact, just obtain the gap between of fee and usable native currency
 			// amount, but `Currency` does not expose interface to get usable balance by
 			// specific reason. Here try to swap the whole fee by non-native currency.
@@ -424,7 +426,7 @@ where
 					vec![currency_id, stable_currency_id, native_currency_id]
 				};
 
-				if T::DEX::swap_with_exact_target(
+				if T::EXCHANGE::swap_with_exact_target(
 					who,
 					&trading_path,
 					balance_fee,

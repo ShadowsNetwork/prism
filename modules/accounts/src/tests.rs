@@ -8,8 +8,8 @@ use frame_support::{
 	weights::{DispatchClass, DispatchInfo, Pays},
 };
 use mock::{
-	Accounts, Call, Currencies, DEXModule, ExtBuilder, NewAccountDeposit, Origin, Runtime, System, ALICE, AUSD, BOB,
-	BTC, CAROL, DOS,
+	Accounts, Call, Currencies, EXCHANGEModule, ExtBuilder, NewAccountDeposit, Origin, Runtime, System, ALICE, AUSD,
+	BOB, BTC, CAROL, DOS,
 };
 use orml_traits::MultiCurrency;
 
@@ -116,8 +116,14 @@ fn open_account_failed_when_transfer_native() {
 fn open_account_successfully_when_transfer_non_native() {
 	ExtBuilder::default().build().execute_with(|| {
 		// add liquidity to exchange
-		assert_ok!(DEXModule::add_liquidity(Origin::signed(ALICE), DOS, AUSD, 10000, 100));
-		assert_ok!(DEXModule::add_liquidity(Origin::signed(ALICE), BTC, AUSD, 10, 200));
+		assert_ok!(EXCHANGEModule::add_liquidity(
+			Origin::signed(ALICE),
+			DOS,
+			AUSD,
+			10000,
+			100
+		));
+		assert_ok!(EXCHANGEModule::add_liquidity(Origin::signed(ALICE), BTC, AUSD, 10, 200));
 
 		assert_eq!(Accounts::is_explicit(&BOB), false);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(BTC, &BOB), 0);
@@ -126,8 +132,8 @@ fn open_account_successfully_when_transfer_non_native() {
 			<Currencies as MultiReservableCurrency<_>>::reserved_balance(DOS, &BOB),
 			0
 		);
-		assert_eq!(DEXModule::get_liquidity_pool(DOS, AUSD), (10000, 100));
-		assert_eq!(DEXModule::get_liquidity_pool(BTC, AUSD), (10, 200));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, AUSD), (10000, 100));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(BTC, AUSD), (10, 200));
 
 		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(BTC, &ALICE, &BOB, 10));
 
@@ -138,8 +144,8 @@ fn open_account_successfully_when_transfer_non_native() {
 			<Currencies as MultiReservableCurrency<_>>::reserved_balance(DOS, &BOB),
 			100
 		);
-		assert_eq!(DEXModule::get_liquidity_pool(DOS, AUSD), (9900, 102));
-		assert_eq!(DEXModule::get_liquidity_pool(BTC, AUSD), (11, 198));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, AUSD), (9900, 102));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(BTC, AUSD), (11, 198));
 	});
 }
 
@@ -147,8 +153,14 @@ fn open_account_successfully_when_transfer_non_native() {
 fn open_account_failed_when_transfer_non_native() {
 	ExtBuilder::default().build().execute_with(|| {
 		// inject liquidity to exchange
-		assert_ok!(DEXModule::add_liquidity(Origin::signed(ALICE), DOS, AUSD, 200, 100));
-		assert_eq!(DEXModule::get_liquidity_pool(DOS, AUSD), (200, 100));
+		assert_ok!(EXCHANGEModule::add_liquidity(
+			Origin::signed(ALICE),
+			DOS,
+			AUSD,
+			200,
+			100
+		));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, AUSD), (200, 100));
 
 		assert_eq!(Accounts::is_explicit(&Accounts::treasury_account_id()), false);
 		assert_eq!(Accounts::is_explicit(&BOB), false);
@@ -344,9 +356,15 @@ fn charges_fee_when_validate_and_native_is_not_enough() {
 		);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(AUSD, &BOB), 1000);
 
-		// add liquidity to DEX
-		assert_ok!(DEXModule::add_liquidity(Origin::signed(ALICE), DOS, AUSD, 10000, 1000));
-		assert_eq!(DEXModule::get_liquidity_pool(DOS, AUSD), (10000, 1000));
+		// add liquidity to EXCHANGE
+		assert_ok!(EXCHANGEModule::add_liquidity(
+			Origin::signed(ALICE),
+			DOS,
+			AUSD,
+			10000,
+			1000
+		));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, AUSD), (10000, 1000));
 
 		let fee = 500 * 2 + 1000; // len * byte + weight
 		assert_eq!(
@@ -359,6 +377,6 @@ fn charges_fee_when_validate_and_native_is_not_enough() {
 
 		assert_eq!(Currencies::free_balance(DOS, &BOB), 0);
 		assert_eq!(Currencies::free_balance(AUSD, &BOB), 749);
-		assert_eq!(DEXModule::get_liquidity_pool(DOS, AUSD), (10000 - 2000, 1251));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, AUSD), (10000 - 2000, 1251));
 	});
 }

@@ -16,20 +16,20 @@ use sp_runtime::{
 	FixedPointNumber, ModuleId, RuntimeDebug,
 };
 use sp_std::prelude::*;
-use support::{CDPTreasury, DEXManager, EmergencyShutdown, Rate};
+use support::{CDPTreasury, EXCHANGEManager, EmergencyShutdown, Rate};
 
 mod default_weight;
 mod mock;
 mod tests;
 
 pub trait WeightInfo {
-	fn deposit_dex_share() -> Weight;
-	fn withdraw_dex_share() -> Weight;
+	fn deposit_exchange_share() -> Weight;
+	fn withdraw_exchange_share() -> Weight;
 	fn claim_rewards() -> Weight;
 	fn update_loans_incentive_rewards(c: u32) -> Weight;
-	fn update_dex_incentive_rewards(c: u32) -> Weight;
+	fn update_exchange_incentive_rewards(c: u32) -> Weight;
 	fn update_homa_incentive_reward() -> Weight;
-	fn update_dex_saving_rates(c: u32) -> Weight;
+	fn update_exchange_saving_rates(c: u32) -> Weight;
 }
 
 /// PoolId for various rewards pools
@@ -62,10 +62,10 @@ decl_event!(
 		Balance = Balance,
 		CurrencyId = CurrencyId,
 	{
-		/// Deposit DEX share. \[who, dex_share_type, deposit_amount\]
-		DepositDEXShare(AccountId, CurrencyId, Balance),
-		/// Withdraw DEX share. \[who, dex_share_type, withdraw_amount\]
-		WithdrawDEXShare(AccountId, CurrencyId, Balance),
+		/// Deposit EXCHANGE share. \[who, exchange_share_type, deposit_amount\]
+		DepositEXCHANGEShare(AccountId, CurrencyId, Balance),
+		/// Withdraw EXCHANGE share. \[who, exchange_share_type, withdraw_amount\]
+		WithdrawEXCHANGEShare(AccountId, CurrencyId, Balance),
 	}
 );
 
@@ -102,13 +102,13 @@ pub trait Trait:
 	/// Currency for transfer/issue assets
 	type Currency: MultiCurrency<Self::AccountId, CurrencyId = CurrencyId, Balance = Balance>;
 
-	/// DEX to supply liquidity info
-	type DEX: DEXManager<Self::AccountId, CurrencyId, Balance>;
+	/// EXCHANGE to supply liquidity info
+	type EXCHANGE: EXCHANGEManager<Self::AccountId, CurrencyId, Balance>;
 
 	/// Emergency shutdown.
 	type EmergencyShutdown: EmergencyShutdown;
 
-	/// The module id, keep DEXShare LP.
+	/// The module id, keep EXCHANGEShare LP.
 	type ModuleId: Get<ModuleId>;
 
 	/// Weight information for the extrinsics in this module.
@@ -121,13 +121,13 @@ decl_storage! {
 		pub LoansIncentiveRewards get(fn loans_incentive_rewards): map hasher(twox_64_concat) CurrencyId => Balance;
 
 		/// Mapping from exchange liquidity currency type to its lend incentive reward amount per period
-		pub DEXIncentiveRewards get(fn dex_incentive_rewards): map hasher(twox_64_concat) CurrencyId => Balance;
+		pub EXCHANGEIncentiveRewards get(fn exchange_incentive_rewards): map hasher(twox_64_concat) CurrencyId => Balance;
 
 		/// Homa incentive reward amount
 		pub HomaIncentiveReward get(fn homa_incentive_reward): Balance;
 
 		/// Mapping from exchange liquidity currency type to its saving rate
-		pub DEXSavingRates get(fn dex_saving_rates): map hasher(twox_64_concat) CurrencyId => Rate;
+		pub EXCHANGESavingRates get(fn exchange_saving_rates): map hasher(twox_64_concat) CurrencyId => Rate;
 	}
 }
 
@@ -155,20 +155,20 @@ decl_module! {
 		/// The saving reward type (should be AUSD)
 		const SavingCurrencyId: CurrencyId = T::SavingCurrencyId::get();
 
-		#[weight = <T as Trait>::WeightInfo::deposit_dex_share()]
-		pub fn deposit_dex_share(origin, lp_currency_id: CurrencyId, amount: Balance) {
+		#[weight = <T as Trait>::WeightInfo::deposit_exchange_share()]
+		pub fn deposit_exchange_share(origin, lp_currency_id: CurrencyId, amount: Balance) {
 			with_transaction_result(|| {
 				let who = ensure_signed(origin)?;
 
 				match lp_currency_id {
-					CurrencyId::DEXShare(_, _) => {},
+					CurrencyId::EXCHANGEShare(_, _) => {},
 					_ => return Err(Error::<T>::InvalidCurrencyId.into()),
 				}
 
 				T::Currency::transfer(lp_currency_id, &who, &Self::account_id(), amount)?;
 				OnAddLiquidity::<T>::happened(&(who.clone(), lp_currency_id, amount.unique_saturated_into()));
 
-				Self::deposit_event(RawEvent::DepositDEXShare(
+				Self::deposit_event(RawEvent::DepositEXCHANGEShare(
 					who,
 					lp_currency_id,
 					amount,
@@ -177,13 +177,13 @@ decl_module! {
 			})?;
 		}
 
-		#[weight = <T as Trait>::WeightInfo::withdraw_dex_share()]
-		pub fn withdraw_dex_share(origin, lp_currency_id: CurrencyId, amount: Balance) {
+		#[weight = <T as Trait>::WeightInfo::withdraw_exchange_share()]
+		pub fn withdraw_exchange_share(origin, lp_currency_id: CurrencyId, amount: Balance) {
 			with_transaction_result(|| {
 				let who = ensure_signed(origin)?;
 
 				match lp_currency_id {
-					CurrencyId::DEXShare(_, _) => {},
+					CurrencyId::EXCHANGEShare(_, _) => {},
 					_ => return Err(Error::<T>::InvalidCurrencyId.into()),
 				}
 
@@ -195,7 +195,7 @@ decl_module! {
 				OnRemoveLiquidity::<T>::happened(&(who.clone(), lp_currency_id, amount));
 				T::Currency::transfer(lp_currency_id, &Self::account_id(), &who, amount)?;
 
-				Self::deposit_event(RawEvent::WithdrawDEXShare(
+				Self::deposit_event(RawEvent::WithdrawEXCHANGEShare(
 					who,
 					lp_currency_id,
 					amount,
@@ -227,8 +227,8 @@ decl_module! {
 			})?;
 		}
 
-		#[weight = <T as Trait>::WeightInfo::update_dex_incentive_rewards(updates.len() as u32)]
-		pub fn update_dex_incentive_rewards(
+		#[weight = <T as Trait>::WeightInfo::update_exchange_incentive_rewards(updates.len() as u32)]
+		pub fn update_exchange_incentive_rewards(
 			origin,
 			updates: Vec<(CurrencyId, Balance)>,
 		) {
@@ -236,11 +236,11 @@ decl_module! {
 				T::UpdateOrigin::ensure_origin(origin)?;
 				for (currency_id, amount) in updates {
 					match currency_id {
-						CurrencyId::DEXShare(_, _) => {},
+						CurrencyId::EXCHANGEShare(_, _) => {},
 						_ => return Err(Error::<T>::InvalidCurrencyId.into()),
 					}
 
-					DEXIncentiveRewards::insert(currency_id, amount);
+					EXCHANGEIncentiveRewards::insert(currency_id, amount);
 				}
 				Ok(())
 			})?;
@@ -258,8 +258,8 @@ decl_module! {
 			})?;
 		}
 
-		#[weight = <T as Trait>::WeightInfo::update_dex_saving_rates(updates.len() as u32)]
-		pub fn update_dex_saving_rates(
+		#[weight = <T as Trait>::WeightInfo::update_exchange_saving_rates(updates.len() as u32)]
+		pub fn update_exchange_saving_rates(
 			origin,
 			updates: Vec<(CurrencyId, Rate)>,
 		) {
@@ -267,11 +267,11 @@ decl_module! {
 				T::UpdateOrigin::ensure_origin(origin)?;
 				for (currency_id, rate) in updates {
 					match currency_id {
-						CurrencyId::DEXShare(_, _) => {},
+						CurrencyId::EXCHANGEShare(_, _) => {},
 						_ => return Err(Error::<T>::InvalidCurrencyId.into()),
 					}
 
-					DEXSavingRates::insert(currency_id, rate);
+					EXCHANGESavingRates::insert(currency_id, rate);
 				}
 				Ok(())
 			})?;
@@ -358,7 +358,7 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 						}
 
 						PoolId::DexIncentive(currency_id) => {
-							let incentive_reward = Self::dex_incentive_rewards(currency_id);
+							let incentive_reward = Self::exchange_incentive_rewards(currency_id);
 
 							// TODO: transfer from RESERVED TREASURY instead of issuing
 							if !incentive_reward.is_zero()
@@ -375,23 +375,24 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 						}
 
 						PoolId::DexSaving(currency_id) => {
-							let dex_saving_rate = Self::dex_saving_rates(currency_id);
-							if !dex_saving_rate.is_zero() {
-								if let CurrencyId::DEXShare(token_symbol_a, token_symbol_b) = currency_id {
+							let exchange_saving_rate = Self::exchange_saving_rates(currency_id);
+							if !exchange_saving_rate.is_zero() {
+								if let CurrencyId::EXCHANGEShare(token_symbol_a, token_symbol_b) = currency_id {
 									let (currency_id_a, currency_id_b) =
 										(CurrencyId::Token(token_symbol_a), CurrencyId::Token(token_symbol_b));
 
 									// accumulate saving reward only for liquidity pool of saving currency id
 									let saving_currency_amount = if currency_id_a == saving_currency_id {
-										T::DEX::get_liquidity_pool(saving_currency_id, currency_id_b).0
+										T::EXCHANGE::get_liquidity_pool(saving_currency_id, currency_id_b).0
 									} else if currency_id_b == saving_currency_id {
-										T::DEX::get_liquidity_pool(saving_currency_id, currency_id_a).0
+										T::EXCHANGE::get_liquidity_pool(saving_currency_id, currency_id_a).0
 									} else {
 										Zero::zero()
 									};
 
 									if !saving_currency_amount.is_zero() {
-										let saving_reward = dex_saving_rate.saturating_mul_int(saving_currency_amount);
+										let saving_reward =
+											exchange_saving_rate.saturating_mul_int(saving_currency_amount);
 										if T::CDPTreasury::issue_debit(
 											&T::DexIncentivePool::get(),
 											saving_reward,

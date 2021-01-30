@@ -72,7 +72,7 @@ pub trait AuctionManager<AccountId> {
 	fn get_total_target_in_auction() -> Self::Balance;
 }
 
-pub trait DEXManager<AccountId, CurrencyId, Balance> {
+pub trait EXCHANGEManager<AccountId, CurrencyId, Balance> {
 	fn get_liquidity_pool(currency_id_a: CurrencyId, currency_id_b: CurrencyId) -> (Balance, Balance);
 
 	fn get_swap_target_amount(
@@ -104,7 +104,7 @@ pub trait DEXManager<AccountId, CurrencyId, Balance> {
 	) -> sp_std::result::Result<Balance, DispatchError>;
 }
 
-impl<AccountId, CurrencyId, Balance> DEXManager<AccountId, CurrencyId, Balance> for ()
+impl<AccountId, CurrencyId, Balance> EXCHANGEManager<AccountId, CurrencyId, Balance> for ()
 where
 	Balance: Default,
 {

@@ -51,7 +51,7 @@ impl_outer_event! {
 		orml_tokens<T>,
 		orml_auction<T>,
 		cdp_treasury,
-		dex<T>,
+		exchange<T>,
 	}
 }
 
@@ -126,7 +126,7 @@ impl cdp_treasury::Trait for Runtime {
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type AuctionManagerHandler = AuctionManagerModule;
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
-	type DEX = DEXModule;
+	type EXCHANGE = EXCHANGEModule;
 	type MaxAuctionsCount = MaxAuctionsCount;
 	type ModuleId = CDPTreasuryModuleId;
 	type WeightInfo = ();
@@ -158,22 +158,22 @@ impl PriceProvider<CurrencyId> for MockPriceSource {
 }
 
 parameter_types! {
-	pub const DEXModuleId: ModuleId = ModuleId(*b"aca/dexm");
+	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
 	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(AUSD, BTC)];
 }
 
-impl dex::Trait for Runtime {
+impl exchange::Trait for Runtime {
 	type Event = TestEvent;
 	type Currency = Tokens;
 	type EnabledTradingPairs = EnabledTradingPairs;
 	type GetExchangeFee = GetExchangeFee;
 	type TradingPathLimit = TradingPathLimit;
-	type ModuleId = DEXModuleId;
+	type ModuleId = EXCHANGEModuleId;
 	type WeightInfo = ();
 }
-pub type DEXModule = dex::Module<Runtime>;
+pub type EXCHANGEModule = exchange::Module<Runtime>;
 
 thread_local! {
 	static IS_SHUTDOWN: RefCell<bool> = RefCell::new(false);
@@ -208,7 +208,7 @@ impl Trait for Runtime {
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
 	type CDPTreasury = CDPTreasuryModule;
-	type DEX = DEXModule;
+	type EXCHANGE = EXCHANGEModule;
 	type PriceSource = MockPriceSource;
 	type UnsignedPriority = UnsignedPriority;
 	type EmergencyShutdown = MockEmergencyShutdown;

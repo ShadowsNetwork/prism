@@ -81,7 +81,7 @@ pub enum TokenSymbol {
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum CurrencyId {
 	Token(TokenSymbol),
-	DEXShare(TokenSymbol, TokenSymbol),
+	EXCHANGEShare(TokenSymbol, TokenSymbol),
 }
 
 #[derive(Encode, Decode, Eq, PartialEq, Copy, Clone, RuntimeDebug, PartialOrd, Ord)]
@@ -115,10 +115,10 @@ impl TradingPair {
 		}
 	}
 
-	pub fn get_dex_share_currency_id(&self) -> Option<CurrencyId> {
+	pub fn get_exchange_share_currency_id(&self) -> Option<CurrencyId> {
 		match (self.0, self.1) {
 			(CurrencyId::Token(token_symbol_0), CurrencyId::Token(token_symbol_1)) => {
-				Some(CurrencyId::DEXShare(token_symbol_0, token_symbol_1))
+				Some(CurrencyId::EXCHANGEShare(token_symbol_0, token_symbol_1))
 			}
 			_ => None,
 		}

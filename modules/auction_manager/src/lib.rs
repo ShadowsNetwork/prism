@@ -42,7 +42,9 @@ use sp_std::{
 	cmp::{Eq, PartialEq},
 	prelude::*,
 };
-use support::{AuctionManager, CDPTreasury, CDPTreasuryExtended, DEXManager, EmergencyShutdown, PriceProvider, Rate};
+use support::{
+	AuctionManager, CDPTreasury, CDPTreasuryExtended, EXCHANGEManager, EmergencyShutdown, PriceProvider, Rate,
+};
 
 mod default_weight;
 mod mock;
@@ -187,8 +189,8 @@ pub trait Trait: SendTransactionTypes<Call<Self>> + system::Trait {
 	/// CDP treasury to escrow assets related to auction
 	type CDPTreasury: CDPTreasuryExtended<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
 
-	/// DEX to get exchange info
-	type DEX: DEXManager<Self::AccountId, CurrencyId, Balance>;
+	/// EXCHANGE to get exchange info
+	type EXCHANGE: EXCHANGEManager<Self::AccountId, CurrencyId, Balance>;
 
 	/// The price source of currencies
 	type PriceSource: PriceProvider<CurrencyId>;
@@ -229,7 +231,7 @@ decl_event!(
 		/// Debit auction dealt. \[auction_id, debit_currency_amount, winner, payment_amount\]
 		DebitAuctionDealt(AuctionId, Balance, AccountId, Balance),
 		/// Dex take collateral auction. \[auction_id, collateral_type, collateral_amount, turnover\]
-		DEXTakeCollateralAuction(AuctionId, CurrencyId, Balance, Balance),
+		EXCHANGETakeCollateralAuction(AuctionId, CurrencyId, Balance, Balance),
 	}
 );
 
@@ -789,17 +791,18 @@ impl<T: Trait> Module<T> {
 		if let Some((bidder, bid_price)) = winner {
 			let mut should_deal = true;
 
-			// if bid_price doesn't reach target and trading with DEX will get better result
+			// if bid_price doesn't reach target and trading with EXCHANGE will get better
+			// result
 			if !collateral_auction.in_reverse_stage(bid_price)
 				&& bid_price
-					< T::DEX::get_swap_target_amount(
+					< T::EXCHANGE::get_swap_target_amount(
 						&[collateral_auction.currency_id, T::GetStableCurrencyId::get()],
 						collateral_auction.amount,
 						None,
 					)
 					.unwrap_or_default()
 			{
-				// try swap collateral in auction with DEX to get stable
+				// try swap collateral in auction with EXCHANGE to get stable
 				if let Ok(stable_amount) = T::CDPTreasury::swap_exact_collateral_in_auction_to_stable(
 					collateral_auction.currency_id,
 					collateral_auction.amount,
@@ -825,7 +828,7 @@ impl<T: Trait> Module<T> {
 						let _ = T::CDPTreasury::issue_debit(&collateral_auction.refund_recipient, refund_amount, false);
 					}
 
-					<Module<T>>::deposit_event(RawEvent::DEXTakeCollateralAuction(
+					<Module<T>>::deposit_event(RawEvent::EXCHANGETakeCollateralAuction(
 						auction_id,
 						collateral_auction.currency_id,
 						collateral_auction.amount,

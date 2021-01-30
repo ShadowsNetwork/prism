@@ -421,7 +421,7 @@ fn collateral_auction_end_handler_by_dealing_which_target_not_zero() {
 }
 
 #[test]
-fn collateral_auction_end_handler_by_dex_which_target_not_zero() {
+fn collateral_auction_end_handler_by_exchange_which_target_not_zero() {
 	ExtBuilder::default().build().execute_with(|| {
 		System::set_block_number(1);
 		assert_ok!(CDPTreasuryModule::deposit_collateral(&CAROL, BTC, 100));
@@ -430,8 +430,17 @@ fn collateral_auction_end_handler_by_dex_which_target_not_zero() {
 			AuctionManagerModule::collateral_auction_bid_handler(1, 0, (BOB, 20), None).is_ok(),
 			true
 		);
-		assert_ok!(DEXModule::add_liquidity(Origin::signed(CAROL), BTC, AUSD, 100, 1000));
-		assert_eq!(DEXModule::get_swap_target_amount(&[BTC, AUSD], 100, None).unwrap(), 500);
+		assert_ok!(EXCHANGEModule::add_liquidity(
+			Origin::signed(CAROL),
+			BTC,
+			AUSD,
+			100,
+			1000
+		));
+		assert_eq!(
+			EXCHANGEModule::get_swap_target_amount(&[BTC, AUSD], 100, None).unwrap(),
+			500
+		);
 
 		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 100);
 		assert_eq!(AuctionManagerModule::total_target_in_auction(), 200);
@@ -446,11 +455,11 @@ fn collateral_auction_end_handler_by_dex_which_target_not_zero() {
 
 		assert_eq!(AuctionManagerModule::collateral_auctions(0).is_some(), true);
 		AuctionManagerModule::on_auction_ended(0, Some((BOB, 20)));
-		let dex_take_collateral_auction =
-			TestEvent::auction_manager(RawEvent::DEXTakeCollateralAuction(0, BTC, 100, 500));
+		let exchange_take_collateral_auction =
+			TestEvent::auction_manager(RawEvent::EXCHANGETakeCollateralAuction(0, BTC, 100, 500));
 		assert!(System::events()
 			.iter()
-			.any(|record| record.event == dex_take_collateral_auction));
+			.any(|record| record.event == exchange_take_collateral_auction));
 
 		assert_eq!(CDPTreasuryModule::total_collaterals(BTC), 0);
 		assert_eq!(AuctionManagerModule::collateral_auctions(0), None);

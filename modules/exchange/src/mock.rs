@@ -25,14 +25,14 @@ pub const DOT_XBTC_PAIR: TradingPair = TradingPair(DOT, XBTC);
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct Runtime;
 
-mod dex {
+mod exchange {
 	pub use super::super::*;
 }
 
 impl_outer_event! {
 	pub enum TestEvent for Runtime {
 		frame_system<T>,
-		dex<T>,
+		exchange<T>,
 		orml_tokens<T>,
 	}
 }
@@ -95,7 +95,7 @@ parameter_types! {
 	pub const GetExchangeFee: (u32, u32) = (1, 100);
 	pub const TradingPathLimit: usize = 3;
 	pub EnabledTradingPairs : Vec<TradingPair> = vec![AUSD_DOT_PAIR, AUSD_XBTC_PAIR, DOT_XBTC_PAIR];
-	pub const DEXModuleId: ModuleId = ModuleId(*b"aca/dexm");
+	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
 }
 
 impl Trait for Runtime {
@@ -104,7 +104,7 @@ impl Trait for Runtime {
 	type EnabledTradingPairs = EnabledTradingPairs;
 	type GetExchangeFee = GetExchangeFee;
 	type TradingPathLimit = TradingPathLimit;
-	type ModuleId = DEXModuleId;
+	type ModuleId = EXCHANGEModuleId;
 	type WeightInfo = ();
 }
 pub type DexModule = Module<Runtime>;
