@@ -1,5 +1,5 @@
 use crate::{
-	AccountId, Amount, CdpEngine, CollateralCurrencyIds, CurrencyId, ExchangeRate, MinimumDebitValue, Mintx, Price,
+	AccountId, Amount, CollateralCurrencyIds, CurrencyId, DebtEngine, ExchangeRate, MinimumDebitValue, Mintx, Price,
 	Rate, Ratio, Runtime, ShadowsOracle, TokenSymbol,
 };
 
@@ -59,7 +59,7 @@ runtime_benchmarks! {
 		let caller: AccountId = account("caller", 0, SEED);
 		let currency_id: CurrencyId = CollateralCurrencyIds::get()[0];
 		let min_debit_value = MinimumDebitValue::get();
-		let debit_exchange_rate = CdpEngine::get_debit_exchange_rate(currency_id);
+		let debit_exchange_rate = DebtEngine::get_debit_exchange_rate(currency_id);
 		let collateral_price = Price::one();		// 1 USD
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_add(ExchangeRate::from_inner(1)).saturating_mul_int(min_debit_value);
 		let min_debit_amount: Amount = min_debit_amount.unique_saturated_into();
@@ -73,7 +73,7 @@ runtime_benchmarks! {
 		ShadowsOracle::feed_values(RawOrigin::Root.into(), vec![(currency_id, collateral_price)])?;
 
 		// set risk params
-		CdpEngine::set_collateral_params(
+		DebtEngine::set_collateral_params(
 			RawOrigin::Root.into(),
 			currency_id,
 			Change::NoChange,
@@ -89,7 +89,7 @@ runtime_benchmarks! {
 		let sender: AccountId = account("sender", 0, SEED);
 		let receiver: AccountId = account("receiver", 0, SEED);
 		let min_debit_value = MinimumDebitValue::get();
-		let debit_exchange_rate = CdpEngine::get_debit_exchange_rate(currency_id);
+		let debit_exchange_rate = DebtEngine::get_debit_exchange_rate(currency_id);
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_add(ExchangeRate::from_inner(1)).saturating_mul_int(min_debit_value);
 		let min_debit_amount: Amount = min_debit_amount.unique_saturated_into();
 		let debit_amount = min_debit_amount * 10;
@@ -102,7 +102,7 @@ runtime_benchmarks! {
 		ShadowsOracle::feed_values(RawOrigin::Root.into(), vec![(currency_id, Price::one())])?;
 
 		// set risk params
-		CdpEngine::set_collateral_params(
+		DebtEngine::set_collateral_params(
 			RawOrigin::Root.into(),
 			currency_id,
 			Change::NoChange,

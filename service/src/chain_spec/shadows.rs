@@ -182,8 +182,8 @@ fn testnet_genesis(
 	enable_println: bool,
 ) -> shadows_runtime::GenesisConfig {
 	use shadows_runtime::{
-		get_all_module_accounts, BabeConfig, BalancesConfig, BandOracleConfig, CdpEngineConfig, CdpTreasuryConfig,
-		ContractsConfig, CurrencyId, GeneralCouncilMembershipConfig, GrandpaConfig, HomaCouncilMembershipConfig,
+		get_all_module_accounts, BabeConfig, BalancesConfig, BandOracleConfig, CdpTreasuryConfig, ContractsConfig,
+		CurrencyId, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig, HomaCouncilMembershipConfig,
 		IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit, OperatorMembershipBandConfig,
 		OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig, ShadowsOracleConfig, StakerStatus,
 		StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig, TokenSymbol, TokensConfig,
@@ -288,7 +288,7 @@ fn testnet_genesis(
 				(CurrencyId::Token(TokenSymbol::RENBTC), DOLLARS),
 			],
 		}),
-		module_cdp_engine: Some(CdpEngineConfig {
+		module_cdp_engine: Some(DebtEngineConfig {
 			collaterals_params: vec![
 				(
 					CurrencyId::Token(TokenSymbol::DOT),
@@ -348,8 +348,8 @@ fn shadows_genesis(
 	enable_println: bool,
 ) -> shadows_runtime::GenesisConfig {
 	use shadows_runtime::{
-		get_all_module_accounts, BabeConfig, Balance, BalancesConfig, BandOracleConfig, CdpEngineConfig,
-		CdpTreasuryConfig, ContractsConfig, CurrencyId, GeneralCouncilMembershipConfig, GrandpaConfig,
+		get_all_module_accounts, BabeConfig, Balance, BalancesConfig, BandOracleConfig, CdpTreasuryConfig,
+		ContractsConfig, CurrencyId, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
 		HomaCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
 		OperatorMembershipBandConfig, OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig,
 		ShadowsOracleConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig,
@@ -449,7 +449,7 @@ fn shadows_genesis(
 				(CurrencyId::Token(TokenSymbol::RENBTC), 5 * CENTS),
 			],
 		}),
-		module_cdp_engine: Some(CdpEngineConfig {
+		module_cdp_engine: Some(DebtEngineConfig {
 			collaterals_params: vec![
 				(
 					CurrencyId::Token(TokenSymbol::DOT),

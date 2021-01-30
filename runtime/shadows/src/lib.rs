@@ -918,7 +918,7 @@ impl module_lend::Trait for Runtime {
 	type Event = Event;
 	type Convert = module_cdp_engine::DebitExchangeRateConvertor<Runtime>;
 	type Currency = Currencies;
-	type RiskManager = CdpEngine;
+	type RiskManager = DebtEngine;
 	type CDPTreasury = CdpTreasury;
 	type ModuleId = LendModuleId;
 	type OnUpdateLoan = module_incentives::OnUpdateLoan<Runtime>;
@@ -989,7 +989,7 @@ parameter_types! {
 	pub DefaultLiquidationPenalty: Rate = Rate::saturating_from_rational(5, 100);
 	pub const MinimumDebitValue: Balance = DOLLARS;
 	pub MaxSlippageSwapWithEXCHANGE: Ratio = Ratio::saturating_from_rational(5, 100);
-	pub const CdpEngineUnsignedPriority: TransactionPriority = TransactionPriority::max_value();
+	pub const DebtEngineUnsignedPriority: TransactionPriority = TransactionPriority::max_value();
 }
 
 impl module_cdp_engine::Trait for Runtime {
@@ -1005,7 +1005,7 @@ impl module_cdp_engine::Trait for Runtime {
 	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
 	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
 	type EXCHANGE = Exchange;
-	type UnsignedPriority = CdpEngineUnsignedPriority;
+	type UnsignedPriority = DebtEngineUnsignedPriority;
 	type EmergencyShutdown = EmergencyShutdown;
 	type WeightInfo = weights::cdp_engine::WeightInfo<Runtime>;
 }
@@ -1365,7 +1365,7 @@ construct_runtime!(
 		Lend: module_lend::{Module, Storage, Call, Event<T>},
 		Mintx: module_mintx::{Module, Storage, Call, Event<T>},
 		CdpTreasury: module_cdp_treasury::{Module, Storage, Call, Config, Event},
-		CdpEngine: module_cdp_engine::{Module, Storage, Call, Event<T>, Config, ValidateUnsigned},
+		DebtEngine: module_cdp_engine::{Module, Storage, Call, Event<T>, Config, ValidateUnsigned},
 		EmergencyShutdown: module_emergency_shutdown::{Module, Storage, Call, Event<T>},
 
 		// Homa

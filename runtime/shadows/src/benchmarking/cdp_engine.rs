@@ -1,5 +1,5 @@
 use crate::{
-	AccountId, Amount, Balance, CdpEngine, CollateralCurrencyIds, CurrencyId, EmergencyShutdown, Exchange,
+	AccountId, Amount, Balance, CollateralCurrencyIds, CurrencyId, DebtEngine, EmergencyShutdown, Exchange,
 	GetStableCurrencyId, MaxSlippageSwapWithEXCHANGE, MinimumDebitValue, Price, Rate, Ratio, Runtime, ShadowsOracle,
 	TokenSymbol, DOLLARS,
 };
@@ -68,7 +68,7 @@ runtime_benchmarks! {
 		let owner: AccountId = account("owner", 0, SEED);
 		let currency_id: CurrencyId = CollateralCurrencyIds::get()[0];
 		let min_debit_value = MinimumDebitValue::get();
-		let debit_exchange_rate = CdpEngine::get_debit_exchange_rate(currency_id);
+		let debit_exchange_rate = DebtEngine::get_debit_exchange_rate(currency_id);
 		let collateral_price = Price::one();		// 1 USD
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_mul_int(min_debit_value);
 		let min_debit_amount: Amount = min_debit_amount.unique_saturated_into();
@@ -81,7 +81,7 @@ runtime_benchmarks! {
 		ShadowsOracle::feed_values(RawOrigin::Root.into(), vec![(currency_id, collateral_price)])?;
 
 		// set risk params
-		CdpEngine::set_collateral_params(
+		DebtEngine::set_collateral_params(
 			RawOrigin::Root.into(),
 			currency_id,
 			Change::NoChange,
@@ -92,10 +92,10 @@ runtime_benchmarks! {
 		)?;
 
 		// adjust position
-		CdpEngine::adjust_position(&owner, currency_id, collateral_amount.try_into().unwrap(), min_debit_amount)?;
+		DebtEngine::adjust_position(&owner, currency_id, collateral_amount.try_into().unwrap(), min_debit_amount)?;
 
 		// modify liquidation rate to make the cdp unsafe
-		CdpEngine::set_collateral_params(
+		DebtEngine::set_collateral_params(
 			RawOrigin::Root.into(),
 			currency_id,
 			Change::NoChange,
@@ -112,7 +112,7 @@ runtime_benchmarks! {
 		let funder: AccountId = account("funder", 0, SEED);
 		let currency_id: CurrencyId = CollateralCurrencyIds::get()[0];
 		let min_debit_value = MinimumDebitValue::get();
-		let debit_exchange_rate = CdpEngine::get_debit_exchange_rate(currency_id);
+		let debit_exchange_rate = DebtEngine::get_debit_exchange_rate(currency_id);
 		let collateral_price = Price::one();		// 1 USD
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_mul_int(min_debit_value);
 		let min_debit_amount: Amount = min_debit_amount.unique_saturated_into();
@@ -131,7 +131,7 @@ runtime_benchmarks! {
 		ShadowsOracle::feed_values(RawOrigin::Root.into(), vec![(currency_id, collateral_price)])?;
 
 		// set risk params
-		CdpEngine::set_collateral_params(
+		DebtEngine::set_collateral_params(
 			RawOrigin::Root.into(),
 			currency_id,
 			Change::NoChange,
@@ -142,10 +142,10 @@ runtime_benchmarks! {
 		)?;
 
 		// adjust position
-		CdpEngine::adjust_position(&owner, currency_id, collateral_amount.try_into().unwrap(), min_debit_amount)?;
+		DebtEngine::adjust_position(&owner, currency_id, collateral_amount.try_into().unwrap(), min_debit_amount)?;
 
 		// modify liquidation rate to make the cdp unsafe
-		CdpEngine::set_collateral_params(
+		DebtEngine::set_collateral_params(
 			RawOrigin::Root.into(),
 			currency_id,
 			Change::NoChange,
@@ -165,7 +165,7 @@ runtime_benchmarks! {
 		let owner: AccountId = account("owner", 0, SEED);
 		let currency_id: CurrencyId = CollateralCurrencyIds::get()[0];
 		let min_debit_value = MinimumDebitValue::get();
-		let debit_exchange_rate = CdpEngine::get_debit_exchange_rate(currency_id);
+		let debit_exchange_rate = DebtEngine::get_debit_exchange_rate(currency_id);
 		let collateral_price = Price::one();		// 1 USD
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_mul_int(min_debit_value);
 		let min_debit_amount: Amount = min_debit_amount.unique_saturated_into();
@@ -178,7 +178,7 @@ runtime_benchmarks! {
 		ShadowsOracle::feed_values(RawOrigin::Root.into(), vec![(currency_id, collateral_price)])?;
 
 		// set risk params
-		CdpEngine::set_collateral_params(
+		DebtEngine::set_collateral_params(
 			RawOrigin::Root.into(),
 			currency_id,
 			Change::NoChange,
@@ -189,7 +189,7 @@ runtime_benchmarks! {
 		)?;
 
 		// adjust position
-		CdpEngine::adjust_position(&owner, currency_id, collateral_amount.try_into().unwrap(), min_debit_amount)?;
+		DebtEngine::adjust_position(&owner, currency_id, collateral_amount.try_into().unwrap(), min_debit_amount)?;
 
 		// shutdown
 		EmergencyShutdown::emergency_shutdown(RawOrigin::Root.into())?;

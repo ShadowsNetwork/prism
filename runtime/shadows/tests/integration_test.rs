@@ -28,7 +28,7 @@ const BOB: [u8; 32] = [5u8; 32];
 
 pub type OracleModule = orml_oracle::Module<Runtime, orml_oracle::Instance1>;
 pub type ExchangeModule = module_exchange::Module<Runtime>;
-pub type CdpEngineModule = module_cdp_engine::Module<Runtime>;
+pub type DebtEngineModule = module_cdp_engine::Module<Runtime>;
 pub type LendModule = module_lend::Module<Runtime>;
 pub type CdpTreasuryModule = module_cdp_treasury::Module<Runtime>;
 pub type SystemModule = frame_system::Module<Runtime>;
@@ -294,7 +294,7 @@ fn liquidate_cdp() {
 				amount(1_000_000)
 			));
 
-			assert_ok!(CdpEngineModule::set_collateral_params(
+			assert_ok!(DebtEngineModule::set_collateral_params(
 				<Runtime as frame_system::Trait>::Origin::root(),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				Change::NewValue(Some(Rate::zero())),
@@ -304,14 +304,14 @@ fn liquidate_cdp() {
 				Change::NewValue(amount(1000000)),
 			));
 
-			assert_ok!(CdpEngineModule::adjust_position(
+			assert_ok!(DebtEngineModule::adjust_position(
 				&AccountId::from(ALICE),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				amount(10) as i128,
 				amount(500_000) as i128
 			));
 
-			assert_ok!(CdpEngineModule::adjust_position(
+			assert_ok!(DebtEngineModule::adjust_position(
 				&AccountId::from(BOB),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				amount(1) as i128,
@@ -337,7 +337,7 @@ fn liquidate_cdp() {
 			assert_eq!(CdpTreasuryModule::debit_pool(), 0);
 			assert_eq!(AuctionManagerModule::collateral_auctions(0), None);
 
-			assert_ok!(CdpEngineModule::set_collateral_params(
+			assert_ok!(DebtEngineModule::set_collateral_params(
 				<Runtime as frame_system::Trait>::Origin::root(),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				Change::NoChange,
@@ -347,7 +347,7 @@ fn liquidate_cdp() {
 				Change::NoChange,
 			));
 
-			assert_ok!(CdpEngineModule::liquidate_unsafe_cdp(
+			assert_ok!(DebtEngineModule::liquidate_unsafe_cdp(
 				AccountId::from(ALICE),
 				CurrencyId::Token(TokenSymbol::XBTC)
 			));
@@ -375,7 +375,7 @@ fn liquidate_cdp() {
 			assert_eq!(AuctionManagerModule::collateral_auctions(0).is_some(), true);
 			assert_eq!(CdpTreasuryModule::debit_pool(), amount(50_000));
 
-			assert_ok!(CdpEngineModule::liquidate_unsafe_cdp(
+			assert_ok!(DebtEngineModule::liquidate_unsafe_cdp(
 				AccountId::from(BOB),
 				CurrencyId::Token(TokenSymbol::XBTC)
 			));
@@ -613,7 +613,7 @@ fn test_mintx_module() {
 				Price::saturating_from_rational(1, 1)
 			)]));
 
-			assert_ok!(CdpEngineModule::set_collateral_params(
+			assert_ok!(DebtEngineModule::set_collateral_params(
 				<Runtime as frame_system::Trait>::Origin::root(),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
@@ -622,7 +622,7 @@ fn test_mintx_module() {
 				Change::NewValue(Some(Ratio::saturating_from_rational(9, 5))),
 				Change::NewValue(amount(10000)),
 			));
-			assert_ok!(CdpEngineModule::adjust_position(
+			assert_ok!(DebtEngineModule::adjust_position(
 				&AccountId::from(ALICE),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				amount(100) as i128,
@@ -645,7 +645,7 @@ fn test_mintx_module() {
 				amount(100)
 			);
 			assert_eq!(
-				CdpEngineModule::liquidate(
+				DebtEngineModule::liquidate(
 					<Runtime as frame_system::Trait>::Origin::none(),
 					CurrencyId::Token(TokenSymbol::XBTC),
 					AccountId::from(ALICE)
@@ -653,7 +653,7 @@ fn test_mintx_module() {
 				.is_ok(),
 				false
 			);
-			assert_ok!(CdpEngineModule::set_collateral_params(
+			assert_ok!(DebtEngineModule::set_collateral_params(
 				<Runtime as frame_system::Trait>::Origin::root(),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				Change::NoChange,
@@ -662,7 +662,7 @@ fn test_mintx_module() {
 				Change::NoChange,
 				Change::NoChange,
 			));
-			assert_ok!(CdpEngineModule::liquidate(
+			assert_ok!(DebtEngineModule::liquidate(
 				<Runtime as frame_system::Trait>::Origin::none(),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				AccountId::from(ALICE)
@@ -710,7 +710,7 @@ fn test_cdp_engine_module() {
 		.build()
 		.execute_with(|| {
 			SystemModule::set_block_number(1);
-			assert_ok!(CdpEngineModule::set_collateral_params(
+			assert_ok!(DebtEngineModule::set_collateral_params(
 				<Runtime as frame_system::Trait>::Origin::root(),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
@@ -720,7 +720,7 @@ fn test_cdp_engine_module() {
 				Change::NewValue(amount(10000)),
 			));
 
-			let new_collateral_params = CdpEngineModule::collateral_params(CurrencyId::Token(TokenSymbol::XBTC));
+			let new_collateral_params = DebtEngineModule::collateral_params(CurrencyId::Token(TokenSymbol::XBTC));
 
 			assert_eq!(
 				new_collateral_params.stability_fee,
@@ -741,7 +741,7 @@ fn test_cdp_engine_module() {
 			assert_eq!(new_collateral_params.maximum_total_debit_value, amount(10000));
 
 			assert_eq!(
-				CdpEngineModule::calculate_collateral_ratio(
+				DebtEngineModule::calculate_collateral_ratio(
 					CurrencyId::Token(TokenSymbol::XBTC),
 					100,
 					50,
@@ -750,16 +750,16 @@ fn test_cdp_engine_module() {
 				Ratio::saturating_from_rational(100 * 10, 50)
 			);
 
-			assert_ok!(CdpEngineModule::check_debit_cap(
+			assert_ok!(DebtEngineModule::check_debit_cap(
 				CurrencyId::Token(TokenSymbol::XBTC),
 				amount(99999)
 			));
 			assert_eq!(
-				CdpEngineModule::check_debit_cap(CurrencyId::Token(TokenSymbol::XBTC), amount(100001)).is_ok(),
+				DebtEngineModule::check_debit_cap(CurrencyId::Token(TokenSymbol::XBTC), amount(100001)).is_ok(),
 				false
 			);
 
-			assert_ok!(CdpEngineModule::adjust_position(
+			assert_ok!(DebtEngineModule::adjust_position(
 				&AccountId::from(ALICE),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				amount(100) as i128,
@@ -779,7 +779,7 @@ fn test_cdp_engine_module() {
 			);
 
 			assert_noop!(
-				CdpEngineModule::settle_cdp_has_debit(AccountId::from(ALICE), CurrencyId::Token(TokenSymbol::XBTC)),
+				DebtEngineModule::settle_cdp_has_debit(AccountId::from(ALICE), CurrencyId::Token(TokenSymbol::XBTC)),
 				module_cdp_engine::Error::<Runtime>::NoDebitValue,
 			);
 
@@ -794,7 +794,7 @@ fn test_cdp_engine_module() {
 				)
 			]));
 
-			assert_ok!(CdpEngineModule::adjust_position(
+			assert_ok!(DebtEngineModule::adjust_position(
 				&AccountId::from(ALICE),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				0,
@@ -809,7 +809,7 @@ fn test_cdp_engine_module() {
 				CdpTreasuryModule::total_collaterals(CurrencyId::Token(TokenSymbol::XBTC)),
 				0
 			);
-			assert_ok!(CdpEngineModule::settle_cdp_has_debit(
+			assert_ok!(DebtEngineModule::settle_cdp_has_debit(
 				AccountId::from(ALICE),
 				CurrencyId::Token(TokenSymbol::XBTC)
 			));

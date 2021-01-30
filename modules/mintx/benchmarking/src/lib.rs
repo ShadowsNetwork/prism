@@ -17,7 +17,7 @@ use sp_runtime::{
 	FixedPointNumber,
 };
 
-use cdp_engine::Module as CdpEngine;
+use cdp_engine::Module as DebtEngine;
 use mintx::Module as Mintx;
 use mintx::*;
 use orml_traits::{Change, DataFeeder, MultiCurrencyExtended};
@@ -89,7 +89,7 @@ benchmarks! {
 		let caller: T::AccountId = account("caller", u, SEED);
 		let currency_id: CurrencyId = <T as cdp_engine::Trait>::CollateralCurrencyIds::get()[0];
 		let min_debit_value = <T as cdp_engine::Trait>::MinimumDebitValue::get();
-		let debit_exchange_rate = CdpEngine::<T>::get_debit_exchange_rate(currency_id);
+		let debit_exchange_rate = DebtEngine::<T>::get_debit_exchange_rate(currency_id);
 		let collateral_price = Price::one();		// 1 USD
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_add(ExchangeRate::from_inner(1)).saturating_mul_int(min_debit_value);
 		let min_debit_amount: Amount = min_debit_amount.unique_saturated_into();
@@ -103,7 +103,7 @@ benchmarks! {
 		feed_price::<T>(currency_id, collateral_price)?;
 
 		// set risk params
-		CdpEngine::<T>::set_collateral_params(
+		DebtEngine::<T>::set_collateral_params(
 			RawOrigin::Root.into(),
 			currency_id,
 			Change::NoChange,
@@ -121,7 +121,7 @@ benchmarks! {
 		let sender: T::AccountId = account("sender", u, SEED);
 		let receiver: T::AccountId = account("receiver", u, SEED);
 		let min_debit_value = <T as cdp_engine::Trait>::MinimumDebitValue::get();
-		let debit_exchange_rate = CdpEngine::<T>::get_debit_exchange_rate(currency_id);
+		let debit_exchange_rate = DebtEngine::<T>::get_debit_exchange_rate(currency_id);
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_add(ExchangeRate::from_inner(1)).saturating_mul_int(min_debit_value);
 		let min_debit_amount: Amount = min_debit_amount.unique_saturated_into();
 		let debit_amount = min_debit_amount * 10;
@@ -134,7 +134,7 @@ benchmarks! {
 		feed_price::<T>(currency_id, Price::one())?;
 
 		// set risk params
-		CdpEngine::<T>::set_collateral_params(
+		DebtEngine::<T>::set_collateral_params(
 			RawOrigin::Root.into(),
 			currency_id,
 			Change::NoChange,
