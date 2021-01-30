@@ -40,6 +40,7 @@ GITHOOKS_DEST = $(patsubst githooks/%, .git/hooks/%, $(GITHOOKS_SRC))
 
 githooks: .git/hooks $(GITHOOKS_DEST)
 
+#init
 init: toolchain  build-full
 
 build-wasm-shadows:
