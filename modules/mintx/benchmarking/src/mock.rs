@@ -198,7 +198,7 @@ parameter_types! {
 
 impl cdp_engine::Trait for Runtime {
 	type Event = ();
-	type PriceSource = prices::Module<Runtime>;
+	type PriceSource = ingester::Module<Runtime>;
 	type CollateralCurrencyIds = CollateralCurrencyIds;
 	type DefaultLiquidationRatio = DefaultLiquidationRatio;
 	type DefaultDebitExchangeRate = DefaultDebitExchangeRate;
@@ -268,7 +268,7 @@ parameter_types! {
 	pub StableCurrencyFixedPrice: Price = Price::one();
 }
 
-impl prices::Trait for Runtime {
+impl ingester::Trait for Runtime {
 	type Event = ();
 	type Source = orml_oracle::Module<Runtime>;
 	type GetStableCurrencyId = GetStableCurrencyId;

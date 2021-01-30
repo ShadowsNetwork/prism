@@ -203,7 +203,7 @@ fn get_all_values_should_work() {
 		assert_ok!(ModuleOracle::feed_values(Origin::signed(2), vec![(eur, 1000)]));
 		assert_ok!(ModuleOracle::feed_values(Origin::signed(3), vec![(jpy, 9000)]));
 
-		// not enough eur & jpy prices
+		// not enough eur & jpy ingester
 		assert_eq!(ModuleOracle::get(&eur), None);
 		assert_eq!(ModuleOracle::get(&jpy), None);
 		assert_eq!(ModuleOracle::get_all_values(), vec![]);
@@ -215,14 +215,14 @@ fn get_all_values_should_work() {
 		assert_ok!(ModuleOracle::feed_values(Origin::signed(3), vec![(eur, 1200)]));
 		assert_ok!(ModuleOracle::feed_values(Origin::signed(1), vec![(jpy, 8000)]));
 
-		// enough eur prices
+		// enough eur ingester
 		let eur_price = Some(TimestampedValue {
 			value: 1200,
 			timestamp: 12345,
 		});
 		assert_eq!(ModuleOracle::get(&eur), eur_price);
 
-		// not enough jpy prices
+		// not enough jpy ingester
 		assert_eq!(ModuleOracle::get(&jpy), None);
 
 		assert_eq!(ModuleOracle::get_all_values(), vec![(eur, eur_price)]);
@@ -230,7 +230,7 @@ fn get_all_values_should_work() {
 		// feed jpy
 		assert_ok!(ModuleOracle::feed_values(Origin::signed(2), vec![(jpy, 7000)]));
 
-		// enough jpy prices
+		// enough jpy ingester
 		let jpy_price = Some(TimestampedValue {
 			value: 8000,
 			timestamp: 12345,

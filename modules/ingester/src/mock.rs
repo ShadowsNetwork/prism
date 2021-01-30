@@ -23,14 +23,14 @@ pub const LDOT: CurrencyId = CurrencyId::Token(TokenSymbol::LDOT);
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct Runtime;
 
-mod prices {
+mod ingester {
 	pub use super::super::*;
 }
 
 impl_outer_event! {
 	pub enum TestEvent for Runtime {
 		frame_system<T>,
-		prices,
+		ingester,
 	}
 }
 

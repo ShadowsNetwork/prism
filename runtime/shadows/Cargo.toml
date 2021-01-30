@@ -81,7 +81,7 @@ module-emergency-shutdown = { path = "../../modules/emergency_shutdown", default
 module-mintx = { path = "../../modules/mintx", default-features = false }
 module-lend = { path = "../../modules/lend", default-features = false }
 module-nft = { path = "../../modules/nft", default-features = false }
-module-prices = { path = "../../modules/ingester", default-features = false }
+module-ingester = { path = "../../modules/ingester", default-features = false }
 module-incentives = { path = "../../modules/incentives", default-features = false }
 module-support = { path = "../../modules/support", default-features = false }
 module-homa = { path = "../../modules/homa", default-features = false }
@@ -175,7 +175,7 @@ std = [
 	"module-mintx/std",
 	"module-lend/std",
 	"module-nft/std",
-	"module-prices/std",
+	"module-ingester/std",
 	"module-incentives/std",
 	"module-support/std",
 	"module-homa/std",

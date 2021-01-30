@@ -23,7 +23,7 @@ use support::{CDPTreasury, Price};
 pub struct Module<T: Trait>(emergency_shutdown::Module<T>);
 
 pub trait Trait:
-	emergency_shutdown::Trait + orml_oracle::Trait<orml_oracle::Instance1> + prices::Trait + lend::Trait
+	emergency_shutdown::Trait + orml_oracle::Trait<orml_oracle::Instance1> + ingester::Trait + lend::Trait
 {
 }
 
@@ -37,7 +37,7 @@ fn dollar(d: u32) -> Balance {
 fn feed_price<T: Trait>(currency_id: CurrencyId, price: Price) -> Result<(), &'static str> {
 	let oracle_operators = orml_oracle::Module::<T, orml_oracle::Instance1>::members().0;
 	for operator in oracle_operators {
-		<T as prices::Trait>::Source::feed_value(operator.clone(), currency_id, price)?;
+		<T as ingester::Trait>::Source::feed_value(operator.clone(), currency_id, price)?;
 	}
 	Ok(())
 }

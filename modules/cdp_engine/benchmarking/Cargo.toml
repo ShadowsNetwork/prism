@@ -12,7 +12,7 @@ frame-system = { version = "2.0.0", default-features = false }
 frame-benchmarking = { version = "2.0.0", default-features = false }
 orml-oracle = { path = "../../../orml/oracle", default-features = false }
 orml-traits = { path = "../../../orml/traits", default-features = false }
-prices = { package = "module-prices", path = "../../ingester", default-features = false }
+ingester = { package = "module-ingester", path = "../../ingester", default-features = false }
 primitives = { package = "shadows-primitives", path = "../../../primitives", default-features = false }
 support = { package = "module-support", path = "../../support", default-features = false }
 cdp-engine = { package = "module-cdp-engine", path = "../../cdp_engine", default-features = false }
@@ -44,7 +44,7 @@ std = [
 	"support/std",
 	"orml-oracle/std",
 	"orml-traits/std",
-	"prices/std",
+	"ingester/std",
 	"exchange/std",
 	"emergency_shutdown/std",
 ]

@@ -122,17 +122,17 @@ pub fn origin_of(account_id: AccountId) -> <Runtime as frame_system::Trait>::Ori
 	<Runtime as frame_system::Trait>::Origin::signed(account_id)
 }
 
-fn set_oracle_price(prices: Vec<(CurrencyId, Price)>) -> DispatchResult {
+fn set_oracle_price(ingester: Vec<(CurrencyId, Price)>) -> DispatchResult {
 	OracleModule::on_finalize(0);
 	assert_ok!(OracleModule::feed_values(
 		origin_of(AccountId::from(ORACLE1)),
-		prices.clone(),
+		ingester.clone(),
 	));
 	assert_ok!(OracleModule::feed_values(
 		origin_of(AccountId::from(ORACLE2)),
-		prices.clone(),
+		ingester.clone(),
 	));
-	assert_ok!(OracleModule::feed_values(origin_of(AccountId::from(ORACLE3)), prices,));
+	assert_ok!(OracleModule::feed_values(origin_of(AccountId::from(ORACLE3)), ingester,));
 	Ok(())
 }
 

@@ -794,7 +794,7 @@ parameter_types! {
 	pub StableCurrencyFixedPrice: Price = Price::saturating_from_rational(1, 1);
 }
 
-impl module_prices::Trait for Runtime {
+impl module_ingester::Trait for Runtime {
 	type Event = Event;
 	type Source = AggregatedDataProvider;
 	type GetStableCurrencyId = GetStableCurrencyId;
@@ -803,7 +803,7 @@ impl module_prices::Trait for Runtime {
 	type GetLiquidCurrencyId = GetLiquidCurrencyId;
 	type LockOrigin = EnsureRootOrTwoThirdsGeneralCouncil;
 	type LiquidStakingExchangeRateProvider = LiquidStakingExchangeRateProvider;
-	type WeightInfo = weights::prices::WeightInfo<Runtime>;
+	type WeightInfo = weights::ingester::WeightInfo<Runtime>;
 }
 
 pub struct LiquidStakingExchangeRateProvider;
@@ -1355,7 +1355,7 @@ construct_runtime!(
 		OrmlNFT: orml_nft::{Module, Storage},
 
 		// Shadow Core
-		Prices: module_prices::{Module, Storage, Call, Event},
+		Prices: module_ingester::{Module, Storage, Call, Event},
 
 		// EXCHANGE
 		Exchange: module_exchange::{Module, Storage, Call, Event<T>},
@@ -1699,7 +1699,7 @@ impl_runtime_apis! {
 			orml_add_benchmark!(params, batches, cdp_treasury, benchmarking::cdp_treasury);
 			orml_add_benchmark!(params, batches, accounts, benchmarking::accounts);
 			orml_add_benchmark!(params, batches, incentives, benchmarking::incentives);
-			orml_add_benchmark!(params, batches, prices, benchmarking::prices);
+			orml_add_benchmark!(params, batches, ingester, benchmarking::ingester);
 
 			orml_add_benchmark!(params, batches, orml_tokens, benchmarking::tokens);
 			// orml_add_benchmark!(params, batches, orml_vesting, benchmarking::vesting);

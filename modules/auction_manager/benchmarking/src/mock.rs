@@ -135,7 +135,7 @@ impl auction_manager::Trait for Runtime {
 	type GetNativeCurrencyId = GetNativeCurrencyId;
 	type CDPTreasury = CDPTreasuryModule;
 	type EXCHANGE = ();
-	type PriceSource = prices::Module<Runtime>;
+	type PriceSource = ingester::Module<Runtime>;
 	type UnsignedPriority = UnsignedPriority;
 	type EmergencyShutdown = EmergencyShutdownModule;
 	type WeightInfo = ();
@@ -217,7 +217,7 @@ parameter_types! {
 	pub StableCurrencyFixedPrice: Price = Price::one();
 }
 
-impl prices::Trait for Runtime {
+impl ingester::Trait for Runtime {
 	type Event = ();
 	type Source = orml_oracle::Module<Runtime, orml_oracle::Instance1>;
 	type GetStableCurrencyId = GetStableCurrencyId;
@@ -257,7 +257,7 @@ parameter_types! {
 impl emergency_shutdown::Trait for Runtime {
 	type Event = ();
 	type CollateralCurrencyIds = CollateralCurrencyIds;
-	type PriceSource = prices::Module<Runtime>;
+	type PriceSource = ingester::Module<Runtime>;
 	type CDPTreasury = CDPTreasuryModule;
 	type AuctionManagerHandler = AuctionManagerModule;
 	type ShutdownOrigin = EnsureRoot<AccountId>;

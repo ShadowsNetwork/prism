@@ -7,6 +7,6 @@ pub mod cdp_treasury;
 pub mod emergency_shutdown;
 pub mod exchange;
 pub mod incentives;
+pub mod ingester;
 pub mod mintx;
 pub mod nft;
-pub mod prices;

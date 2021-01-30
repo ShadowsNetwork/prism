@@ -26,14 +26,14 @@ use support::{ExchangeRate, Price, Rate, Ratio};
 
 pub struct Module<T: Trait>(mintx::Module<T>);
 
-pub trait Trait: mintx::Trait + orml_oracle::Trait<orml_oracle::Instance1> + prices::Trait {}
+pub trait Trait: mintx::Trait + orml_oracle::Trait<orml_oracle::Instance1> + ingester::Trait {}
 
 const SEED: u32 = 0;
 
 fn feed_price<T: Trait>(currency_id: CurrencyId, price: Price) -> Result<(), &'static str> {
 	let oracle_operators = orml_oracle::Module::<T, orml_oracle::Instance1>::members().0;
 	for operator in oracle_operators {
-		<T as prices::Trait>::Source::feed_value(operator.clone(), currency_id, price)?;
+		<T as ingester::Trait>::Source::feed_value(operator.clone(), currency_id, price)?;
 	}
 	Ok(())
 }
