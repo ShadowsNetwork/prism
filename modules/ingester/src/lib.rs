@@ -1,4 +1,4 @@
-//! # Prices Module
+//! # Ingester Module
 //!
 //! ## Overview
 //!
@@ -70,7 +70,7 @@ decl_event!(
 );
 
 decl_storage! {
-	trait Store for Module<T: Trait> as Prices {
+	trait Store for Module<T: Trait> as Ingester {
 		/// Mapping from currency id to it's locked price
 		LockedPrice get(fn locked_price): map hasher(twox_64_concat) CurrencyId => Option<Price>;
 	}

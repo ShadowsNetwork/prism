@@ -122,7 +122,7 @@ impl Trait for Runtime {
 	type LiquidStakingExchangeRateProvider = MockLiquidStakingExchangeProvider;
 	type WeightInfo = ();
 }
-pub type PricesModule = Module<Runtime>;
+pub type IngesterModule = Module<Runtime>;
 
 pub struct ExtBuilder;
 

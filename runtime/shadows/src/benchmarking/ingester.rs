@@ -1,4 +1,4 @@
-use crate::{CollateralCurrencyIds, CurrencyId, Origin, Price, Prices, Runtime, ShadowsOracle, TokenSymbol};
+use crate::{CollateralCurrencyIds, CurrencyId, Ingester, Origin, Price, Runtime, ShadowsOracle, TokenSymbol};
 
 use frame_system::RawOrigin;
 use orml_benchmarking::runtime_benchmarks;
@@ -22,7 +22,7 @@ runtime_benchmarks! {
 
 		// feed price
 		ShadowsOracle::feed_values(RawOrigin::Root.into(), vec![(currency_id, Price::one())])?;
-		Prices::lock_price(Origin::root(), CurrencyId::Token(TokenSymbol::DOT))?;
+		Ingester::lock_price(Origin::root(), CurrencyId::Token(TokenSymbol::DOT))?;
 	}: _(RawOrigin::Root, CurrencyId::Token(TokenSymbol::DOT))
 }
 

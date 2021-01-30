@@ -908,7 +908,7 @@ impl module_auction_manager::Trait for Runtime {
 	type GetNativeCurrencyId = GetNativeCurrencyId;
 	type CDPTreasury = CdpTreasury;
 	type EXCHANGE = Exchange;
-	type PriceSource = Prices;
+	type PriceSource = Ingester;
 	type UnsignedPriority = AuctionManagerUnsignedPriority;
 	type EmergencyShutdown = EmergencyShutdown;
 	type WeightInfo = weights::auction_manager::WeightInfo<Runtime>;
@@ -994,7 +994,7 @@ parameter_types! {
 
 impl module_cdp_engine::Trait for Runtime {
 	type Event = Event;
-	type PriceSource = Prices;
+	type PriceSource = Ingester;
 	type CollateralCurrencyIds = CollateralCurrencyIds;
 	type DefaultLiquidationRatio = DefaultLiquidationRatio;
 	type DefaultDebitExchangeRate = DefaultDebitExchangeRate;
@@ -1018,7 +1018,7 @@ impl module_mintx::Trait for Runtime {
 impl module_emergency_shutdown::Trait for Runtime {
 	type Event = Event;
 	type CollateralCurrencyIds = CollateralCurrencyIds;
-	type PriceSource = Prices;
+	type PriceSource = Ingester;
 	type CDPTreasury = CdpTreasury;
 	type AuctionManagerHandler = AuctionManager;
 	type ShutdownOrigin = EnsureRootOrHalfGeneralCouncil;
@@ -1355,7 +1355,7 @@ construct_runtime!(
 		OrmlNFT: orml_nft::{Module, Storage},
 
 		// Shadow Core
-		Prices: module_ingester::{Module, Storage, Call, Event},
+		Ingester: module_ingester::{Module, Storage, Call, Event},
 
 		// EXCHANGE
 		Exchange: module_exchange::{Module, Storage, Call, Event<T>},
