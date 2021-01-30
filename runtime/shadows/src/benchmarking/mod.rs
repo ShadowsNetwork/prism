@@ -3,8 +3,8 @@
 // module benchmarking
 pub mod accounts;
 pub mod auction_manager;
-pub mod cdp_engine;
 pub mod cdp_treasury;
+pub mod debt_engine;
 pub mod emergency_shutdown;
 pub mod incentives;
 pub mod ingester;

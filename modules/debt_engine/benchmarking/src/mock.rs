@@ -17,7 +17,7 @@ use support::{AuctionManager, ExchangeRate, ExchangeRateProvider, Price, Rate, R
 
 impl_outer_dispatch! {
 	pub enum Call for Runtime where origin: Origin {
-		cdp_engine::CDPEngineModule,
+		debt_engine::CDPEngineModule,
 		orml_oracle::ModuleOracle,
 	}
 }
@@ -112,7 +112,7 @@ parameter_types! {
 
 impl lend::Trait for Runtime {
 	type Event = ();
-	type Convert = cdp_engine::DebitExchangeRateConvertor<Runtime>;
+	type Convert = debt_engine::DebitExchangeRateConvertor<Runtime>;
 	type Currency = Tokens;
 	type RiskManager = CDPEngineModule;
 	type CDPTreasury = CDPTreasuryModule;
@@ -213,7 +213,7 @@ parameter_types! {
 	pub const UnsignedPriority: u64 = 1 << 20;
 }
 
-impl cdp_engine::Trait for Runtime {
+impl debt_engine::Trait for Runtime {
 	type Event = ();
 	type PriceSource = ingester::Module<Runtime>;
 	type CollateralCurrencyIds = CollateralCurrencyIds;
@@ -228,7 +228,7 @@ impl cdp_engine::Trait for Runtime {
 	type EXCHANGE = ExchangeModule;
 	type UnsignedPriority = UnsignedPriority;
 }
-pub type CDPEngineModule = cdp_engine::Module<Runtime>;
+pub type CDPEngineModule = debt_engine::Module<Runtime>;
 
 /// An extrinsic type used for tests.
 pub type Extrinsic = TestXt<Call, ()>;

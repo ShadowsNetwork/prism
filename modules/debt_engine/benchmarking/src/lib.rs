@@ -14,17 +14,17 @@ use frame_support::traits::Get;
 use frame_system::RawOrigin;
 use sp_runtime::{traits::UniqueSaturatedInto, DispatchError, FixedPointNumber};
 
-use cdp_engine::Module as DebtEngine;
-use cdp_engine::*;
+use debt_engine::Module as DebtEngine;
+use debt_engine::*;
 use exchange::Module as Exchange;
 use orml_traits::{Change, DataFeeder, MultiCurrencyExtended};
 use primitives::{Amount, Balance, CurrencyId, TokenSymbol};
 use support::{EXCHANGEManager, Price, Rate, Ratio};
 
-pub struct Module<T: Trait>(cdp_engine::Module<T>);
+pub struct Module<T: Trait>(debt_engine::Module<T>);
 
 pub trait Trait:
-	cdp_engine::Trait
+	debt_engine::Trait
 	+ orml_oracle::Trait<orml_oracle::Instance1>
 	+ ingester::Trait
 	+ exchange::Trait
@@ -53,7 +53,7 @@ fn inject_liquidity<T: Trait>(
 	max_amount: Balance,
 	max_other_currency_amount: Balance,
 ) -> Result<(), &'static str> {
-	let base_currency_id = <T as cdp_engine::Trait>::GetStableCurrencyId::get();
+	let base_currency_id = <T as debt_engine::Trait>::GetStableCurrencyId::get();
 
 	// set balance
 	<T as exchange::Trait>::Currency::update_balance(currency_id, &maker, max_amount.unique_saturated_into())?;
@@ -102,8 +102,8 @@ benchmarks! {
 		let u in 0 .. 1000;
 
 		let owner: T::AccountId = account("owner", u, SEED);
-		let currency_id: CurrencyId = <T as cdp_engine::Trait>::CollateralCurrencyIds::get()[0];
-		let min_debit_value = <T as cdp_engine::Trait>::MinimumDebitValue::get();
+		let currency_id: CurrencyId = <T as debt_engine::Trait>::CollateralCurrencyIds::get()[0];
+		let min_debit_value = <T as debt_engine::Trait>::MinimumDebitValue::get();
 		let debit_exchange_rate = DebtEngine::<T>::get_debit_exchange_rate(currency_id);
 		let collateral_price = Price::one();		// 1 USD
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_mul_int(min_debit_value);
@@ -148,16 +148,16 @@ benchmarks! {
 
 		let owner: T::AccountId = account("owner", u, SEED);
 		let funder: T::AccountId = account("funder", u, SEED);
-		let currency_id: CurrencyId = <T as cdp_engine::Trait>::CollateralCurrencyIds::get()[0];
-		let base_currency_id: CurrencyId = <T as cdp_engine::Trait>::GetStableCurrencyId::get();
-		let min_debit_value = <T as cdp_engine::Trait>::MinimumDebitValue::get();
+		let currency_id: CurrencyId = <T as debt_engine::Trait>::CollateralCurrencyIds::get()[0];
+		let base_currency_id: CurrencyId = <T as debt_engine::Trait>::GetStableCurrencyId::get();
+		let min_debit_value = <T as debt_engine::Trait>::MinimumDebitValue::get();
 		let debit_exchange_rate = DebtEngine::<T>::get_debit_exchange_rate(currency_id);
 		let collateral_price = Price::one();		// 1 USD
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_mul_int(min_debit_value);
 		let min_debit_amount: Amount = min_debit_amount.unique_saturated_into();
 		let collateral_amount = (min_debit_value * 2).unique_saturated_into();
 
-		let max_slippage_swap_with_exchange = <T as cdp_engine::Trait>::MaxSlippageSwapWithEXCHANGE::get();
+		let max_slippage_swap_with_exchange = <T as debt_engine::Trait>::MaxSlippageSwapWithEXCHANGE::get();
 		let collateral_amount_in_exchange = max_slippage_swap_with_exchange.reciprocal().unwrap().saturating_mul_int(min_debit_value * 10);
 		let base_amount_in_exchange = collateral_amount_in_exchange * 2;
 
@@ -204,8 +204,8 @@ benchmarks! {
 		let u in 0 .. 1000;
 
 		let owner: T::AccountId = account("owner", u, SEED);
-		let currency_id: CurrencyId = <T as cdp_engine::Trait>::CollateralCurrencyIds::get()[0];
-		let min_debit_value = <T as cdp_engine::Trait>::MinimumDebitValue::get();
+		let currency_id: CurrencyId = <T as debt_engine::Trait>::CollateralCurrencyIds::get()[0];
+		let min_debit_value = <T as debt_engine::Trait>::MinimumDebitValue::get();
 		let debit_exchange_rate = DebtEngine::<T>::get_debit_exchange_rate(currency_id);
 		let collateral_price = Price::one();		// 1 USD
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_mul_int(min_debit_value);

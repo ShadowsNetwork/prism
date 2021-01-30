@@ -916,7 +916,7 @@ impl module_auction_manager::Trait for Runtime {
 
 impl module_lend::Trait for Runtime {
 	type Event = Event;
-	type Convert = module_cdp_engine::DebitExchangeRateConvertor<Runtime>;
+	type Convert = module_debt_engine::DebitExchangeRateConvertor<Runtime>;
 	type Currency = Currencies;
 	type RiskManager = DebtEngine;
 	type CDPTreasury = CdpTreasury;
@@ -992,7 +992,7 @@ parameter_types! {
 	pub const DebtEngineUnsignedPriority: TransactionPriority = TransactionPriority::max_value();
 }
 
-impl module_cdp_engine::Trait for Runtime {
+impl module_debt_engine::Trait for Runtime {
 	type Event = Event;
 	type PriceSource = Ingester;
 	type CollateralCurrencyIds = CollateralCurrencyIds;
@@ -1007,7 +1007,7 @@ impl module_cdp_engine::Trait for Runtime {
 	type EXCHANGE = Exchange;
 	type UnsignedPriority = DebtEngineUnsignedPriority;
 	type EmergencyShutdown = EmergencyShutdown;
-	type WeightInfo = weights::cdp_engine::WeightInfo<Runtime>;
+	type WeightInfo = weights::debt_engine::WeightInfo<Runtime>;
 }
 
 impl module_mintx::Trait for Runtime {
@@ -1365,7 +1365,7 @@ construct_runtime!(
 		Lend: module_lend::{Module, Storage, Call, Event<T>},
 		Mintx: module_mintx::{Module, Storage, Call, Event<T>},
 		CdpTreasury: module_cdp_treasury::{Module, Storage, Call, Config, Event},
-		DebtEngine: module_cdp_engine::{Module, Storage, Call, Event<T>, Config, ValidateUnsigned},
+		DebtEngine: module_debt_engine::{Module, Storage, Call, Event<T>, Config, ValidateUnsigned},
 		EmergencyShutdown: module_emergency_shutdown::{Module, Storage, Call, Event<T>},
 
 		// Homa
@@ -1693,7 +1693,7 @@ impl_runtime_apis! {
 			add_benchmark!(params, batches, exchange, Exchange);
 			add_benchmark!(params, batches, nft, NftBench::<Runtime>);
 			orml_add_benchmark!(params, batches, auction_manager, benchmarking::auction_manager);
-			orml_add_benchmark!(params, batches, cdp_engine, benchmarking::cdp_engine);
+			orml_add_benchmark!(params, batches, debt_engine, benchmarking::debt_engine);
 			orml_add_benchmark!(params, batches, emergency_shutdown, benchmarking::emergency_shutdown);
 			orml_add_benchmark!(params, batches, mintx, benchmarking::mintx);
 			orml_add_benchmark!(params, batches, cdp_treasury, benchmarking::cdp_treasury);

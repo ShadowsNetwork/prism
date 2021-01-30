@@ -288,7 +288,7 @@ fn testnet_genesis(
 				(CurrencyId::Token(TokenSymbol::RENBTC), DOLLARS),
 			],
 		}),
-		module_cdp_engine: Some(DebtEngineConfig {
+		module_debt_engine: Some(DebtEngineConfig {
 			collaterals_params: vec![
 				(
 					CurrencyId::Token(TokenSymbol::DOT),
@@ -449,7 +449,7 @@ fn shadows_genesis(
 				(CurrencyId::Token(TokenSymbol::RENBTC), 5 * CENTS),
 			],
 		}),
-		module_cdp_engine: Some(DebtEngineConfig {
+		module_debt_engine: Some(DebtEngineConfig {
 			collaterals_params: vec![
 				(
 					CurrencyId::Token(TokenSymbol::DOT),

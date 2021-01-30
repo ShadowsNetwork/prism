@@ -45,7 +45,7 @@ fn dollar(d: u32) -> Balance {
 }
 
 runtime_benchmarks! {
-	{ Runtime, module_cdp_engine }
+	{ Runtime, module_debt_engine }
 
 	_ {}
 

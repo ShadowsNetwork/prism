@@ -74,7 +74,7 @@ orml-nft= { path = "../../orml/nft", default-features = false }
 
 module-accounts = { path = "../../modules/accounts", default-features = false }
 module-auction-manager = { path = "../../modules/auction_manager", default-features = false }
-module-cdp-engine = { path = "../../modules/cdp_engine", default-features = false }
+module-debt-engine = { path = "../../modules/debt_engine", default-features = false }
 module-cdp-treasury = { path = "../../modules/cdp_treasury", default-features = false }
 module-exchange = { path = "../../modules/exchange", default-features = false }
 module-emergency-shutdown = { path = "../../modules/emergency_shutdown", default-features = false }
@@ -90,7 +90,7 @@ module-staking-pool = { path = "../../modules/staking_pool", default-features = 
 module-staking-pool-rpc-runtime-api = { path = "../../modules/staking_pool/rpc/runtime-api", default-features = false }
 module-polkadot-bridge = { path = "../../modules/polkadot_bridge", default-features = false }
 module-mintx-benchmarking = { path = "../../modules/mintx/benchmarking", default-features = false, optional = true }
-module-cdp-engine-benchmarking = { path = "../../modules/cdp_engine/benchmarking", default-features = false, optional = true }
+module-debt-engine-benchmarking = { path = "../../modules/debt_engine/benchmarking", default-features = false, optional = true }
 module-emergency-shutdown-benchmarking = { path = "../../modules/emergency_shutdown/benchmarking", default-features = false, optional = true }
 module-auction-manager-benchmarking = { path = "../../modules/auction_manager/benchmarking", default-features = false, optional = true }
 module-nft-benchmarking = { path = "../../modules/nft/benchmarking", default-features = false, optional = true }
@@ -168,7 +168,7 @@ std = [
 
 	"module-accounts/std",
 	"module-auction-manager/std",
-	"module-cdp-engine/std",
+	"module-debt-engine/std",
 	"module-cdp-treasury/std",
 	"module-exchange/std",
 	"module-emergency-shutdown/std",
@@ -199,7 +199,7 @@ runtime-benchmarks = [
 	"orml-authority/runtime-benchmarks",
 
 	"module-auction-manager-benchmarking",
-	"module-cdp-engine-benchmarking",
+	"module-debt-engine-benchmarking",
 	"module-cdp-treasury/runtime-benchmarks",
 	"module-exchange/runtime-benchmarks",
 	"module-emergency-shutdown-benchmarking",

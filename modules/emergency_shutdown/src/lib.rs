@@ -116,7 +116,7 @@ decl_module! {
 		/// - Preconditions:
 		/// 	- T::CDPTreasury is module_cdp_treasury
 		/// 	- T::AuctionManagerHandler is module_auction_manager
-		/// 	- T::OnShutdown is (module_cdp_treasury, module_cdp_engine, module_mintx, module_exchange)
+		/// 	- T::OnShutdown is (module_cdp_treasury, module_debt_engine, module_mintx, module_exchange)
 		/// - Complexity: `O(1)`
 		/// - Db reads: `IsShutdown`, (length of collateral_ids) items in modules related to module_emergency_shutdown
 		/// - Db writes: `IsShutdown`, (4 + length of collateral_ids) items in modules related to module_emergency_shutdown
@@ -151,7 +151,7 @@ decl_module! {
 		/// - Preconditions:
 		/// 	- T::CDPTreasury is module_cdp_treasury
 		/// 	- T::AuctionManagerHandler is module_auction_manager
-		/// 	- T::OnShutdown is (module_cdp_treasury, module_cdp_engine, module_mintx, module_exchange)
+		/// 	- T::OnShutdown is (module_cdp_treasury, module_debt_engine, module_mintx, module_exchange)
 		/// - Complexity: `O(1)`
 		/// - Db reads: `IsShutdown`, (2 + 2 * length of collateral_ids) items in modules related to module_emergency_shutdown
 		/// - Db writes: `CanRefund`
@@ -204,7 +204,7 @@ decl_module! {
 		/// - Preconditions:
 		/// 	- T::CDPTreasury is module_cdp_treasury
 		/// 	- T::AuctionManagerHandler is module_auction_manager
-		/// 	- T::OnShutdown is (module_cdp_treasury, module_cdp_engine, module_mintx, module_exchange)
+		/// 	- T::OnShutdown is (module_cdp_treasury, module_debt_engine, module_mintx, module_exchange)
 		/// - Complexity: `O(1)`
 		/// - Db reads: `CanRefund`, (2 + 3 * length of collateral_ids) items in modules related to module_emergency_shutdown
 		/// - Db writes: (3 * length of collateral_ids) items in modules related to module_emergency_shutdown

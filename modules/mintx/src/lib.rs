@@ -29,7 +29,7 @@ pub trait WeightInfo {
 	fn transfer_loan_from() -> Weight;
 }
 
-pub trait Trait: system::Trait + cdp_engine::Trait {
+pub trait Trait: system::Trait + debt_engine::Trait {
 	type Event: From<Event<Self>> + Into<<Self as system::Trait>::Event>;
 
 	/// Weight information for the extrinsics in this module.
@@ -102,7 +102,7 @@ decl_module! {
 				if !debit_adjustment.is_zero() {
 					ensure!(!T::EmergencyShutdown::is_shutdown(), Error::<T>::AlreadyShutdown);
 				}
-				<cdp_engine::Module<T>>::adjust_position(&who, currency_id, collateral_adjustment, debit_adjustment)?;
+				<debt_engine::Module<T>>::adjust_position(&who, currency_id, collateral_adjustment, debit_adjustment)?;
 				Ok(())
 			})?;
 		}
@@ -196,7 +196,7 @@ decl_module! {
 		/// -------------------
 		/// Base Weight: 0 + 3.8 * M + 128.4 * C µs
 		/// # </weight>
-		#[weight = <T as Trait>::WeightInfo::unauthorize_all(<T as cdp_engine::Trait>::CollateralCurrencyIds::get().len() as u32)]
+		#[weight = <T as Trait>::WeightInfo::unauthorize_all(<T as debt_engine::Trait>::CollateralCurrencyIds::get().len() as u32)]
 		pub fn unauthorize_all(origin) {
 			with_transaction_result(|| {
 				let from = ensure_signed(origin)?;

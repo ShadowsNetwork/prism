@@ -15,7 +15,7 @@ orml-traits = { path = "../../../orml/traits", default-features = false }
 ingester = { package = "module-ingester", path = "../../ingester", default-features = false }
 primitives = { package = "shadows-primitives", path = "../../../primitives", default-features = false }
 support = { package = "module-support", path = "../../support", default-features = false }
-cdp-engine = { package = "module-cdp-engine", path = "../../cdp_engine", default-features = false }
+debt-engine = { package = "module-debt-engine", path = "../../debt_engine", default-features = false }
 lend = { package = "module-lend", path = "../../lend", default-features = false }
 emergency-shutdown = { package = "module-emergency-shutdown", path = "../../emergency_shutdown", default-features = false }
 
@@ -38,7 +38,7 @@ std = [
 	"frame-support/std",
 	"frame-system/std",
 	"frame-benchmarking/std",
-	"cdp-engine/std",
+	"debt-engine/std",
 	"lend/std",
 	"support/std",
 	"orml-oracle/std",

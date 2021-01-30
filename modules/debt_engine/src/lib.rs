@@ -55,9 +55,9 @@ pub trait WeightInfo {
 	fn settle() -> Weight;
 }
 
-const OFFCHAIN_WORKER_DATA: &[u8] = b"shadows/cdp-engine/data/";
-const OFFCHAIN_WORKER_LOCK: &[u8] = b"shadows/cdp-engine/lock/";
-const OFFCHAIN_WORKER_MAX_ITERATIONS: &[u8] = b"shadows/cdp-engine/max-iterations/";
+const OFFCHAIN_WORKER_DATA: &[u8] = b"shadows/debt-engine/data/";
+const OFFCHAIN_WORKER_LOCK: &[u8] = b"shadows/debt-engine/lock/";
+const OFFCHAIN_WORKER_MAX_ITERATIONS: &[u8] = b"shadows/debt-engine/max-iterations/";
 const LOCK_DURATION: u64 = 100;
 const DEFAULT_MAX_ITERATIONS: u32 = 1000;
 
@@ -439,14 +439,14 @@ decl_module! {
 		fn offchain_worker(now: T::BlockNumber) {
 			if let Err(e) = Self::_offchain_worker() {
 				debug::info!(
-					target: "cdp-engine offchain worker",
+					target: "debt-engine offchain worker",
 					"cannot run offchain worker at {:?}: {:?}",
 					now,
 					e,
 				);
 			} else {
 				debug::debug!(
-					target: "cdp-engine offchain worker",
+					target: "debt-engine offchain worker",
 					"offchain worker start at block: {:?} already done!",
 					now,
 				);
@@ -460,7 +460,7 @@ impl<T: Trait> Module<T> {
 		let call = Call::<T>::liquidate(currency_id, who.clone());
 		if SubmitTransaction::<T, Call<T>>::submit_unsigned_transaction(call.into()).is_err() {
 			debug::info!(
-				target: "cdp-engine offchain worker",
+				target: "debt-engine offchain worker",
 				"submit unsigned liquidation tx for \nCDP - AccountId {:?} CurrencyId {:?} \nfailed!",
 				who, currency_id,
 			);
@@ -471,7 +471,7 @@ impl<T: Trait> Module<T> {
 		let call = Call::<T>::settle(currency_id, who.clone());
 		if SubmitTransaction::<T, Call<T>>::submit_unsigned_transaction(call.into()).is_err() {
 			debug::info!(
-				target: "cdp-engine offchain worker",
+				target: "debt-engine offchain worker",
 				"submit unsigned settlement tx for \nCDP - AccountId {:?} CurrencyId {:?} \nfailed!",
 				who, currency_id,
 			);
@@ -520,7 +520,7 @@ impl<T: Trait> Module<T> {
 		let currency_id = collateral_currency_ids[(collateral_position as usize)];
 		let is_shutdown = T::EmergencyShutdown::is_shutdown();
 
-		debug::debug!(target: "cdp-engine offchain worker", "max iterations is {:?}", max_iterations);
+		debug::debug!(target: "debt-engine offchain worker", "max iterations is {:?}", max_iterations);
 
 		let mut map_iterator = <lend::Positions<T> as IterableStorageDoubleMapExtended<_, _, _>>::iter_prefix(
 			currency_id,

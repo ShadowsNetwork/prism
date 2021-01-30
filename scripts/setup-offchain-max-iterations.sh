@@ -1,7 +1,7 @@
-# example for set shadows/cdp-engine/max-iterations to 1000
+# example for set shadows/debt-engine/max-iterations to 1000
 #
 # codec:
-#   shadows/cdp-engine/max-iterations/ = 0x6163616c612f6364702d656e67696e652f6d61782d697465726174696f6e732f,
+#   shadows/debt-engine/max-iterations/ = 0x6163616c612f6364702d656e67696e652f6d61782d697465726174696f6e732f,
 #   shadows/auction-manager/max-iterations/ = 0x6163616c612f61756374696f6e2d6d616e616765722f6d61782d697465726174696f6e732f,
 # Litter-endian u32:
 #   10 = 0x0a000000

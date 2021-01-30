@@ -1,5 +1,5 @@
 [package]
-name = "module-cdp-engine"
+name = "module-debt-engine"
 version = "0.0.1"
 authors = ["Shadows Developers"]
 edition = "2018"

@@ -17,7 +17,7 @@ use sp_runtime::{
 	FixedPointNumber,
 };
 
-use cdp_engine::Module as DebtEngine;
+use debt_engine::Module as DebtEngine;
 use mintx::Module as Mintx;
 use mintx::*;
 use orml_traits::{Change, DataFeeder, MultiCurrencyExtended};
@@ -63,10 +63,10 @@ benchmarks! {
 	unauthorize_all {
 		let u in 0 .. 1000;
 		let v in 0 .. 100;
-		let c in 0 .. <T as cdp_engine::Trait>::CollateralCurrencyIds::get().len().saturating_sub(1) as u32;
+		let c in 0 .. <T as debt_engine::Trait>::CollateralCurrencyIds::get().len().saturating_sub(1) as u32;
 
 		let caller: T::AccountId = account("caller", u, SEED);
-		let currency_ids = <T as cdp_engine::Trait>::CollateralCurrencyIds::get();
+		let currency_ids = <T as debt_engine::Trait>::CollateralCurrencyIds::get();
 
 		for i in 0 .. v {
 			let to: T::AccountId = account("to", i, SEED);
@@ -87,8 +87,8 @@ benchmarks! {
 		let u in 0 .. 1000;
 
 		let caller: T::AccountId = account("caller", u, SEED);
-		let currency_id: CurrencyId = <T as cdp_engine::Trait>::CollateralCurrencyIds::get()[0];
-		let min_debit_value = <T as cdp_engine::Trait>::MinimumDebitValue::get();
+		let currency_id: CurrencyId = <T as debt_engine::Trait>::CollateralCurrencyIds::get()[0];
+		let min_debit_value = <T as debt_engine::Trait>::MinimumDebitValue::get();
 		let debit_exchange_rate = DebtEngine::<T>::get_debit_exchange_rate(currency_id);
 		let collateral_price = Price::one();		// 1 USD
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_add(ExchangeRate::from_inner(1)).saturating_mul_int(min_debit_value);
@@ -117,10 +117,10 @@ benchmarks! {
 	transfer_loan_from {
 		let u in 0 .. 1000;
 
-		let currency_id: CurrencyId = <T as cdp_engine::Trait>::CollateralCurrencyIds::get()[0];
+		let currency_id: CurrencyId = <T as debt_engine::Trait>::CollateralCurrencyIds::get()[0];
 		let sender: T::AccountId = account("sender", u, SEED);
 		let receiver: T::AccountId = account("receiver", u, SEED);
-		let min_debit_value = <T as cdp_engine::Trait>::MinimumDebitValue::get();
+		let min_debit_value = <T as debt_engine::Trait>::MinimumDebitValue::get();
 		let debit_exchange_rate = DebtEngine::<T>::get_debit_exchange_rate(currency_id);
 		let min_debit_amount = debit_exchange_rate.reciprocal().unwrap().saturating_add(ExchangeRate::from_inner(1)).saturating_mul_int(min_debit_value);
 		let min_debit_amount: Amount = min_debit_amount.unique_saturated_into();

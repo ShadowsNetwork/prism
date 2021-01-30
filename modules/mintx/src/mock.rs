@@ -21,7 +21,7 @@ mod mintx {
 
 impl_outer_dispatch! {
 	pub enum Call for Runtime where origin: Origin {
-		cdp_engine::CDPEngineModule,
+		debt_engine::CDPEngineModule,
 	}
 }
 
@@ -29,7 +29,7 @@ impl_outer_event! {
 	pub enum TestEvent for Runtime {
 		frame_system<T>,
 		mintx<T>,
-		cdp_engine<T>,
+		debt_engine<T>,
 		orml_tokens<T>,
 		lend<T>,
 		pallet_balances<T>,
@@ -138,7 +138,7 @@ parameter_types! {
 
 impl lend::Trait for Runtime {
 	type Event = TestEvent;
-	type Convert = cdp_engine::DebitExchangeRateConvertor<Runtime>;
+	type Convert = debt_engine::DebitExchangeRateConvertor<Runtime>;
 	type Currency = Tokens;
 	type RiskManager = CDPEngineModule;
 	type CDPTreasury = CDPTreasuryModule;
@@ -254,7 +254,7 @@ parameter_types! {
 	pub const UnsignedPriority: u64 = 1 << 20;
 }
 
-impl cdp_engine::Trait for Runtime {
+impl debt_engine::Trait for Runtime {
 	type Event = TestEvent;
 	type PriceSource = MockPriceSource;
 	type CollateralCurrencyIds = CollateralCurrencyIds;
@@ -271,7 +271,7 @@ impl cdp_engine::Trait for Runtime {
 	type EmergencyShutdown = MockEmergencyShutdown;
 	type WeightInfo = ();
 }
-pub type CDPEngineModule = cdp_engine::Module<Runtime>;
+pub type CDPEngineModule = debt_engine::Module<Runtime>;
 
 /// An extrinsic type used for tests.
 pub type Extrinsic = TestXt<Call, ()>;

@@ -5,7 +5,7 @@ use frame_support::{
 	traits::{schedule::DispatchTime, OnFinalize, OnInitialize, OriginTrait},
 };
 use frame_system::RawOrigin;
-use module_cdp_engine::LiquidationStrategy;
+use module_debt_engine::LiquidationStrategy;
 use module_support::{CDPTreasury, EXCHANGEManager, Price, Rate, Ratio, RiskManager};
 use orml_authority::DelayedOrigin;
 use orml_traits::{Change, MultiCurrency};
@@ -28,7 +28,7 @@ const BOB: [u8; 32] = [5u8; 32];
 
 pub type OracleModule = orml_oracle::Module<Runtime, orml_oracle::Instance1>;
 pub type ExchangeModule = module_exchange::Module<Runtime>;
-pub type DebtEngineModule = module_cdp_engine::Module<Runtime>;
+pub type DebtEngineModule = module_debt_engine::Module<Runtime>;
 pub type LendModule = module_lend::Module<Runtime>;
 pub type CdpTreasuryModule = module_cdp_treasury::Module<Runtime>;
 pub type SystemModule = frame_system::Module<Runtime>;
@@ -353,7 +353,7 @@ fn liquidate_cdp() {
 			));
 
 			let liquidate_alice_xbtc_cdp_event =
-				Event::module_cdp_engine(module_cdp_engine::RawEvent::LiquidateUnsafeCDP(
+				Event::module_debt_engine(module_debt_engine::RawEvent::LiquidateUnsafeCDP(
 					CurrencyId::Token(TokenSymbol::XBTC),
 					AccountId::from(ALICE),
 					amount(10),
@@ -381,7 +381,7 @@ fn liquidate_cdp() {
 			));
 
 			let liquidate_bob_xbtc_cdp_event =
-				Event::module_cdp_engine(module_cdp_engine::RawEvent::LiquidateUnsafeCDP(
+				Event::module_debt_engine(module_debt_engine::RawEvent::LiquidateUnsafeCDP(
 					CurrencyId::Token(TokenSymbol::XBTC),
 					AccountId::from(BOB),
 					amount(1),
@@ -688,7 +688,7 @@ fn test_mintx_module() {
 }
 
 #[test]
-fn test_cdp_engine_module() {
+fn test_debt_engine_module() {
 	ExtBuilder::default()
 		.balances(vec![
 			(
@@ -780,7 +780,7 @@ fn test_cdp_engine_module() {
 
 			assert_noop!(
 				DebtEngineModule::settle_cdp_has_debit(AccountId::from(ALICE), CurrencyId::Token(TokenSymbol::XBTC)),
-				module_cdp_engine::Error::<Runtime>::NoDebitValue,
+				module_debt_engine::Error::<Runtime>::NoDebitValue,
 			);
 
 			assert_ok!(set_oracle_price(vec![
@@ -814,7 +814,7 @@ fn test_cdp_engine_module() {
 				CurrencyId::Token(TokenSymbol::XBTC)
 			));
 
-			let settle_cdp_in_debit_event = Event::module_cdp_engine(module_cdp_engine::RawEvent::SettleCDPInDebit(
+			let settle_cdp_in_debit_event = Event::module_debt_engine(module_debt_engine::RawEvent::SettleCDPInDebit(
 				CurrencyId::Token(TokenSymbol::XBTC),
 				AccountId::from(ALICE),
 			));

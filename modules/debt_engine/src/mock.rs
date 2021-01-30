@@ -31,14 +31,14 @@ pub const LDOT: CurrencyId = CurrencyId::Token(TokenSymbol::LDOT);
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct Runtime;
 
-mod cdp_engine {
+mod debt_engine {
 	pub use super::super::*;
 }
 
 impl_outer_event! {
 	pub enum TestEvent for Runtime {
 		frame_system<T>,
-		cdp_engine<T>,
+		debt_engine<T>,
 		orml_tokens<T>,
 		lend<T>,
 		pallet_balances<T>,
@@ -54,7 +54,7 @@ impl_outer_origin! {
 
 impl_outer_dispatch! {
 	pub enum Call for Runtime where origin: Origin {
-		cdp_engine::CDPEngineModule,
+		debt_engine::CDPEngineModule,
 	}
 }
 
