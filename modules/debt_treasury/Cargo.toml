@@ -1,5 +1,5 @@
 [package]
-name = "module-dept-treasury"
+name = "module-debt-treasury"
 version = "0.0.1"
 authors = ["Shadows Developers"]
 edition = "2018"

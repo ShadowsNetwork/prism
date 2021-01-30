@@ -1,4 +1,4 @@
-use crate::{Balance, CdpTreasury, CollateralCurrencyIds, Currencies, CurrencyId, Runtime, DOLLARS};
+use crate::{Balance, CollateralCurrencyIds, Currencies, CurrencyId, DeptTreasury, Runtime, DOLLARS};
 
 use frame_system::RawOrigin;
 use module_support::DEPTTreasury;
@@ -17,16 +17,16 @@ runtime_benchmarks! {
 	_ {}
 
 	auction_surplus {
-		CdpTreasury::on_system_surplus(dollar(100))?;
+		DeptTreasury::on_system_surplus(dollar(100))?;
 	}: _(RawOrigin::Root, dollar(100))
 
 	auction_debit {
-		CdpTreasury::on_system_debit(dollar(100))?;
+		DeptTreasury::on_system_debit(dollar(100))?;
 	}: _(RawOrigin::Root,dollar(100), dollar(200))
 
 	auction_collateral {
 		let currency_id: CurrencyId = CollateralCurrencyIds::get()[0];
-		Currencies::deposit(currency_id, &CdpTreasury::account_id(), dollar(10000))?;
+		Currencies::deposit(currency_id, &DeptTreasury::account_id(), dollar(10000))?;
 	}: _(RawOrigin::Root, currency_id, dollar(1000), dollar(1000), true)
 
 	set_collateral_auction_maximum_size {

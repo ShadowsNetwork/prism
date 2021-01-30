@@ -1,5 +1,5 @@
 use crate::{
-	Auction, AuctionId, AuctionManager, AuctionTimeToClose, CdpTreasury, CurrencyId, Runtime, System, TokenSymbol,
+	Auction, AuctionId, AuctionManager, AuctionTimeToClose, CurrencyId, DeptTreasury, Runtime, System, TokenSymbol,
 	DOLLARS,
 };
 
@@ -37,7 +37,7 @@ runtime_benchmarks! {
 
 		set_balance(currency_id, &funder, collateral_amount);
 		set_balance(CurrencyId::Token(TokenSymbol::AUSD), &bidder, bid_price);
-		<CdpTreasury as DEPTTreasury<_>>::deposit_collateral(&funder, currency_id, collateral_amount)?;
+		<DeptTreasury as DEPTTreasury<_>>::deposit_collateral(&funder, currency_id, collateral_amount)?;
 		AuctionManager::new_collateral_auction(&funder, currency_id, collateral_amount, target_amount)?;
 	}: bid(RawOrigin::Signed(bidder), auction_id, bid_price)
 
@@ -57,7 +57,7 @@ runtime_benchmarks! {
 		set_balance(currency_id, &funder, collateral_amount);
 		set_balance(CurrencyId::Token(TokenSymbol::AUSD), &bidder, bid_price);
 		set_balance(CurrencyId::Token(TokenSymbol::AUSD), &previous_bidder, previous_bid_price);
-		<CdpTreasury as DEPTTreasury<_>>::deposit_collateral(&funder, currency_id, collateral_amount)?;
+		<DeptTreasury as DEPTTreasury<_>>::deposit_collateral(&funder, currency_id, collateral_amount)?;
 		AuctionManager::new_collateral_auction(&funder, currency_id, collateral_amount, target_amount)?;
 		Auction::bid(RawOrigin::Signed(previous_bidder).into(), auction_id, previous_bid_price)?;
 	}: bid(RawOrigin::Signed(bidder), auction_id, bid_price)

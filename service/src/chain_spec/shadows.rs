@@ -182,12 +182,12 @@ fn testnet_genesis(
 	enable_println: bool,
 ) -> shadows_runtime::GenesisConfig {
 	use shadows_runtime::{
-		get_all_module_accounts, BabeConfig, BalancesConfig, BandOracleConfig, CdpTreasuryConfig, ContractsConfig,
-		CurrencyId, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig, HomaCouncilMembershipConfig,
-		IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit, OperatorMembershipBandConfig,
-		OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig, ShadowsOracleConfig, StakerStatus,
-		StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig, TokenSymbol, TokensConfig,
-		VestingConfig, DOLLARS,
+		get_all_module_accounts, BabeConfig, BalancesConfig, BandOracleConfig, ContractsConfig, CurrencyId,
+		DebtEngineConfig, DeptTreasuryConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
+		HomaCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
+		OperatorMembershipBandConfig, OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig,
+		ShadowsOracleConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig,
+		TokenSymbol, TokensConfig, VestingConfig, DOLLARS,
 	};
 
 	let new_account_deposit = NewAccountDeposit::get();
@@ -281,7 +281,7 @@ fn testnet_genesis(
 				.collect(),
 		}),
 		orml_vesting: Some(VestingConfig { vesting: vec![] }),
-		module_debt_treasury: Some(CdpTreasuryConfig {
+		module_debt_treasury: Some(DeptTreasuryConfig {
 			collateral_auction_maximum_size: vec![
 				(CurrencyId::Token(TokenSymbol::DOT), DOLLARS), // (currency_id, max size of a collateral auction)
 				(CurrencyId::Token(TokenSymbol::XBTC), DOLLARS),
@@ -348,8 +348,8 @@ fn shadows_genesis(
 	enable_println: bool,
 ) -> shadows_runtime::GenesisConfig {
 	use shadows_runtime::{
-		get_all_module_accounts, BabeConfig, Balance, BalancesConfig, BandOracleConfig, CdpTreasuryConfig,
-		ContractsConfig, CurrencyId, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
+		get_all_module_accounts, BabeConfig, Balance, BalancesConfig, BandOracleConfig, ContractsConfig, CurrencyId,
+		DebtEngineConfig, DeptTreasuryConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
 		HomaCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
 		OperatorMembershipBandConfig, OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig,
 		ShadowsOracleConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig,
@@ -442,7 +442,7 @@ fn shadows_genesis(
 			],
 		}),
 		orml_vesting: Some(VestingConfig { vesting: vec![] }),
-		module_debt_treasury: Some(CdpTreasuryConfig {
+		module_debt_treasury: Some(DeptTreasuryConfig {
 			collateral_auction_maximum_size: vec![
 				(CurrencyId::Token(TokenSymbol::DOT), DOLLARS), // (currency_id, max size of a collateral auction)
 				(CurrencyId::Token(TokenSymbol::XBTC), 5 * CENTS),
