@@ -1,5 +1,5 @@
 [package]
-name = "module-honzon-benchmarking"
+name = "module-mintx-benchmarking"
 version = "0.0.1"
 authors = ["Shadow Developers"]
 edition = "2018"
@@ -12,7 +12,7 @@ frame-system = { version = "2.0.0", default-features = false }
 frame-benchmarking = { version = "2.0.0", default-features = false }
 orml-oracle = { path = "../../../orml/oracle", default-features = false }
 orml-traits = { path = "../../../orml/traits", default-features = false }
-honzon = { package = "module-honzon", path = "..", default-features = false }
+mintx = { package = "module-mintx", path = "..", default-features = false }
 prices = { package = "module-prices", path = "../../ingester", default-features = false }
 primitives = { package = "shadows-primitives", path = "../../../primitives", default-features = false }
 support = { package = "module-support", path = "../../support", default-features = false }
@@ -38,7 +38,7 @@ std = [
 	"frame-support/std",
 	"frame-system/std",
 	"frame-benchmarking/std",
-	"honzon/std",
+	"mintx/std",
 	"cdp-engine/std",
 	"lend/std",
 	"support/std",

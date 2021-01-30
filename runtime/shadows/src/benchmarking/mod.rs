@@ -6,8 +6,8 @@ pub mod auction_manager;
 pub mod cdp_engine;
 pub mod cdp_treasury;
 pub mod emergency_shutdown;
-pub mod honzon;
 pub mod incentives;
+pub mod mintx;
 pub mod prices;
 
 // orml benchmarking

@@ -1010,9 +1010,9 @@ impl module_cdp_engine::Trait for Runtime {
 	type WeightInfo = weights::cdp_engine::WeightInfo<Runtime>;
 }
 
-impl module_honzon::Trait for Runtime {
+impl module_mintx::Trait for Runtime {
 	type Event = Event;
-	type WeightInfo = weights::honzon::WeightInfo<Runtime>;
+	type WeightInfo = weights::mintx::WeightInfo<Runtime>;
 }
 
 impl module_emergency_shutdown::Trait for Runtime {
@@ -1363,7 +1363,7 @@ construct_runtime!(
 		// Honzon
 		AuctionManager: module_auction_manager::{Module, Storage, Call, Event<T>, ValidateUnsigned},
 		Lend: module_lend::{Module, Storage, Call, Event<T>},
-		Honzon: module_honzon::{Module, Storage, Call, Event<T>},
+		Honzon: module_mintx::{Module, Storage, Call, Event<T>},
 		CdpTreasury: module_cdp_treasury::{Module, Storage, Call, Config, Event},
 		CdpEngine: module_cdp_engine::{Module, Storage, Call, Event<T>, Config, ValidateUnsigned},
 		EmergencyShutdown: module_emergency_shutdown::{Module, Storage, Call, Event<T>},
@@ -1695,7 +1695,7 @@ impl_runtime_apis! {
 			orml_add_benchmark!(params, batches, auction_manager, benchmarking::auction_manager);
 			orml_add_benchmark!(params, batches, cdp_engine, benchmarking::cdp_engine);
 			orml_add_benchmark!(params, batches, emergency_shutdown, benchmarking::emergency_shutdown);
-			orml_add_benchmark!(params, batches, honzon, benchmarking::honzon);
+			orml_add_benchmark!(params, batches, mintx, benchmarking::mintx);
 			orml_add_benchmark!(params, batches, cdp_treasury, benchmarking::cdp_treasury);
 			orml_add_benchmark!(params, batches, accounts, benchmarking::accounts);
 			orml_add_benchmark!(params, batches, incentives, benchmarking::incentives);

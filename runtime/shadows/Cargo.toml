@@ -78,7 +78,7 @@ module-cdp-engine = { path = "../../modules/cdp_engine", default-features = fals
 module-cdp-treasury = { path = "../../modules/cdp_treasury", default-features = false }
 module-exchange = { path = "../../modules/exchange", default-features = false }
 module-emergency-shutdown = { path = "../../modules/emergency_shutdown", default-features = false }
-module-honzon = { path = "../../modules/mintx", default-features = false }
+module-mintx = { path = "../../modules/mintx", default-features = false }
 module-lend = { path = "../../modules/lend", default-features = false }
 module-nft = { path = "../../modules/nft", default-features = false }
 module-prices = { path = "../../modules/ingester", default-features = false }
@@ -89,7 +89,7 @@ module-nominees-election = { path = "../../modules/nominees_election", default-f
 module-staking-pool = { path = "../../modules/staking_pool", default-features = false }
 module-staking-pool-rpc-runtime-api = { path = "../../modules/staking_pool/rpc/runtime-api", default-features = false }
 module-polkadot-bridge = { path = "../../modules/polkadot_bridge", default-features = false }
-module-honzon-benchmarking = { path = "../../modules/mintx/benchmarking", default-features = false, optional = true }
+module-mintx-benchmarking = { path = "../../modules/mintx/benchmarking", default-features = false, optional = true }
 module-cdp-engine-benchmarking = { path = "../../modules/cdp_engine/benchmarking", default-features = false, optional = true }
 module-emergency-shutdown-benchmarking = { path = "../../modules/emergency_shutdown/benchmarking", default-features = false, optional = true }
 module-auction-manager-benchmarking = { path = "../../modules/auction_manager/benchmarking", default-features = false, optional = true }
@@ -172,7 +172,7 @@ std = [
 	"module-cdp-treasury/std",
 	"module-exchange/std",
 	"module-emergency-shutdown/std",
-	"module-honzon/std",
+	"module-mintx/std",
 	"module-lend/std",
 	"module-nft/std",
 	"module-prices/std",
@@ -203,7 +203,7 @@ runtime-benchmarks = [
 	"module-cdp-treasury/runtime-benchmarks",
 	"module-exchange/runtime-benchmarks",
 	"module-emergency-shutdown-benchmarking",
-	"module-honzon-benchmarking",
+	"module-mintx-benchmarking",
 	"module-nft-benchmarking",
 ]
 # When enabled, the runtime api will not be build.

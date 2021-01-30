@@ -15,7 +15,7 @@ use sp_runtime::{
 use sp_std::cell::RefCell;
 use support::{AuctionManager, ExchangeRate, Price, PriceProvider, Rate, Ratio};
 
-mod honzon {
+mod mintx {
 	pub use super::super::*;
 }
 
@@ -28,7 +28,7 @@ impl_outer_dispatch! {
 impl_outer_event! {
 	pub enum TestEvent for Runtime {
 		frame_system<T>,
-		honzon<T>,
+		mintx<T>,
 		cdp_engine<T>,
 		orml_tokens<T>,
 		lend<T>,

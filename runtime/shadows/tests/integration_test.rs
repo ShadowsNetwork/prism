@@ -592,7 +592,7 @@ fn test_exchange_module() {
 }
 
 #[test]
-fn test_honzon_module() {
+fn test_mintx_module() {
 	ExtBuilder::default()
 		.balances(vec![
 			(

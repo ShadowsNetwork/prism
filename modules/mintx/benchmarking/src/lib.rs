@@ -18,15 +18,15 @@ use sp_runtime::{
 };
 
 use cdp_engine::Module as CdpEngine;
-use honzon::Module as Honzon;
-use honzon::*;
+use mintx::Module as Honzon;
+use mintx::*;
 use orml_traits::{Change, DataFeeder, MultiCurrencyExtended};
 use primitives::{Amount, CurrencyId, TokenSymbol};
 use support::{ExchangeRate, Price, Rate, Ratio};
 
-pub struct Module<T: Trait>(honzon::Module<T>);
+pub struct Module<T: Trait>(mintx::Module<T>);
 
-pub trait Trait: honzon::Trait + orml_oracle::Trait<orml_oracle::Instance1> + prices::Trait {}
+pub trait Trait: mintx::Trait + orml_oracle::Trait<orml_oracle::Instance1> + prices::Trait {}
 
 const SEED: u32 = 0;
 

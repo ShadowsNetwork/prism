@@ -224,7 +224,7 @@ where
 	type Extrinsic = Extrinsic;
 }
 
-impl honzon::Trait for Runtime {
+impl mintx::Trait for Runtime {
 	type Event = ();
 }
 
