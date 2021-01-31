@@ -94,7 +94,7 @@ runtime_benchmarks! {
 		// adjust position
 		DebtEngine::adjust_position(&owner, currency_id, collateral_amount.try_into().unwrap(), min_debit_amount)?;
 
-		// modify liquidation rate to make the cdp unsafe
+		// modify liquidation rate to make the debt unsafe
 		DebtEngine::set_collateral_params(
 			RawOrigin::Root.into(),
 			currency_id,
@@ -144,7 +144,7 @@ runtime_benchmarks! {
 		// adjust position
 		DebtEngine::adjust_position(&owner, currency_id, collateral_amount.try_into().unwrap(), min_debit_amount)?;
 
-		// modify liquidation rate to make the cdp unsafe
+		// modify liquidation rate to make the debt unsafe
 		DebtEngine::set_collateral_params(
 			RawOrigin::Root.into(),
 			currency_id,

@@ -133,9 +133,9 @@ impl auction_manager::Trait for Runtime {
 	type AuctionDurationSoftCap = AuctionDurationSoftCap;
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
-	type DEPTTreasury = DEPTTreasuryModule;
+	type debtreasury = DEBTTreasuryModule;
 	type EXCHANGE = ();
-	type PriceSource = ingester::Module<Runtime>;
+	type PriceSource = prices::Module<Runtime>;
 	type UnsignedPriority = UnsignedPriority;
 	type EmergencyShutdown = EmergencyShutdownModule;
 	type WeightInfo = ();
@@ -159,7 +159,7 @@ ord_parameter_types! {
 
 parameter_types! {
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
 impl debt_treasury::Trait for Runtime {
@@ -170,10 +170,10 @@ impl debt_treasury::Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type EXCHANGE = ();
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = DEPTTreasuryModuleId;
+	type ModuleId = DEBTTreasuryModuleId;
 	type WeightInfo = ();
 }
-pub type DEPTTreasuryModule = debt_treasury::Module<Runtime>;
+pub type DEBTTreasuryModule = debt_treasury::Module<Runtime>;
 
 parameter_types! {
 	pub const MinimumPeriod: u64 = 5;
@@ -217,7 +217,7 @@ parameter_types! {
 	pub StableCurrencyFixedPrice: Price = Price::one();
 }
 
-impl ingester::Trait for Runtime {
+impl prices::Trait for Runtime {
 	type Event = ();
 	type Source = orml_oracle::Module<Runtime, orml_oracle::Instance1>;
 	type GetStableCurrencyId = GetStableCurrencyId;
@@ -237,16 +237,16 @@ impl Convert<(CurrencyId, Balance), Balance> for MockConvert {
 }
 
 parameter_types! {
-	pub const LendModuleId: ModuleId = ModuleId(*b"aca/loan");
+	pub const LoansModuleId: ModuleId = ModuleId(*b"aca/loan");
 }
 
-impl lend::Trait for Runtime {
+impl loans::Trait for Runtime {
 	type Event = ();
 	type Convert = MockConvert;
 	type Currency = Tokens;
 	type RiskManager = ();
-	type DEPTTreasury = DEPTTreasuryModule;
-	type ModuleId = LendModuleId;
+	type DEBTTreasury = DEBTTreasuryModule;
+	type ModuleId = LoansModuleId;
 	type OnUpdateLoan = ();
 }
 
@@ -257,8 +257,8 @@ parameter_types! {
 impl emergency_shutdown::Trait for Runtime {
 	type Event = ();
 	type CollateralCurrencyIds = CollateralCurrencyIds;
-	type PriceSource = ingester::Module<Runtime>;
-	type DEPTTreasury = DEPTTreasuryModule;
+	type PriceSource = prices::Module<Runtime>;
+	type DEBTTreasury = DEBTTreasuryModule;
 	type AuctionManagerHandler = AuctionManagerModule;
 	type ShutdownOrigin = EnsureRoot<AccountId>;
 	type WeightInfo = ();

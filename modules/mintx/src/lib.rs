@@ -2,9 +2,9 @@
 //!
 //! ## Overview
 //!
-//! The entry of the Mintx protocol for users, user can manipulate their CDP
+//! The entry of the Mintx protocol for users, user can manipulate their DEBT
 //! position to loan/payback, and can also authorize others to manage the their
-//! CDP under specific collateral type.
+//! DEBT under specific collateral type.
 //!
 //! After system shutdown, some operations will be restricted.
 
@@ -76,10 +76,10 @@ decl_module! {
 		/// Adjust the lend of `currency_id` by specific `collateral_adjustment` and `debit_adjustment`
 		///
 		/// - `currency_id`: collateral currency id.
-		/// - `collateral_adjustment`: signed amount, positive means to deposit collateral currency into CDP,
-		///			negative means withdraw collateral currency from CDP.
+		/// - `collateral_adjustment`: signed amount, positive means to deposit collateral currency into DEBT,
+		///			negative means withdraw collateral currency from DEBT.
 		/// - `debit_adjustment`: signed amount, positive means to issue some amount of stablecoin to caller according to the debit adjustment,
-		///			negative means caller will payback some amount of stablecoin to CDP according to to the debit adjustment.
+		///			negative means caller will payback some amount of stablecoin to DEBT according to to the debit adjustment.
 		///
 		/// # <weight>
 		/// - Complexity: `O(1)`
@@ -107,7 +107,7 @@ decl_module! {
 			})?;
 		}
 
-		/// Transfer the whole CDP of `from` under `currency_id` to caller's CDP under the same `currency_id`,
+		/// Transfer the whole DEBT of `from` under `currency_id` to caller's DEBT under the same `currency_id`,
 		/// caller must have the authorization of `from` for the specific collateral type
 		///
 		/// - `currency_id`: collateral currency id.

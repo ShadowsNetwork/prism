@@ -117,7 +117,7 @@ ord_parameter_types! {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
 impl debt_treasury::Trait for Runtime {
@@ -128,10 +128,10 @@ impl debt_treasury::Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type EXCHANGE = EXCHANGEModule;
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = DEPTTreasuryModuleId;
+	type ModuleId = DEBTTreasuryModuleId;
 	type WeightInfo = ();
 }
-pub type DEPTTreasuryModule = debt_treasury::Module<Runtime>;
+pub type DEBTTreasuryModule = debt_treasury::Module<Runtime>;
 
 thread_local! {
 	static RELATIVE_PRICE: RefCell<Option<Price>> = RefCell::new(Some(Price::one()));
@@ -156,8 +156,7 @@ impl PriceProvider<CurrencyId> for MockPriceSource {
 
 	fn unlock_price(_currency_id: CurrencyId) {}
 }
-
-parameter_types! {
+zpes! {
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
@@ -207,7 +206,7 @@ impl Trait for Runtime {
 	type AuctionDurationSoftCap = AuctionDurationSoftCap;
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
-	type DEPTTreasury = DEPTTreasuryModule;
+	type DEBTTreasury = DEBTTreasuryModule;
 	type EXCHANGE = EXCHANGEModule;
 	type PriceSource = MockPriceSource;
 	type UnsignedPriority = UnsignedPriority;

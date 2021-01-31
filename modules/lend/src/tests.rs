@@ -5,7 +5,7 @@
 use super::*;
 use frame_support::{assert_noop, assert_ok};
 use mock::{
-	Currencies, DEPTTreasuryModule, ExtBuilder, LendModule, Runtime, System, TestEvent, ALICE, AUSD, BOB, BTC, DOT,
+	Currencies, DEBTTreasuryModule, ExtBuilder, LendModule, Runtime, System, TestEvent, ALICE, AUSD, BOB, BTC, DOT,
 };
 
 #[test]
@@ -153,14 +153,14 @@ fn confiscate_collateral_and_debit_work() {
 		);
 
 		assert_ok!(LendModule::adjust_position(&ALICE, BTC, 500, 300));
-		assert_eq!(DEPTTreasuryModule::get_total_collaterals(BTC), 0);
-		assert_eq!(DEPTTreasuryModule::debit_pool(), 0);
+		assert_eq!(DEBTTreasuryModule::get_total_collaterals(BTC), 0);
+		assert_eq!(DEBTTreasuryModule::debit_pool(), 0);
 		assert_eq!(LendModule::positions(BTC, &ALICE).debit, 300);
 		assert_eq!(LendModule::positions(BTC, &ALICE).collateral, 500);
 
 		assert_ok!(LendModule::confiscate_collateral_and_debit(&ALICE, BTC, 300, 200));
-		assert_eq!(DEPTTreasuryModule::get_total_collaterals(BTC), 300);
-		assert_eq!(DEPTTreasuryModule::debit_pool(), 100);
+		assert_eq!(DEBTTreasuryModule::get_total_collaterals(BTC), 300);
+		assert_eq!(DEBTTreasuryModule::debit_pool(), 100);
 		assert_eq!(LendModule::positions(BTC, &ALICE).debit, 100);
 		assert_eq!(LendModule::positions(BTC, &ALICE).collateral, 200);
 

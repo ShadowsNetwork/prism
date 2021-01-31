@@ -18,7 +18,7 @@ use emergency_shutdown::Module as EmergencyShutdown;
 use emergency_shutdown::*;
 use orml_traits::{DataFeeder, MultiCurrencyExtended};
 use primitives::{Balance, CurrencyId};
-use support::{DEPTTreasury, Price};
+use support::{DEBTTreasury, Price};
 
 pub struct Module<T: Trait>(emergency_shutdown::Module<T>);
 
@@ -66,10 +66,10 @@ benchmarks! {
 		let currency_ids = <T as emergency_shutdown::Trait>::CollateralCurrencyIds::get();
 		for currency_id in currency_ids {
 			<T as lend::Trait>::Currency::update_balance(currency_id, &funder, dollar(100).unique_saturated_into())?;
-			<T as emergency_shutdown::Trait>::DEPTTreasury::deposit_collateral(&funder, currency_id, dollar(100))?;
+			<T as emergency_shutdown::Trait>::DEBTTreasury::deposit_collateral(&funder, currency_id, dollar(100))?;
 		}
-		<T as emergency_shutdown::Trait>::DEPTTreasury::issue_debit(&caller, dollar(1000), true)?;
-		<T as emergency_shutdown::Trait>::DEPTTreasury::issue_debit(&funder, dollar(9000), true)?;
+		<T as emergency_shutdown::Trait>::DEBTTreasury::issue_debit(&caller, dollar(1000), true)?;
+		<T as emergency_shutdown::Trait>::DEBTTreasury::issue_debit(&funder, dollar(9000), true)?;
 
 		EmergencyShutdown::<T>::emergency_shutdown(RawOrigin::Root.into())?;
 		EmergencyShutdown::<T>::open_collateral_refund(RawOrigin::Root.into())?;

@@ -1,4 +1,4 @@
-//! Mocks for the cdp treasury module.
+//! Mocks for the debt treasury module.
 
 #![cfg(test)]
 
@@ -198,7 +198,7 @@ ord_parameter_types! {
 }
 
 parameter_types! {
-	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
 thread_local! {
@@ -213,10 +213,10 @@ impl Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type EXCHANGE = EXCHANGEModule;
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = DEPTTreasuryModuleId;
+	type ModuleId = DEBTTreasuryModuleId;
 	type WeightInfo = ();
 }
-pub type DEPTTreasuryModule = Module<Runtime>;
+pub type DEBTTreasuryModule = Module<Runtime>;
 
 pub struct ExtBuilder {
 	endowed_accounts: Vec<(AccountId, CurrencyId, Balance)>,

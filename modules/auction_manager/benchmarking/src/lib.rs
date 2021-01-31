@@ -16,7 +16,7 @@ use frame_system::RawOrigin;
 use orml_traits::{DataFeeder, MultiCurrency};
 use primitives::{AuctionId, Balance, CurrencyId, TokenSymbol};
 use sp_runtime::{DispatchError, FixedPointNumber};
-use support::{AuctionManager as AuctionManagerTrait, DEPTTreasury, Price};
+use support::{AuctionManager as AuctionManagerTrait, DEBTTreasury, Price};
 
 pub struct Module<T: Trait>(auction_manager::Module<T>);
 
@@ -103,7 +103,7 @@ benchmarks! {
 		// set balance
 		<T as auction_manager::Trait>::Currency::deposit(stable_currency_id, &bidder, dollar(80))?;
 		<T as auction_manager::Trait>::Currency::deposit(CurrencyId::Token(TokenSymbol::DOT), &funder, dollar(1))?;
-		<T as auction_manager::Trait>::DEPTTreasury::deposit_collateral(&funder, CurrencyId::Token(TokenSymbol::DOT), dollar(1))?;
+		<T as auction_manager::Trait>::DEBTTreasury::deposit_collateral(&funder, CurrencyId::Token(TokenSymbol::DOT), dollar(1))?;
 
 		// feed price
 		feed_price::<T>(CurrencyId::Token(TokenSymbol::DOT), Price::saturating_from_integer(120))?;

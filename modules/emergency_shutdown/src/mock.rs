@@ -140,7 +140,7 @@ impl lend::Trait for Runtime {
 	type Convert = MockConvert;
 	type Currency = Tokens;
 	type RiskManager = ();
-	type DEPTTreasury = DEPTTreasuryModule;
+	type DEBTTreasury = DEBTTreasuryModule;
 	type ModuleId = LendModuleId;
 	type OnUpdateLoan = ();
 }
@@ -211,7 +211,7 @@ ord_parameter_types! {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
 impl debt_treasury::Trait for Runtime {
@@ -222,10 +222,10 @@ impl debt_treasury::Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type EXCHANGE = ();
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = DEPTTreasuryModuleId;
+	type ModuleId = DEBTTreasuryModuleId;
 	type WeightInfo = ();
 }
-pub type DEPTTreasuryModule = debt_treasury::Module<Runtime>;
+pub type DEBTTreasuryModule = debt_treasury::Module<Runtime>;
 
 ord_parameter_types! {
 	pub const CollateralCurrencyIds: Vec<CurrencyId> = vec![BTC, DOT];
@@ -235,7 +235,7 @@ impl Trait for Runtime {
 	type Event = TestEvent;
 	type CollateralCurrencyIds = CollateralCurrencyIds;
 	type PriceSource = MockPriceSource;
-	type DEPTTreasury = DEPTTreasuryModule;
+	type DEBTTreasury = DEBTTreasuryModule;
 	type AuctionManagerHandler = MockAuctionManager;
 	type ShutdownOrigin = EnsureSignedBy<One, AccountId>;
 	type WeightInfo = ();

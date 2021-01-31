@@ -12,7 +12,7 @@ use primitives::TokenSymbol;
 use sp_core::H256;
 use sp_runtime::{testing::Header, traits::IdentityLookup, Perbill};
 use sp_std::cell::RefCell;
-pub use support::{DEPTTreasury, EXCHANGEManager, Price, Ratio};
+pub use support::{DEBTTreasury, EXCHANGEManager, Price, Ratio};
 
 pub type AccountId = u128;
 pub type BlockNumber = u64;
@@ -91,8 +91,8 @@ impl orml_tokens::Trait for Runtime {
 }
 pub type TokensModule = orml_tokens::Module<Runtime>;
 
-pub struct MockDEPTTreasury;
-impl DEPTTreasury<AccountId> for MockDEPTTreasury {
+pub struct MockDEBTTreasury;
+impl DEBTTreasury<AccountId> for MockDEBTTreasury {
 	type Balance = Balance;
 	type CurrencyId = CurrencyId;
 
@@ -229,7 +229,7 @@ impl Trait for Runtime {
 	type IncentiveCurrencyId = IncentiveCurrencyId;
 	type SavingCurrencyId = SavingCurrencyId;
 	type UpdateOrigin = EnsureSignedBy<Four, AccountId>;
-	type DEPTTreasury = MockDEPTTreasury;
+	type DEBTTreasury = MockDEBTTreasury;
 	type Currency = TokensModule;
 	type EXCHANGE = MockEXCHANGE;
 	type EmergencyShutdown = MockEmergencyShutdown;

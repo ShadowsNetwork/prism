@@ -1,4 +1,4 @@
-//! Mocks for the cdp engine module.
+//! Mocks for the debt engine module.
 
 #![cfg(test)]
 
@@ -54,7 +54,7 @@ impl_outer_origin! {
 
 impl_outer_dispatch! {
 	pub enum Call for Runtime where origin: Origin {
-		debt_engine::CDPEngineModule,
+		debt_engine::DEBTEngineModule,
 	}
 }
 
@@ -141,8 +141,8 @@ impl lend::Trait for Runtime {
 	type Event = TestEvent;
 	type Convert = DebitExchangeRateConvertor<Runtime>;
 	type Currency = Currencies;
-	type RiskManager = CDPEngineModule;
-	type DEPTTreasury = DEPTTreasuryModule;
+	type RiskManager = DEBTEngineModule;
+	type DEBTTreasury = DEBTTreasuryModule;
 	type ModuleId = LendModuleId;
 	type OnUpdateLoan = ();
 }
@@ -223,7 +223,7 @@ impl AuctionManager<AccountId> for MockAuctionManager {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
 impl debt_treasury::Trait for Runtime {
@@ -234,10 +234,10 @@ impl debt_treasury::Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type EXCHANGE = EXCHANGEModule;
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = DEPTTreasuryModuleId;
+	type ModuleId = DEBTTreasuryModuleId;
 	type WeightInfo = ();
 }
-pub type DEPTTreasuryModule = debt_treasury::Module<Runtime>;
+pub type DEBTTreasuryModule = debt_treasury::Module<Runtime>;
 
 parameter_types! {
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
@@ -295,7 +295,7 @@ impl Trait for Runtime {
 	type DefaultLiquidationPenalty = DefaultLiquidationPenalty;
 	type MinimumDebitValue = MinimumDebitValue;
 	type GetStableCurrencyId = GetStableCurrencyId;
-	type DEPTTreasury = DEPTTreasuryModule;
+	type DEBTTreasury = DEBTTreasuryModule;
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
 	type EXCHANGE = EXCHANGEModule;
@@ -303,7 +303,7 @@ impl Trait for Runtime {
 	type EmergencyShutdown = MockEmergencyShutdown;
 	type WeightInfo = ();
 }
-pub type CDPEngineModule = Module<Runtime>;
+pub type DEBTEngineModule = Module<Runtime>;
 
 /// An extrinsic type used for tests.
 pub type Extrinsic = TestXt<Call, ()>;

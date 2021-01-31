@@ -7,7 +7,7 @@ use super::utils::set_balance;
 use frame_benchmarking::account;
 use frame_system::RawOrigin;
 use module_support::AuctionManager as AuctionManagerTrait;
-use module_support::DEPTTreasury;
+use module_support::DEBTTreasury;
 use orml_benchmarking::runtime_benchmarks;
 use orml_traits::MultiCurrency;
 use sp_runtime::FixedPointNumber;

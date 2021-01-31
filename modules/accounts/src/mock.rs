@@ -1,4 +1,4 @@
-//! Mocks for the cdp treasury module.
+//! Mocks for the debt treasury module.
 
 #![cfg(test)]
 

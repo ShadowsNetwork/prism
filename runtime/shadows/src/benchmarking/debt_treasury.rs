@@ -1,7 +1,7 @@
 use crate::{Balance, CollateralCurrencyIds, Currencies, CurrencyId, DeptTreasury, Runtime, DOLLARS};
 
 use frame_system::RawOrigin;
-use module_support::DEPTTreasury;
+use module_support::DEBTTreasury;
 use orml_benchmarking::runtime_benchmarks;
 use orml_traits::MultiCurrency;
 use sp_std::prelude::*;

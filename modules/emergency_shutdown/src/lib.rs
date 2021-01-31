@@ -7,7 +7,7 @@
 //! to shutdown system is made, emergency shutdown module needs to trigger all
 //! related module to halt, and start a series of operations including close
 //! some user entry, freeze feed ingester, run offchain worker to settle
-//! CDPs has debit, cancel all active auctions module, when debits and gaps are
+//! DEBTs has debit, cancel all active auctions module, when debits and gaps are
 //! settled, the stable currency holder are allowed to refund a basket of
 //! remaining collateral assets.
 
@@ -23,7 +23,7 @@ use orml_utilities::with_transaction_result;
 use primitives::{Balance, CurrencyId};
 use sp_runtime::{traits::Zero, FixedPointNumber};
 use sp_std::prelude::*;
-use support::{AuctionManager, DEPTTreasury, EmergencyShutdown, PriceProvider, Ratio};
+use support::{AuctionManager, DEBTTreasury, EmergencyShutdown, PriceProvider, Ratio};
 
 mod default_weight;
 mod mock;
@@ -44,8 +44,8 @@ pub trait Trait: system::Trait + lend::Trait {
 	/// Price source to freeze currencies' price
 	type PriceSource: PriceProvider<CurrencyId>;
 
-	/// CDP treasury to escrow collateral assets after settlement
-	type DEPTTreasury: DEPTTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
+	/// DEBT treasury to escrow collateral assets after settlement
+	type DEBTTreasury: DEBTTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
 
 	/// Check the auction cancellation to decide whether to open the final
 	/// redemption
@@ -114,7 +114,7 @@ decl_module! {
 		///
 		/// # <weight>
 		/// - Preconditions:
-		/// 	- T::DEPTTreasury is module_debt_treasury
+		/// 	- T::DEBTTreasury is module_debt_treasury
 		/// 	- T::AuctionManagerHandler is module_auction_manager
 		/// 	- T::OnShutdown is (module_debt_treasury, module_debt_engine, module_mintx, module_exchange)
 		/// - Complexity: `O(1)`
@@ -149,7 +149,7 @@ decl_module! {
 		///
 		/// # <weight>
 		/// - Preconditions:
-		/// 	- T::DEPTTreasury is module_debt_treasury
+		/// 	- T::DEBTTreasury is module_debt_treasury
 		/// 	- T::AuctionManagerHandler is module_auction_manager
 		/// 	- T::OnShutdown is (module_debt_treasury, module_debt_engine, module_mintx, module_exchange)
 		/// - Complexity: `O(1)`
@@ -172,8 +172,8 @@ decl_module! {
 					Error::<T>::ExistPotentialSurplus,
 				);
 
-				// Ensure all debits of CDPs have been settled, and all collateral auction has been done or canceled.
-				// Settle all collaterals type CDPs which have debit, cancel all collateral auctions in forward stage and
+				// Ensure all debits of DEBTs have been settled, and all collateral auction has been done or canceled.
+				// Settle all collaterals type DEBTs which have debit, cancel all collateral auctions in forward stage and
 				// wait for all collateral auctions in reverse stage to be ended.
 				let collateral_currency_ids = T::CollateralCurrencyIds::get();
 				for currency_id in collateral_currency_ids {
@@ -182,7 +182,7 @@ decl_module! {
 						<T as Trait>::AuctionManagerHandler::get_total_collateral_in_auction(currency_id).is_zero(),
 						Error::<T>::ExistPotentialSurplus,
 					);
-					// there's on debit in CDP
+					// there's on debit in DEBT
 					ensure!(
 						<lend::Module<T>>::total_positions(currency_id).debit.is_zero(),
 						Error::<T>::ExistUnhandledDebit,
@@ -202,7 +202,7 @@ decl_module! {
 		///
 		/// # <weight>
 		/// - Preconditions:
-		/// 	- T::DEPTTreasury is module_debt_treasury
+		/// 	- T::DEBTTreasury is module_debt_treasury
 		/// 	- T::AuctionManagerHandler is module_auction_manager
 		/// 	- T::OnShutdown is (module_debt_treasury, module_debt_engine, module_mintx, module_exchange)
 		/// - Complexity: `O(1)`
@@ -217,20 +217,20 @@ decl_module! {
 				let who = ensure_signed(origin)?;
 				ensure!(Self::can_refund(), Error::<T>::CanNotRefund);
 
-				let refund_ratio: Ratio = <T as Trait>::DEPTTreasury::get_debit_proportion(amount);
+				let refund_ratio: Ratio = <T as Trait>::DEBTTreasury::get_debit_proportion(amount);
 				let collateral_currency_ids = T::CollateralCurrencyIds::get();
 
-				// burn caller's stable currency by CDP treasury
-				<T as Trait>::DEPTTreasury::burn_debit(&who, amount)?;
+				// burn caller's stable currency by DEBT treasury
+				<T as Trait>::DEBTTreasury::burn_debit(&who, amount)?;
 
 				let mut refund_assets: Vec<(CurrencyId, Balance)> = vec![];
-				// refund collaterals to caller by CDP treasury
+				// refund collaterals to caller by DEBT treasury
 				for currency_id in collateral_currency_ids {
 					let refund_amount = refund_ratio
-						.saturating_mul_int(<T as Trait>::DEPTTreasury::get_total_collaterals(currency_id));
+						.saturating_mul_int(<T as Trait>::DEBTTreasury::get_total_collaterals(currency_id));
 
 					if !refund_amount.is_zero() {
-						<T as Trait>::DEPTTreasury::withdraw_collateral(&who, currency_id, refund_amount)?;
+						<T as Trait>::DEBTTreasury::withdraw_collateral(&who, currency_id, refund_amount)?;
 						refund_assets.push((currency_id, refund_amount));
 					}
 				}

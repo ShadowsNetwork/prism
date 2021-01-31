@@ -16,7 +16,7 @@ use sp_runtime::{
 	FixedPointNumber, ModuleId, RuntimeDebug,
 };
 use sp_std::prelude::*;
-use support::{DEPTTreasury, EXCHANGEManager, EmergencyShutdown, Rate};
+use support::{DEBTTreasury, EXCHANGEManager, EmergencyShutdown, Rate};
 
 mod default_weight;
 mod mock;
@@ -35,7 +35,7 @@ pub trait WeightInfo {
 /// PoolId for various rewards pools
 #[derive(Encode, Decode, Copy, Clone, PartialEq, Eq, RuntimeDebug)]
 pub enum PoolId {
-	/// Rewards(DOS) pool for users who open CDP
+	/// Rewards(DOS) pool for users who open DEBT
 	Lend(CurrencyId),
 	/// Rewards(DOS) pool for market makers who provide exchange liquidity
 	ExchangeIncentive(CurrencyId),
@@ -96,8 +96,8 @@ pub trait Trait:
 	/// The origin which may update incentive related params
 	type UpdateOrigin: EnsureOrigin<Self::Origin>;
 
-	/// CDP treasury to issue rewards in AUSD
-	type DEPTTreasury: DEPTTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
+	/// DEBT treasury to issue rewards in AUSD
+	type DEBTTreasury: DEBTTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
 
 	/// Currency for transfer/issue assets
 	type Currency: MultiCurrency<Self::AccountId, CurrencyId = CurrencyId, Balance = Balance>;
@@ -393,7 +393,7 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 									if !saving_currency_amount.is_zero() {
 										let saving_reward =
 											exchange_saving_rate.saturating_mul_int(saving_currency_amount);
-										if T::DEPTTreasury::issue_debit(
+										if T::DEBTTreasury::issue_debit(
 											&T::ExchangeIncentivePool::get(),
 											saving_reward,
 											false,

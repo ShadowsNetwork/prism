@@ -2,7 +2,7 @@
 //!
 //! ## Overview
 //!
-//! Lend module manages CDP's collateral assets and the debits backed by these
+//! Lend module manages DEBT's collateral assets and the debits backed by these
 //! assets.
 
 #![cfg_attr(not(feature = "std"), no_std)]
@@ -21,7 +21,7 @@ use sp_runtime::{
 	DispatchResult, ModuleId, RuntimeDebug,
 };
 use sp_std::{convert::TryInto, result};
-use support::{DEPTTreasury, RiskManager};
+use support::{DEBTTreasury, RiskManager};
 
 mod mock;
 mod tests;
@@ -37,14 +37,14 @@ pub trait Trait: system::Trait {
 	/// module
 	type Currency: MultiCurrencyExtended<Self::AccountId, CurrencyId = CurrencyId, Balance = Balance, Amount = Amount>;
 
-	/// Risk manager is used to limit the debit size of CDP
+	/// Risk manager is used to limit the debit size of DEBT
 	type RiskManager: RiskManager<Self::AccountId, CurrencyId, Balance, Balance>;
 
-	/// CDP treasury for issuing/burning stable currency adjust debit value
+	/// DEBT treasury for issuing/burning stable currency adjust debit value
 	/// adjustment
-	type DEPTTreasury: DEPTTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
+	type DEBTTreasury: DEBTTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
 
-	/// The loan's module id, keep all collaterals of CDPs.
+	/// The loan's module id, keep all collaterals of DEBTs.
 	type ModuleId: Get<ModuleId>;
 
 	/// Event handler which calls when update loan.
@@ -81,7 +81,7 @@ decl_event!(
 	{
 		/// Position updated. \[owner, collateral_type, collateral_adjustment, debit_adjustment\]
 		PositionUpdated(AccountId, CurrencyId, Amount, Amount),
-		/// Confiscate CDP's collateral assets and eliminate its debit. \[owner, collateral_type, confiscated_collateral_amount, deduct_debit_amount\]
+		/// Confiscate DEBT's collateral assets and eliminate its debit. \[owner, collateral_type, confiscated_collateral_amount, deduct_debit_amount\]
 		ConfiscateCollateralAndDebit(AccountId, CurrencyId, Balance, Balance),
 		/// Transfer loan. \[from, to, currency_id\]
 		TransferLoan(AccountId, AccountId, CurrencyId),
@@ -104,7 +104,7 @@ decl_module! {
 		type Error = Error<T>;
 		fn deposit_event() = default;
 
-		/// The loan's module id, keep all collaterals of CDPs.
+		/// The loan's module id, keep all collaterals of DEBTs.
 		const ModuleId: ModuleId = T::ModuleId::get();
 	}
 }
@@ -114,7 +114,7 @@ impl<T: Trait> Module<T> {
 		T::ModuleId::get().into_account()
 	}
 
-	/// confiscate collateral and debit to cdp treasury
+	/// confiscate collateral and debit to debt treasury
 	pub fn confiscate_collateral_and_debit(
 		who: &T::AccountId,
 		currency_id: CurrencyId,
@@ -127,12 +127,12 @@ impl<T: Trait> Module<T> {
 			let collateral_adjustment = Self::amount_try_from_balance(collateral_confiscate)?;
 			let debit_adjustment = Self::amount_try_from_balance(debit_decrease)?;
 
-			// transfer collateral to cdp treasury
-			T::DEPTTreasury::deposit_collateral(&Self::account_id(), currency_id, collateral_confiscate)?;
+			// transfer collateral to debt treasury
+			T::DEBTTreasury::deposit_collateral(&Self::account_id(), currency_id, collateral_confiscate)?;
 
-			// deposit debit to cdp treasury
+			// deposit debit to debt treasury
 			let bad_debt_value = T::RiskManager::get_bad_debt_value(currency_id, debit_decrease);
-			T::DEPTTreasury::on_system_debit(bad_debt_value)?;
+			T::DEBTTreasury::on_system_debit(bad_debt_value)?;
 
 			// update loan
 			Self::update_loan(
@@ -178,12 +178,12 @@ impl<T: Trait> Module<T> {
 				// check debit cap when increase debit
 				T::RiskManager::check_debit_cap(currency_id, Self::total_positions(currency_id).debit)?;
 
-				// issue debit with collateral backed by cdp treasury
-				T::DEPTTreasury::issue_debit(who, T::Convert::convert((currency_id, debit_balance_adjustment)), true)?;
+				// issue debit with collateral backed by debt treasury
+				T::DEBTTreasury::issue_debit(who, T::Convert::convert((currency_id, debit_balance_adjustment)), true)?;
 			} else if debit_adjustment.is_negative() {
 				// repay debit
-				// burn debit by cdp treasury
-				T::DEPTTreasury::burn_debit(who, T::Convert::convert((currency_id, debit_balance_adjustment)))?;
+				// burn debit by debt treasury
+				T::DEBTTreasury::burn_debit(who, T::Convert::convert((currency_id, debit_balance_adjustment)))?;
 			}
 
 			// ensure pass risk check

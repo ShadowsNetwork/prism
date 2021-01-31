@@ -6,7 +6,7 @@ use frame_support::{
 };
 use frame_system::RawOrigin;
 use module_debt_engine::LiquidationStrategy;
-use module_support::{DEPTTreasury, EXCHANGEManager, Price, Rate, Ratio, RiskManager};
+use module_support::{DEBTTreasury, EXCHANGEManager, Price, Rate, Ratio, RiskManager};
 use orml_authority::DelayedOrigin;
 use orml_traits::{Change, MultiCurrency};
 use shadows_runtime::{
@@ -257,7 +257,7 @@ fn emergency_shutdown_and_debt_treasury() {
 }
 
 #[test]
-fn liquidate_cdp() {
+fn liquidate_debt() {
 	ExtBuilder::default()
 		.balances(vec![
 			(
@@ -347,13 +347,13 @@ fn liquidate_cdp() {
 				Change::NoChange,
 			));
 
-			assert_ok!(DebtEngineModule::liquidate_unsafe_cdp(
+			assert_ok!(DebtEngineModule::liquidate_unsafe_debt(
 				AccountId::from(ALICE),
 				CurrencyId::Token(TokenSymbol::XBTC)
 			));
 
-			let liquidate_alice_xbtc_cdp_event =
-				Event::module_debt_engine(module_debt_engine::RawEvent::LiquidateUnsafeCDP(
+			let liquidate_alice_xbtc_debt_event =
+				Event::module_debt_engine(module_debt_engine::RawEvent::LiquidateUnsafeDEBT(
 					CurrencyId::Token(TokenSymbol::XBTC),
 					AccountId::from(ALICE),
 					amount(10),
@@ -362,7 +362,7 @@ fn liquidate_cdp() {
 				));
 			assert!(SystemModule::events()
 				.iter()
-				.any(|record| record.event == liquidate_alice_xbtc_cdp_event));
+				.any(|record| record.event == liquidate_alice_xbtc_debt_event));
 
 			assert_eq!(
 				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
@@ -375,13 +375,13 @@ fn liquidate_cdp() {
 			assert_eq!(AuctionManagerModule::collateral_auctions(0).is_some(), true);
 			assert_eq!(DeptTreasuryModule::debit_pool(), amount(50_000));
 
-			assert_ok!(DebtEngineModule::liquidate_unsafe_cdp(
+			assert_ok!(DebtEngineModule::liquidate_unsafe_debt(
 				AccountId::from(BOB),
 				CurrencyId::Token(TokenSymbol::XBTC)
 			));
 
-			let liquidate_bob_xbtc_cdp_event =
-				Event::module_debt_engine(module_debt_engine::RawEvent::LiquidateUnsafeCDP(
+			let liquidate_bob_xbtc_debt_event =
+				Event::module_debt_engine(module_debt_engine::RawEvent::LiquidateUnsafeDEBT(
 					CurrencyId::Token(TokenSymbol::XBTC),
 					AccountId::from(BOB),
 					amount(1),
@@ -390,7 +390,7 @@ fn liquidate_cdp() {
 				));
 			assert!(SystemModule::events()
 				.iter()
-				.any(|record| record.event == liquidate_bob_xbtc_cdp_event));
+				.any(|record| record.event == liquidate_bob_xbtc_debt_event));
 
 			assert_eq!(
 				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(BOB)).debit,
@@ -779,7 +779,7 @@ fn test_debt_engine_module() {
 			);
 
 			assert_noop!(
-				DebtEngineModule::settle_cdp_has_debit(AccountId::from(ALICE), CurrencyId::Token(TokenSymbol::XBTC)),
+				DebtEngineModule::settle_debt_has_debit(AccountId::from(ALICE), CurrencyId::Token(TokenSymbol::XBTC)),
 				module_debt_engine::Error::<Runtime>::NoDebitValue,
 			);
 
@@ -809,18 +809,19 @@ fn test_debt_engine_module() {
 				DeptTreasuryModule::total_collaterals(CurrencyId::Token(TokenSymbol::XBTC)),
 				0
 			);
-			assert_ok!(DebtEngineModule::settle_cdp_has_debit(
+			assert_ok!(DebtEngineModule::settle_debt_has_debit(
 				AccountId::from(ALICE),
 				CurrencyId::Token(TokenSymbol::XBTC)
 			));
 
-			let settle_cdp_in_debit_event = Event::module_debt_engine(module_debt_engine::RawEvent::SettleCDPInDebit(
-				CurrencyId::Token(TokenSymbol::XBTC),
-				AccountId::from(ALICE),
-			));
+			let settle_debt_in_debit_event =
+				Event::module_debt_engine(module_debt_engine::RawEvent::SettleDEBTInDebit(
+					CurrencyId::Token(TokenSymbol::XBTC),
+					AccountId::from(ALICE),
+				));
 			assert!(SystemModule::events()
 				.iter()
-				.any(|record| record.event == settle_cdp_in_debit_event));
+				.any(|record| record.event == settle_debt_in_debit_event));
 
 			assert_eq!(
 				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,

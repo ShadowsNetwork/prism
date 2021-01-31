@@ -4,10 +4,10 @@
 //!
 //! Built-in decentralized exchange modules in Shadowse network, the swap
 //! mechanism refers to the design of Uniswap V2. In addition to being used for
-//! trading, EXCHANGE also participates in CDP liquidation, which is faster than
-//! liquidation by auction when the liquidity is sufficient. And providing
+//! trading, EXCHANGE also participates in DEBT liquidation, which is faster
+//! than liquidation by auction when the liquidity is sufficient. And providing
 //! market making liquidity for EXCHANGE will also receive stable currency as
-//! additional reward for its participation in the CDP liquidation.
+//! additional reward for its participation in the DEBT liquidation.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 

@@ -1,4 +1,4 @@
-//! Mocks for the cdp engine benchmarking.
+//! Mocks for the debt engine benchmarking.
 
 #![cfg(test)]
 
@@ -17,7 +17,7 @@ use support::{AuctionManager, ExchangeRate, ExchangeRateProvider, Price, Rate, R
 
 impl_outer_dispatch! {
 	pub enum Call for Runtime where origin: Origin {
-		debt_engine::CDPEngineModule,
+		debt_engine::DEBTEngineModule,
 		orml_oracle::ModuleOracle,
 	}
 }
@@ -114,8 +114,8 @@ impl lend::Trait for Runtime {
 	type Event = ();
 	type Convert = debt_engine::DebitExchangeRateConvertor<Runtime>;
 	type Currency = Tokens;
-	type RiskManager = CDPEngineModule;
-	type DEPTTreasury = DEPTTreasuryModule;
+	type RiskManager = DEBTEngineModule;
+	type DEBTTreasury = DEBTTreasuryModule;
 	type ModuleId = LendModuleId;
 	type OnUpdateLoan = ();
 }
@@ -171,7 +171,7 @@ ord_parameter_types! {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
 impl debt_treasury::Trait for Runtime {
@@ -182,9 +182,9 @@ impl debt_treasury::Trait for Runtime {
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type EXCHANGE = ExchangeModule;
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = DEPTTreasuryModuleId;
+	type ModuleId = DEBTTreasuryModuleId;
 }
-pub type DEPTTreasuryModule = debt_treasury::Module<Runtime>;
+pub type DEBTTreasuryModule = debt_treasury::Module<Runtime>;
 
 parameter_types! {
 	pub const GetBaseCurrencyId: CurrencyId = AUSD;
@@ -222,13 +222,13 @@ impl debt_engine::Trait for Runtime {
 	type DefaultLiquidationPenalty = DefaultLiquidationPenalty;
 	type MinimumDebitValue = MinimumDebitValue;
 	type GetStableCurrencyId = GetStableCurrencyId;
-	type DEPTTreasury = DEPTTreasuryModule;
+	type DEBTTreasury = DEBTTreasuryModule;
 	type UpdateOrigin = EnsureSignedBy<One, AccountId>;
 	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
 	type EXCHANGE = ExchangeModule;
 	type UnsignedPriority = UnsignedPriority;
 }
-pub type CDPEngineModule = debt_engine::Module<Runtime>;
+pub type DEBTEngineModule = debt_engine::Module<Runtime>;
 
 /// An extrinsic type used for tests.
 pub type Extrinsic = TestXt<Call, ()>;
@@ -307,7 +307,7 @@ impl emergency_shutdown::Trait for Runtime {
 	type Event = ();
 	type CollateralCurrencyIds = CollateralCurrencyIds;
 	type PriceSource = ingester::Module<Runtime>;
-	type DEPTTreasury = DEPTTreasuryModule;
+	type DEBTTreasury = DEBTTreasuryModule;
 	type AuctionManagerHandler = AuctionManagerModule;
 	type ShutdownOrigin = EnsureRoot<AccountId>;
 }

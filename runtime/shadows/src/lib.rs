@@ -116,7 +116,7 @@ parameter_types! {
 	pub const ShadowTreasuryModuleId: ModuleId = ModuleId(*b"aca/trsy");
 	pub const LendModuleId: ModuleId = ModuleId(*b"aca/loan");
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
-	pub const DEPTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 	pub const StakingPoolModuleId: ModuleId = ModuleId(*b"aca/stkp");
 	pub const MintxTreasuryModuleId: ModuleId = ModuleId(*b"aca/hztr");
 	pub const HomaTreasuryModuleId: ModuleId = ModuleId(*b"aca/hmtr");
@@ -132,7 +132,7 @@ pub fn get_all_module_accounts() -> Vec<AccountId> {
 		ShadowTreasuryModuleId::get().into_account(),
 		LendModuleId::get().into_account(),
 		EXCHANGEModuleId::get().into_account(),
-		DEPTTreasuryModuleId::get().into_account(),
+		DEBTTreasuryModuleId::get().into_account(),
 		StakingPoolModuleId::get().into_account(),
 		MintxTreasuryModuleId::get().into_account(),
 		HomaTreasuryModuleId::get().into_account(),
@@ -906,7 +906,7 @@ impl module_auction_manager::Trait for Runtime {
 	type AuctionDurationSoftCap = AuctionDurationSoftCap;
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
-	type DEPTTreasury = DeptTreasury;
+	type DEBTTreasury = DeptTreasury;
 	type EXCHANGE = Exchange;
 	type PriceSource = Ingester;
 	type UnsignedPriority = AuctionManagerUnsignedPriority;
@@ -919,7 +919,7 @@ impl module_lend::Trait for Runtime {
 	type Convert = module_debt_engine::DebitExchangeRateConvertor<Runtime>;
 	type Currency = Currencies;
 	type RiskManager = DebtEngine;
-	type DEPTTreasury = DeptTreasury;
+	type DEBTTreasury = DeptTreasury;
 	type ModuleId = LendModuleId;
 	type OnUpdateLoan = module_incentives::OnUpdateLoan<Runtime>;
 }
@@ -1001,7 +1001,7 @@ impl module_debt_engine::Trait for Runtime {
 	type DefaultLiquidationPenalty = DefaultLiquidationPenalty;
 	type MinimumDebitValue = MinimumDebitValue;
 	type GetStableCurrencyId = GetStableCurrencyId;
-	type DEPTTreasury = DeptTreasury;
+	type DEBTTreasury = DeptTreasury;
 	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
 	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
 	type EXCHANGE = Exchange;
@@ -1019,7 +1019,7 @@ impl module_emergency_shutdown::Trait for Runtime {
 	type Event = Event;
 	type CollateralCurrencyIds = CollateralCurrencyIds;
 	type PriceSource = Ingester;
-	type DEPTTreasury = DeptTreasury;
+	type DEBTTreasury = DeptTreasury;
 	type AuctionManagerHandler = AuctionManager;
 	type ShutdownOrigin = EnsureRootOrHalfGeneralCouncil;
 	type WeightInfo = weights::emergency_shutdown::WeightInfo<Runtime>;
@@ -1059,7 +1059,7 @@ impl module_debt_treasury::Trait for Runtime {
 	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
 	type EXCHANGE = Exchange;
 	type MaxAuctionsCount = MaxAuctionsCount;
-	type ModuleId = DEPTTreasuryModuleId;
+	type ModuleId = DEBTTreasuryModuleId;
 	type WeightInfo = weights::debt_treasury::WeightInfo<Runtime>;
 }
 
@@ -1104,7 +1104,7 @@ impl module_incentives::Trait for Runtime {
 	type IncentiveCurrencyId = GetNativeCurrencyId;
 	type SavingCurrencyId = GetStableCurrencyId;
 	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
-	type DEPTTreasury = DeptTreasury;
+	type DEBTTreasury = DeptTreasury;
 	type Currency = Currencies;
 	type EXCHANGE = Exchange;
 	type EmergencyShutdown = EmergencyShutdown;

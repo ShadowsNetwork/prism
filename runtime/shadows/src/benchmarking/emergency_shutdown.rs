@@ -5,7 +5,7 @@ use crate::{
 use super::utils::set_balance;
 use frame_benchmarking::account;
 use frame_system::RawOrigin;
-use module_support::DEPTTreasury;
+use module_support::DEBTTreasury;
 use orml_benchmarking::runtime_benchmarks;
 use sp_runtime::FixedPointNumber;
 use sp_std::prelude::*;
