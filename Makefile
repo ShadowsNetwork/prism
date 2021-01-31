@@ -1,5 +1,5 @@
 run: githooks
-	SKIP_WASM_BUILD= cargo run -- --dev -lruntime=debug --ws -external
+	SKIP_WASM_BUILD= cargo run -- --dev -lruntime=debug --ws-external
 
 toolchain:
 	./scripts/init.sh
