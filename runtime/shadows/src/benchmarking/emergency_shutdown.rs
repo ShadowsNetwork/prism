@@ -1,5 +1,5 @@
 use crate::{
-	AccountId, Balance, CollateralCurrencyIds, DeptTreasury, EmergencyShutdown, Price, Runtime, ShadowsOracle, DOLLARS,
+	AccountId, Balance, CollateralCurrencyIds, DEBTTreasury, EmergencyShutdown, Price, Runtime, ShadowsOracle, DOLLARS,
 };
 
 use super::utils::set_balance;
@@ -48,12 +48,12 @@ runtime_benchmarks! {
 			let currency_id = currency_ids[i as usize];
 			values.push((currency_id, Price::one()));
 			set_balance(currency_id, &funder, dollar(100));
-			DeptTreasury::deposit_collateral(&funder, currency_id, dollar(100))?;
+			DEBTTreasury::deposit_collateral(&funder, currency_id, dollar(100))?;
 		}
 		ShadowsOracle::feed_values(RawOrigin::Root.into(), values)?;
 
-		DeptTreasury::issue_debit(&caller, dollar(1000), true)?;
-		DeptTreasury::issue_debit(&funder, dollar(9000), true)?;
+		DEBTTreasury::issue_debit(&caller, dollar(1000), true)?;
+		DEBTTreasury::issue_debit(&funder, dollar(9000), true)?;
 
 		EmergencyShutdown::emergency_shutdown(RawOrigin::Root.into())?;
 		EmergencyShutdown::open_collateral_refund(RawOrigin::Root.into())?;

@@ -35,7 +35,7 @@ pub trait WeightInfo {
 /// PoolId for various rewards pools
 #[derive(Encode, Decode, Copy, Clone, PartialEq, Eq, RuntimeDebug)]
 pub enum PoolId {
-	/// Rewards(DOS) pool for users who open DEBT
+	/// Rewards(DOS) pool for users who open CDP
 	Lend(CurrencyId),
 	/// Rewards(DOS) pool for market makers who provide exchange liquidity
 	ExchangeIncentive(CurrencyId),
@@ -96,7 +96,7 @@ pub trait Trait:
 	/// The origin which may update incentive related params
 	type UpdateOrigin: EnsureOrigin<Self::Origin>;
 
-	/// DEBT treasury to issue rewards in AUSD
+	/// CDP treasury to issue rewards in AUSD
 	type DEBTTreasury: DEBTTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
 
 	/// Currency for transfer/issue assets

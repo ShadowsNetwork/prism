@@ -223,7 +223,7 @@ impl AuctionManager<AccountId> for MockAuctionManager {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/debtt");
 }
 
 impl debt_treasury::Trait for Runtime {

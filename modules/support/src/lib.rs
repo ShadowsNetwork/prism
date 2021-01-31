@@ -149,27 +149,27 @@ where
 	}
 }
 
-/// An abstraction of debt treasury for Mintx Protocol.
+/// An abstraction of cdp treasury for Mintx Protocol.
 pub trait DEBTTreasury<AccountId> {
 	type Balance;
 	type CurrencyId;
 
-	/// get surplus amount of debt treasury
+	/// get surplus amount of cdp treasury
 	fn get_surplus_pool() -> Self::Balance;
 
-	/// get debit amount of debt treasury
+	/// get debit amount of cdp treasury
 	fn get_debit_pool() -> Self::Balance;
 
-	/// get collateral assets amount of debt treasury
+	/// get collateral assets amount of cdp treasury
 	fn get_total_collaterals(id: Self::CurrencyId) -> Self::Balance;
 
 	/// calculate the proportion of specific debit amount for the whole system
 	fn get_debit_proportion(amount: Self::Balance) -> Ratio;
 
-	/// issue debit for debt treasury
+	/// issue debit for cdp treasury
 	fn on_system_debit(amount: Self::Balance) -> DispatchResult;
 
-	/// issue surplus(stable currency) for debt treasury
+	/// issue surplus(stable currency) for cdp treasury
 	fn on_system_surplus(amount: Self::Balance) -> DispatchResult;
 
 	/// issue debit to `who`
@@ -180,13 +180,13 @@ pub trait DEBTTreasury<AccountId> {
 	/// burn debit(stable currency) of `who`
 	fn burn_debit(who: &AccountId, debit: Self::Balance) -> DispatchResult;
 
-	/// deposit surplus(stable currency) to debt treasury by `from`
+	/// deposit surplus(stable currency) to cdp treasury by `from`
 	fn deposit_surplus(from: &AccountId, surplus: Self::Balance) -> DispatchResult;
 
-	/// deposit collateral assets to debt treasury by `who`
+	/// deposit collateral assets to cdp treasury by `who`
 	fn deposit_collateral(from: &AccountId, currency_id: Self::CurrencyId, amount: Self::Balance) -> DispatchResult;
 
-	/// withdraw collateral assets of debt treasury to `who`
+	/// withdraw collateral assets of cdp treasury to `who`
 	fn withdraw_collateral(to: &AccountId, currency_id: Self::CurrencyId, amount: Self::Balance) -> DispatchResult;
 }
 

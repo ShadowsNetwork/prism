@@ -183,7 +183,7 @@ fn testnet_genesis(
 ) -> shadows_runtime::GenesisConfig {
 	use shadows_runtime::{
 		get_all_module_accounts, BabeConfig, BalancesConfig, BandOracleConfig, ContractsConfig, CurrencyId,
-		DebtEngineConfig, DeptTreasuryConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
+		DEBTTreasuryConfig, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
 		HomaCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
 		OperatorMembershipBandConfig, OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig,
 		ShadowsOracleConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig,
@@ -281,7 +281,7 @@ fn testnet_genesis(
 				.collect(),
 		}),
 		orml_vesting: Some(VestingConfig { vesting: vec![] }),
-		module_debt_treasury: Some(DeptTreasuryConfig {
+		module_debt_treasury: Some(DEBTTreasuryConfig {
 			collateral_auction_maximum_size: vec![
 				(CurrencyId::Token(TokenSymbol::DOT), DOLLARS), // (currency_id, max size of a collateral auction)
 				(CurrencyId::Token(TokenSymbol::XBTC), DOLLARS),
@@ -349,7 +349,7 @@ fn shadows_genesis(
 ) -> shadows_runtime::GenesisConfig {
 	use shadows_runtime::{
 		get_all_module_accounts, BabeConfig, Balance, BalancesConfig, BandOracleConfig, ContractsConfig, CurrencyId,
-		DebtEngineConfig, DeptTreasuryConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
+		DEBTTreasuryConfig, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
 		HomaCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
 		OperatorMembershipBandConfig, OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig,
 		ShadowsOracleConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig,
@@ -442,7 +442,7 @@ fn shadows_genesis(
 			],
 		}),
 		orml_vesting: Some(VestingConfig { vesting: vec![] }),
-		module_debt_treasury: Some(DeptTreasuryConfig {
+		module_debt_treasury: Some(DEBTTreasuryConfig {
 			collateral_auction_maximum_size: vec![
 				(CurrencyId::Token(TokenSymbol::DOT), DOLLARS), // (currency_id, max size of a collateral auction)
 				(CurrencyId::Token(TokenSymbol::XBTC), 5 * CENTS),

@@ -906,7 +906,7 @@ impl module_auction_manager::Trait for Runtime {
 	type AuctionDurationSoftCap = AuctionDurationSoftCap;
 	type GetStableCurrencyId = GetStableCurrencyId;
 	type GetNativeCurrencyId = GetNativeCurrencyId;
-	type DEBTTreasury = DeptTreasury;
+	type DEBTTreasury = DEBTTreasury;
 	type EXCHANGE = Exchange;
 	type PriceSource = Ingester;
 	type UnsignedPriority = AuctionManagerUnsignedPriority;
@@ -919,7 +919,7 @@ impl module_lend::Trait for Runtime {
 	type Convert = module_debt_engine::DebitExchangeRateConvertor<Runtime>;
 	type Currency = Currencies;
 	type RiskManager = DebtEngine;
-	type DEBTTreasury = DeptTreasury;
+	type DEBTTreasury = DEBTTreasury;
 	type ModuleId = LendModuleId;
 	type OnUpdateLoan = module_incentives::OnUpdateLoan<Runtime>;
 }
@@ -1001,7 +1001,7 @@ impl module_debt_engine::Trait for Runtime {
 	type DefaultLiquidationPenalty = DefaultLiquidationPenalty;
 	type MinimumDebitValue = MinimumDebitValue;
 	type GetStableCurrencyId = GetStableCurrencyId;
-	type DEBTTreasury = DeptTreasury;
+	type DEBTTreasury = DEBTTreasury;
 	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
 	type MaxSlippageSwapWithEXCHANGE = MaxSlippageSwapWithEXCHANGE;
 	type EXCHANGE = Exchange;
@@ -1019,7 +1019,7 @@ impl module_emergency_shutdown::Trait for Runtime {
 	type Event = Event;
 	type CollateralCurrencyIds = CollateralCurrencyIds;
 	type PriceSource = Ingester;
-	type DEBTTreasury = DeptTreasury;
+	type DEBTTreasury = DEBTTreasury;
 	type AuctionManagerHandler = AuctionManager;
 	type ShutdownOrigin = EnsureRootOrHalfGeneralCouncil;
 	type WeightInfo = weights::emergency_shutdown::WeightInfo<Runtime>;
@@ -1104,7 +1104,7 @@ impl module_incentives::Trait for Runtime {
 	type IncentiveCurrencyId = GetNativeCurrencyId;
 	type SavingCurrencyId = GetStableCurrencyId;
 	type UpdateOrigin = EnsureRootOrHalfMintxCouncil;
-	type DEBTTreasury = DeptTreasury;
+	type DEBTTreasury = DEBTTreasury;
 	type Currency = Currencies;
 	type EXCHANGE = Exchange;
 	type EmergencyShutdown = EmergencyShutdown;
@@ -1364,7 +1364,7 @@ construct_runtime!(
 		AuctionManager: module_auction_manager::{Module, Storage, Call, Event<T>, ValidateUnsigned},
 		Lend: module_lend::{Module, Storage, Call, Event<T>},
 		Mintx: module_mintx::{Module, Storage, Call, Event<T>},
-		DeptTreasury: module_debt_treasury::{Module, Storage, Call, Config, Event},
+		DEBTTreasury: module_debt_treasury::{Module, Storage, Call, Config, Event},
 		DebtEngine: module_debt_engine::{Module, Storage, Call, Event<T>, Config, ValidateUnsigned},
 		EmergencyShutdown: module_emergency_shutdown::{Module, Storage, Call, Event<T>},
 

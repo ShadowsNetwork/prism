@@ -1,5 +1,5 @@
 use crate::{
-	AccountId, AuctionId, AuctionManager, Balance, Currencies, CurrencyId, DeptTreasury, EmergencyShutdown,
+	AccountId, AuctionId, AuctionManager, Balance, Currencies, CurrencyId, DEBTTreasury, EmergencyShutdown,
 	GetNativeCurrencyId, GetStableCurrencyId, Price, Runtime, ShadowsOracle, TokenSymbol, DOLLARS,
 };
 
@@ -75,7 +75,7 @@ runtime_benchmarks! {
 		// set balance
 		Currencies::deposit(stable_currency_id, &bidder, dollar(80))?;
 		Currencies::deposit(CurrencyId::Token(TokenSymbol::DOT), &funder, dollar(1))?;
-		DeptTreasury::deposit_collateral(&funder, CurrencyId::Token(TokenSymbol::DOT), dollar(1))?;
+		DEBTTreasury::deposit_collateral(&funder, CurrencyId::Token(TokenSymbol::DOT), dollar(1))?;
 
 		// feed price
 		ShadowsOracle::feed_values(RawOrigin::Root.into(), vec![(CurrencyId::Token(TokenSymbol::DOT), Price::saturating_from_integer(120))])?;
