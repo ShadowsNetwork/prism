@@ -73,18 +73,18 @@ fn transfer_loan_from_should_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			BTC,
+			DOS,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(9, 5))),
 			Change::NewValue(10000),
 		));
-		assert_ok!(MintxModule::adjust_loan(Origin::signed(ALICE), BTC, 100, 50));
-		assert_ok!(MintxModule::authorize(Origin::signed(ALICE), BTC, BOB));
-		assert_ok!(MintxModule::transfer_loan_from(Origin::signed(BOB), BTC, ALICE));
-		assert_eq!(LendModule::positions(BTC, BOB).collateral, 100);
-		assert_eq!(LendModule::positions(BTC, BOB).debit, 50);
+		assert_ok!(MintxModule::adjust_loan(Origin::signed(ALICE), DOS, 100, 50));
+		assert_ok!(MintxModule::authorize(Origin::signed(ALICE), DOS, BOB));
+		assert_ok!(MintxModule::transfer_loan_from(Origin::signed(BOB), DOS, ALICE));
+		assert_eq!(LendModule::positions(DOS, BOB).collateral, 100);
+		assert_eq!(LendModule::positions(DOS, BOB).debit, 50);
 	});
 }
 
