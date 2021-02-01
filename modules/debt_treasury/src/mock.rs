@@ -198,7 +198,7 @@ ord_parameter_types! {
 }
 
 parameter_types! {
-	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/debtt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
 }
 
 thread_local! {
