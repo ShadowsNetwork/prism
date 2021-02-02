@@ -297,7 +297,7 @@ fn check_position_valid_failed_when_remain_debit_value_too_small() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(1, 1))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
@@ -305,7 +305,7 @@ fn check_position_valid_failed_when_remain_debit_value_too_small() {
 			Change::NewValue(10000),
 		));
 		assert_noop!(
-			DEBTEngineModule::check_position_valid(DOS, 2, 1),
+			DEBTEngineModule::check_position_valid(BTC, 2, 1),
 			Error::<Runtime>::RemainDebitValueTooSmall,
 		);
 	});
