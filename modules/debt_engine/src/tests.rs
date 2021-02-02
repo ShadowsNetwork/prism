@@ -18,26 +18,26 @@ fn is_debt_unsafe_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(9, 5))),
 			Change::NewValue(10000),
 		));
-		assert_eq!(is_user_safe(DOS, &ALICE), false);
-		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, DOS, 100, 50));
-		assert_eq!(is_user_safe(DOS, &ALICE), false);
+		assert_eq!(is_user_safe(BTC, &ALICE), false);
+		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 100, 50));
+		assert_eq!(is_user_safe(BTC, &ALICE), false);
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NoChange,
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 1))),
 			Change::NoChange,
 			Change::NoChange,
 			Change::NoChange,
 		));
-		assert_eq!(is_user_safe(DOS, &ALICE), true);
+		assert_eq!(is_user_safe(BTC, &ALICE), true);
 	});
 }
 
@@ -78,7 +78,7 @@ fn get_liquidation_penalty_work() {
 fn get_liquidation_ratio_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_eq!(
-			DEBTEngineModule::get_liquidation_ratio(DOS),
+			DEBTEngineModule::get_liquidation_ratio(BTC),
 			DefaultLiquidationRatio::get()
 		);
 		assert_ok!(DEBTEngineModule::set_collateral_params(
@@ -91,7 +91,7 @@ fn get_liquidation_ratio_work() {
 			Change::NewValue(10000),
 		));
 		assert_eq!(
-			DEBTEngineModule::get_liquidation_ratio(DOS),
+			DEBTEngineModule::get_liquidation_ratio(BTC),
 			Ratio::saturating_from_rational(5, 2)
 		);
 	});
@@ -144,7 +144,7 @@ fn set_collateral_params_work() {
 		assert_noop!(
 			DEBTEngineModule::set_collateral_params(
 				Origin::signed(5),
-				DOS,
+				BTC,
 				Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 				Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 				Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
@@ -155,7 +155,7 @@ fn set_collateral_params_work() {
 		);
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
@@ -164,42 +164,42 @@ fn set_collateral_params_work() {
 		));
 
 		let update_stability_fee_event = TestEvent::debt_engine(RawEvent::StabilityFeeUpdated(
-			DOS,
+			BTC,
 			Some(Rate::saturating_from_rational(1, 100000)),
 		));
 		assert!(System::events()
 			.iter()
 			.any(|record| record.event == update_stability_fee_event));
 		let update_liquidation_ratio_event = TestEvent::debt_engine(RawEvent::LiquidationRatioUpdated(
-			DOS,
+			BTC,
 			Some(Ratio::saturating_from_rational(3, 2)),
 		));
 		assert!(System::events()
 			.iter()
 			.any(|record| record.event == update_liquidation_ratio_event));
 		let update_liquidation_penalty_event = TestEvent::debt_engine(RawEvent::LiquidationPenaltyUpdated(
-			DOS,
+			BTC,
 			Some(Rate::saturating_from_rational(2, 10)),
 		));
 		assert!(System::events()
 			.iter()
 			.any(|record| record.event == update_liquidation_penalty_event));
 		let update_required_collateral_ratio_event = TestEvent::debt_engine(RawEvent::RequiredCollateralRatioUpdated(
-			DOS,
+			BTC,
 			Some(Ratio::saturating_from_rational(9, 5)),
 		));
 		assert!(System::events()
 			.iter()
 			.any(|record| record.event == update_required_collateral_ratio_event));
 		let update_maximum_total_debit_value_event =
-			TestEvent::debt_engine(RawEvent::MaximumTotalDebitValueUpdated(DOS, 10000));
+			TestEvent::debt_engine(RawEvent::MaximumTotalDebitValueUpdated(BTC, 10000));
 		assert!(System::events()
 			.iter()
 			.any(|record| record.event == update_maximum_total_debit_value_event));
 
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
@@ -207,7 +207,7 @@ fn set_collateral_params_work() {
 			Change::NewValue(10000),
 		));
 
-		let new_collateral_params = DEBTEngineModule::collateral_params(DOS);
+		let new_collateral_params = DEBTEngineModule::collateral_params(BTC);
 
 		assert_eq!(
 			new_collateral_params.stability_fee,
@@ -234,7 +234,7 @@ fn calculate_collateral_ratio_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
@@ -242,7 +242,7 @@ fn calculate_collateral_ratio_work() {
 			Change::NewValue(10000),
 		));
 		assert_eq!(
-			DEBTEngineModule::calculate_collateral_ratio(DOS, 100, 50, Price::saturating_from_rational(1, 1)),
+			DEBTEngineModule::calculate_collateral_ratio(BTC, 100, 50, Price::saturating_from_rational(1, 1)),
 			Ratio::saturating_from_rational(100, 50)
 		);
 	});
@@ -253,16 +253,16 @@ fn check_debit_cap_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(9, 5))),
 			Change::NewValue(10000),
 		));
-		assert_ok!(DEBTEngineModule::check_debit_cap(DOS, 9999));
+		assert_ok!(DEBTEngineModule::check_debit_cap(BTC, 9999));
 		assert_noop!(
-			DEBTEngineModule::check_debit_cap(DOS, 10001),
+			DEBTEngineModule::check_debit_cap(BTC, 10001),
 			Error::<Runtime>::ExceedDebitValueHardCap,
 		);
 	});
@@ -273,7 +273,7 @@ fn check_position_valid_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(1, 1))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
@@ -283,12 +283,12 @@ fn check_position_valid_work() {
 
 		MockPriceSource::set_relative_price(None);
 		assert_noop!(
-			DEBTEngineModule::check_position_valid(DOS, 100, 50),
+			DEBTEngineModule::check_position_valid(BTC, 100, 50),
 			Error::<Runtime>::InvalidFeedPrice
 		);
 		MockPriceSource::set_relative_price(Some(Price::one()));
 
-		assert_ok!(DEBTEngineModule::check_position_valid(DOS, 100, 50));
+		assert_ok!(DEBTEngineModule::check_position_valid(BTC, 100, 50));
 	});
 }
 
@@ -316,7 +316,7 @@ fn check_position_valid_ratio_below_liquidate_ratio() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(10, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
@@ -324,7 +324,7 @@ fn check_position_valid_ratio_below_liquidate_ratio() {
 			Change::NewValue(10000),
 		));
 		assert_noop!(
-			DEBTEngineModule::check_position_valid(DOS, 91, 50),
+			DEBTEngineModule::check_position_valid(BTC, 91, 50),
 			Error::<Runtime>::BelowLiquidationRatio,
 		);
 	});
@@ -335,7 +335,7 @@ fn check_position_valid_ratio_below_required_ratio() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
@@ -343,7 +343,7 @@ fn check_position_valid_ratio_below_required_ratio() {
 			Change::NewValue(10000),
 		));
 		assert_noop!(
-			DEBTEngineModule::check_position_valid(DOS, 89, 50),
+			DEBTEngineModule::check_position_valid(BTC, 89, 50),
 			Error::<Runtime>::BelowRequiredCollateralRatio
 		);
 	});
@@ -354,7 +354,7 @@ fn adjust_position_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
@@ -365,21 +365,21 @@ fn adjust_position_work() {
 			DEBTEngineModule::adjust_position(&ALICE, DOS, 100, 50),
 			Error::<Runtime>::InvalidCollateralType,
 		);
-		assert_eq!(Currencies::free_balance(DOS, &ALICE), 1000);
+		assert_eq!(Currencies::free_balance(BTC, &ALICE), 1000);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 0);
-		assert_eq!(LendModule::positions(DOS, ALICE).debit, 0);
-		assert_eq!(LendModule::positions(DOS, ALICE).collateral, 0);
-		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, DOS, 100, 50));
-		assert_eq!(Currencies::free_balance(DOS, &ALICE), 900);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 0);
+		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 100, 50));
+		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 50);
-		assert_eq!(LendModule::positions(DOS, ALICE).debit, 50);
-		assert_eq!(LendModule::positions(DOS, ALICE).collateral, 100);
-		assert_eq!(DEBTEngineModule::adjust_position(&ALICE, DOS, 0, 20).is_ok(), false);
-		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, DOS, 0, -20));
-		assert_eq!(Currencies::free_balance(DOS, &ALICE), 900);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 50);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 100);
+		assert_eq!(DEBTEngineModule::adjust_position(&ALICE, BTC, 0, 20).is_ok(), false);
+		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 0, -20));
+		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 30);
-		assert_eq!(LendModule::positions(DOS, ALICE).debit, 30);
-		assert_eq!(LendModule::positions(DOS, ALICE).collateral, 100);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 30);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 100);
 	});
 }
 
@@ -388,16 +388,16 @@ fn remain_debit_value_too_small_check() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(9, 5))),
 			Change::NewValue(10000),
 		));
-		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, DOS, 100, 50));
-		assert_eq!(DEBTEngineModule::adjust_position(&ALICE, DOS, 0, -49).is_ok(), false);
-		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, DOS, -100, -50));
+		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 100, 50));
+		assert_eq!(DEBTEngineModule::adjust_position(&ALICE, BTC, 0, -49).is_ok(), false);
+		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, -100, -50));
 	});
 }
 
@@ -407,35 +407,35 @@ fn liquidate_unsafe_debt_by_collateral_auction() {
 		System::set_block_number(1);
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(9, 5))),
 			Change::NewValue(10000),
 		));
-		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, DOS, 100, 50));
-		assert_eq!(Currencies::free_balance(DOS, &ALICE), 900);
+		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 100, 50));
+		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 50);
-		assert_eq!(LendModule::positions(DOS, ALICE).debit, 50);
-		assert_eq!(LendModule::positions(DOS, ALICE).collateral, 100);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 50);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 100);
 		assert_noop!(
-			DEBTEngineModule::liquidate_unsafe_debt(ALICE, DOS),
+			DEBTEngineModule::liquidate_unsafe_debt(ALICE, BTC),
 			Error::<Runtime>::MustBeUnsafe,
 		);
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NoChange,
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 1))),
 			Change::NoChange,
 			Change::NoChange,
 			Change::NoChange,
 		));
-		assert_ok!(DEBTEngineModule::liquidate_unsafe_debt(ALICE, DOS));
+		assert_ok!(DEBTEngineModule::liquidate_unsafe_debt(ALICE, BTC));
 
 		let liquidate_unsafe_debt_event = TestEvent::debt_engine(RawEvent::LiquidateUnsafeDEBT(
-			DOS,
+			BTC,
 			ALICE,
 			100,
 			50,
@@ -446,14 +446,14 @@ fn liquidate_unsafe_debt_by_collateral_auction() {
 			.any(|record| record.event == liquidate_unsafe_debt_event));
 
 		assert_eq!(DEBTTreasuryModule::debit_pool(), 50);
-		assert_eq!(Currencies::free_balance(DOS, &ALICE), 900);
+		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 50);
-		assert_eq!(LendModule::positions(DOS, ALICE).debit, 0);
-		assert_eq!(LendModule::positions(DOS, ALICE).collateral, 0);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 0);
 
 		mock_shutdown();
 		assert_noop!(
-			DEBTEngineModule::liquidate(Origin::none(), DOS, ALICE),
+			DEBTEngineModule::liquidate(Origin::none(), BTC, ALICE),
 			Error::<Runtime>::AlreadyShutdown
 		);
 	});
@@ -464,7 +464,7 @@ fn on_finalize_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
@@ -481,29 +481,29 @@ fn on_finalize_work() {
 			Change::NewValue(10000),
 		));
 		DEBTEngineModule::on_finalize(1);
-		assert_eq!(DEBTEngineModule::debit_exchange_rate(DOS), None);
+		assert_eq!(DEBTEngineModule::debit_exchange_rate(BTC), None);
 		assert_eq!(DEBTEngineModule::debit_exchange_rate(DOT), None);
-		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, DOS, 100, 30));
-		assert_eq!(Currencies::free_balance(DOS, &ALICE), 900);
+		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 100, 30));
+		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 30);
 		DEBTEngineModule::on_finalize(2);
 		assert_eq!(
-			DEBTEngineModule::debit_exchange_rate(DOS),
+			DEBTEngineModule::debit_exchange_rate(BTC),
 			Some(ExchangeRate::saturating_from_rational(101, 100))
 		);
 		assert_eq!(DEBTEngineModule::debit_exchange_rate(DOT), None);
 		DEBTEngineModule::on_finalize(3);
 		assert_eq!(
-			DEBTEngineModule::debit_exchange_rate(DOS),
+			DEBTEngineModule::debit_exchange_rate(BTC),
 			Some(ExchangeRate::saturating_from_rational(10201, 10000))
 		);
 		assert_eq!(DEBTEngineModule::debit_exchange_rate(DOT), None);
-		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, DOS, 0, -30));
-		assert_eq!(Currencies::free_balance(DOS, &ALICE), 900);
+		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 0, -30));
+		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
 		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 0);
 		DEBTEngineModule::on_finalize(4);
 		assert_eq!(
-			DEBTEngineModule::debit_exchange_rate(DOS),
+			DEBTEngineModule::debit_exchange_rate(BTC),
 			Some(ExchangeRate::saturating_from_rational(10201, 10000))
 		);
 		assert_eq!(DEBTEngineModule::debit_exchange_rate(DOT), None);
@@ -515,24 +515,24 @@ fn on_emergency_shutdown_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(9, 5))),
 			Change::NewValue(10000),
 		));
-		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, DOS, 100, 30));
+		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 100, 30));
 		DEBTEngineModule::on_finalize(1);
 		assert_eq!(
-			DEBTEngineModule::debit_exchange_rate(DOS),
+			DEBTEngineModule::debit_exchange_rate(BTC),
 			Some(ExchangeRate::saturating_from_rational(101, 100))
 		);
 		mock_shutdown();
 		assert_eq!(<Runtime as Trait>::EmergencyShutdown::is_shutdown(), true);
 		DEBTEngineModule::on_finalize(2);
 		assert_eq!(
-			DEBTEngineModule::debit_exchange_rate(DOS),
+			DEBTEngineModule::debit_exchange_rate(BTC),
 			Some(ExchangeRate::saturating_from_rational(101, 100))
 		);
 	});
@@ -544,38 +544,38 @@ fn settle_debt_has_debit_work() {
 		System::set_block_number(1);
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(3, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(9, 5))),
 			Change::NewValue(10000),
 		));
-		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, DOS, 100, 0));
-		assert_eq!(Currencies::free_balance(DOS, &ALICE), 900);
-		assert_eq!(LendModule::positions(DOS, ALICE).debit, 0);
-		assert_eq!(LendModule::positions(DOS, ALICE).collateral, 100);
+		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 100, 0));
+		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
+		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 100);
 		assert_noop!(
-			DEBTEngineModule::settle_debt_has_debit(ALICE, DOS),
+			DEBTEngineModule::settle_debt_has_debit(ALICE, BTC),
 			Error::<Runtime>::NoDebitValue,
 		);
-		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, DOS, 0, 50));
-		assert_eq!(LendModule::positions(DOS, ALICE).debit, 50);
+		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 0, 50));
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 50);
 		assert_eq!(DEBTTreasuryModule::debit_pool(), 0);
-		assert_eq!(DEBTTreasuryModule::total_collaterals(DOS), 0);
-		assert_ok!(DEBTEngineModule::settle_debt_has_debit(ALICE, DOS));
+		assert_eq!(DEBTTreasuryModule::total_collaterals(BTC), 0);
+		assert_ok!(DEBTEngineModule::settle_debt_has_debit(ALICE, BTC));
 
-		let settle_debt_in_debit_event = TestEvent::debt_engine(RawEvent::SettleDEBTInDebit(DOS, ALICE));
+		let settle_debt_in_debit_event = TestEvent::debt_engine(RawEvent::SettleDEBTInDebit(BTC, ALICE));
 		assert!(System::events()
 			.iter()
 			.any(|record| record.event == settle_debt_in_debit_event));
 
-		assert_eq!(LendModule::positions(DOS, ALICE).debit, 0);
+		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
 		assert_eq!(DEBTTreasuryModule::debit_pool(), 50);
-		assert_eq!(DEBTTreasuryModule::total_collaterals(DOS), 50);
+		assert_eq!(DEBTTreasuryModule::total_collaterals(BTC), 50);
 
 		assert_noop!(
-			DEBTEngineModule::settle(Origin::none(), DOS, ALICE),
+			DEBTEngineModule::settle(Origin::none(), BTC, ALICE),
 			Error::<Runtime>::MustAfterShutdown
 		);
 	});
