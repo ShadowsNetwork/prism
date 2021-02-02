@@ -42,8 +42,8 @@ pub enum PoolId {
 	/// Rewards(AUSD) pool for liquidators who provide exchange liquidity to
 	/// participate automatic liquidation
 	ExchangeSaving(CurrencyId),
-	/// Rewards(DOS) pool for users who staking by Homa protocol
-	Homa,
+	/// Rewards(DOS) pool for users who staking by Stake_earning protocol
+	Stake_earning,
 }
 
 decl_error! {
@@ -123,7 +123,7 @@ decl_storage! {
 		/// Mapping from exchange liquidity currency type to its lend incentive reward amount per period
 		pub EXCHANGEIncentiveRewards get(fn exchange_incentive_rewards): map hasher(twox_64_concat) CurrencyId => Balance;
 
-		/// Homa incentive reward amount
+		/// Stake_earning incentive reward amount
 		pub HomaIncentiveReward get(fn homa_incentive_reward): Balance;
 
 		/// Mapping from exchange liquidity currency type to its saving rate
@@ -408,7 +408,7 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 							}
 						}
 
-						PoolId::Homa => {
+						PoolId::Stake_earning => {
 							let incentive_reward = Self::homa_incentive_reward();
 
 							// TODO: transfer from RESERVED TREASURY instead of issuing
@@ -444,7 +444,7 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 			PoolId::Lend(_) => (T::LendIncentivePool::get(), T::IncentiveCurrencyId::get()),
 			PoolId::ExchangeIncentive(_) => (T::ExchangeIncentivePool::get(), T::IncentiveCurrencyId::get()),
 			PoolId::ExchangeSaving(_) => (T::ExchangeIncentivePool::get(), T::SavingCurrencyId::get()),
-			PoolId::Homa => (T::HomaIncentivePool::get(), T::IncentiveCurrencyId::get()),
+			PoolId::Stake_earning => (T::HomaIncentivePool::get(), T::IncentiveCurrencyId::get()),
 		};
 
 		// payout the reward to user from the pool. it should not affect the

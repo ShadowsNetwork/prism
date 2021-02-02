@@ -84,7 +84,7 @@ module-nft = { path = "../../modules/nft", default-features = false }
 module-ingester = { path = "../../modules/ingester", default-features = false }
 module-incentives = { path = "../../modules/incentives", default-features = false }
 module-support = { path = "../../modules/support", default-features = false }
-module-homa = { path = "../../modules/homa", default-features = false }
+module-stake_earning = { path = "../../modules/stake_earning", default-features = false }
 module-nominees-election = { path = "../../modules/nominees_election", default-features = false }
 module-staking-pool = { path = "../../modules/staking_pool", default-features = false }
 module-staking-pool-rpc-runtime-api = { path = "../../modules/staking_pool/rpc/runtime-api", default-features = false }
@@ -178,7 +178,7 @@ std = [
 	"module-ingester/std",
 	"module-incentives/std",
 	"module-support/std",
-	"module-homa/std",
+	"module-stake_earning/std",
 	"module-nominees-election/std",
 	"module-staking-pool/std",
 	"module-staking-pool-rpc-runtime-api/std",

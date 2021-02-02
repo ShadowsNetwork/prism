@@ -1153,7 +1153,7 @@ impl module_staking_pool::Trait for Runtime {
 }
 
 impl module_homa::Trait for Runtime {
-	type Homa = StakingPool;
+	type Stake_earning = StakingPool;
 }
 
 parameter_types! {
@@ -1368,8 +1368,8 @@ construct_runtime!(
 		DebtEngine: module_debt_engine::{Module, Storage, Call, Event<T>, Config, ValidateUnsigned},
 		EmergencyShutdown: module_emergency_shutdown::{Module, Storage, Call, Event<T>},
 
-		// Homa
-		Homa: module_homa::{Module, Call},
+		// Stake_earning
+		Stake_earning: module_homa::{Module, Call},
 		NomineesElection: module_nominees_election::{Module, Call, Storage},
 		StakingPool: module_staking_pool::{Module, Call, Storage, Event<T>},
 		PolkadotBridge: module_polkadot_bridge::{Module, Call, Storage, Event<T>, Config},

@@ -135,7 +135,7 @@ impl<T: Trait> PriceProvider<CurrencyId> for Module<T> {
 			// if is stable currency, return fixed price
 			Some(T::StableCurrencyFixedPrice::get())
 		} else if currency_id == T::GetLiquidCurrencyId::get() {
-			// if is homa liquid currency, return the product of staking currency price and
+			// if is stake_earning liquid currency, return the product of staking currency price and
 			// liquid/staking exchange rate.
 			Self::get_price(T::GetStakingCurrencyId::get())
 				.and_then(|n| n.checked_mul(&T::LiquidStakingExchangeRateProvider::get_exchange_rate()))

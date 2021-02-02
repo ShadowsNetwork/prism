@@ -34,7 +34,7 @@ pub trait Trait: system::Trait {
 	type DefaultExchangeRate: Get<ExchangeRate>;
 	type ClaimFeeReturnRatio: Get<Ratio>;
 
-	/// The staking pool's module id, keep all staking currency belong to Homa
+	/// The staking pool's module id, keep all staking currency belong to Stake_earning
 	/// protocol.
 	type ModuleId: Get<ModuleId>;
 
@@ -411,7 +411,7 @@ impl<T: Trait> Module<T> {
 		T::Bridge::withdraw_unbonded();
 
 		// TODO: record the balances of bridge before and after do payout_nominator,
-		// and oncommision to homa treasury according to RewardFeeRatio
+		// and oncommision to stake_earning treasury according to RewardFeeRatio
 		T::Bridge::payout_nominator();
 
 		// #2: update staking pool by bridge ledger

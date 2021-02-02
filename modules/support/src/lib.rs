@@ -8,8 +8,8 @@ use sp_std::{
 	prelude::*,
 };
 
-pub mod homa;
-pub use homa::{
+pub mod stake_earning;
+pub use stake_earning::{
 	HomaProtocol, NomineesProvider, OnCommission, OnNewEra, PolkadotBridge, PolkadotBridgeCall, PolkadotBridgeState,
 	PolkadotBridgeType, PolkadotStakingLedger, PolkadotUnlockChunk,
 };

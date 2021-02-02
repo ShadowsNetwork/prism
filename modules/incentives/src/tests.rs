@@ -558,7 +558,7 @@ fn pay_out_works_works() {
 
 		assert_eq!(TokensModule::free_balance(DOS, &HomaIncentivePool::get()), 10000);
 		assert_eq!(TokensModule::free_balance(DOS, &BOB), 1000);
-		IncentivesModule::payout(&BOB, PoolId::Homa, 3000);
+		IncentivesModule::payout(&BOB, PoolId::Stake_earning, 3000);
 		assert_eq!(TokensModule::free_balance(DOS, &HomaIncentivePool::get()), 7000);
 		assert_eq!(TokensModule::free_balance(DOS, &BOB), 4000);
 	});
@@ -606,7 +606,7 @@ fn accumulate_reward_works() {
 			vec![(DOS, 3300), (AUSD, 9)]
 		);
 
-		RewardsModule::add_share(&ALICE, PoolId::Homa, 1);
+		RewardsModule::add_share(&ALICE, PoolId::Stake_earning, 1);
 		assert_eq!(
 			IncentivesModule::accumulate_reward(50, |_, _| {}),
 			vec![(DOS, 3330), (AUSD, 9)]
