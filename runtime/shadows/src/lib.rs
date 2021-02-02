@@ -1152,7 +1152,7 @@ impl module_staking_pool::Trait for Runtime {
 	type ModuleId = StakingPoolModuleId;
 }
 
-impl module_homa::Trait for Runtime {
+impl module_stake_earning::Trait for Runtime {
 	type Stake_earning = StakingPool;
 }
 
@@ -1369,7 +1369,7 @@ construct_runtime!(
 		EmergencyShutdown: module_emergency_shutdown::{Module, Storage, Call, Event<T>},
 
 		// Stake_earning
-		Stake_earning: module_homa::{Module, Call},
+		Stake_earning: module_stake_earning::{Module, Call},
 		NomineesElection: module_nominees_election::{Module, Call, Storage},
 		StakingPool: module_staking_pool::{Module, Call, Storage, Event<T>},
 		PolkadotBridge: module_polkadot_bridge::{Module, Call, Storage, Event<T>, Config},

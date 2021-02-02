@@ -232,16 +232,16 @@ fn update_exchange_incentive_rewards_works() {
 }
 
 #[test]
-fn update_homa_incentive_reward_works() {
+fn update_stake_earning_incentive_reward_works() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_noop!(
-			IncentivesModule::update_homa_incentive_reward(Origin::signed(ALICE), 100),
+			IncentivesModule::update_stake_earning_incentive_reward(Origin::signed(ALICE), 100),
 			BadOrigin
 		);
-		assert_eq!(IncentivesModule::homa_incentive_reward(), 0);
+		assert_eq!(IncentivesModule::stake_earning_incentive_reward(), 0);
 
-		assert_ok!(IncentivesModule::update_homa_incentive_reward(Origin::signed(4), 100));
-		assert_eq!(IncentivesModule::homa_incentive_reward(), 100);
+		assert_ok!(IncentivesModule::update_stake_earning_incentive_reward(Origin::signed(4), 100));
+		assert_eq!(IncentivesModule::stake_earning_incentive_reward(), 100);
 	});
 }
 
@@ -575,7 +575,7 @@ fn accumulate_reward_works() {
 			Origin::signed(4),
 			vec![(BTC_AUSD_LP, 100), (DOT_AUSD_LP, 200),],
 		));
-		assert_ok!(IncentivesModule::update_homa_incentive_reward(Origin::signed(4), 30));
+		assert_ok!(IncentivesModule::update_stake_earning_incentive_reward(Origin::signed(4), 30));
 		assert_ok!(IncentivesModule::update_exchange_saving_rates(
 			Origin::signed(4),
 			vec![

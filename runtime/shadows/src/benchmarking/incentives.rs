@@ -79,7 +79,7 @@ runtime_benchmarks! {
 		}
 	}: _(RawOrigin::Root, values)
 
-	update_homa_incentive_reward {
+	update_stake_earning_incentive_reward {
 	}: _(RawOrigin::Root, dollar(100))
 
 	update_exchange_saving_rates {
@@ -150,9 +150,9 @@ mod tests {
 	}
 
 	#[test]
-	fn test_update_homa_incentive_reward() {
+	fn test_update_stake_earning_incentive_reward() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(test_benchmark_update_homa_incentive_reward());
+			assert_ok!(test_benchmark_update_stake_earning_incentive_reward());
 		});
 	}
 

@@ -31,7 +31,7 @@ impl crate::WeightInfo for () {
 			.saturating_add((4_851_000 as Weight).saturating_mul(c as Weight))
 			.saturating_add(DbWeight::get().writes((1 as Weight).saturating_mul(c as Weight)))
 	}
-	fn update_homa_incentive_reward() -> Weight {
+	fn update_stake_earning_incentive_reward() -> Weight {
 		(5_934_000 as Weight).saturating_add(DbWeight::get().writes(1 as Weight))
 	}
 	fn update_exchange_saving_rates(c: u32) -> Weight {

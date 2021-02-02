@@ -28,7 +28,7 @@ pub trait WeightInfo {
 	fn claim_rewards() -> Weight;
 	fn update_lend_incentive_rewards(c: u32) -> Weight;
 	fn update_exchange_incentive_rewards(c: u32) -> Weight;
-	fn update_homa_incentive_reward() -> Weight;
+	fn update_stake_earning_incentive_reward() -> Weight;
 	fn update_exchange_saving_rates(c: u32) -> Weight;
 }
 
@@ -124,7 +124,7 @@ decl_storage! {
 		pub EXCHANGEIncentiveRewards get(fn exchange_incentive_rewards): map hasher(twox_64_concat) CurrencyId => Balance;
 
 		/// Stake_earning incentive reward amount
-		pub HomaIncentiveReward get(fn homa_incentive_reward): Balance;
+		pub HomaIncentiveReward get(fn stake_earning_incentive_reward): Balance;
 
 		/// Mapping from exchange liquidity currency type to its saving rate
 		pub EXCHANGESavingRates get(fn exchange_saving_rates): map hasher(twox_64_concat) CurrencyId => Rate;
@@ -246,8 +246,8 @@ decl_module! {
 			})?;
 		}
 
-		#[weight = <T as Trait>::WeightInfo::update_homa_incentive_reward()]
-		pub fn update_homa_incentive_reward(
+		#[weight = <T as Trait>::WeightInfo::update_stake_earning_incentive_reward()]
+		pub fn update_stake_earning_incentive_reward(
 			origin,
 			update: Balance,
 		) {
@@ -409,7 +409,7 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 						}
 
 						PoolId::Stake_earning => {
-							let incentive_reward = Self::homa_incentive_reward();
+							let incentive_reward = Self::stake_earning_incentive_reward();
 
 							// TODO: transfer from RESERVED TREASURY instead of issuing
 							if !incentive_reward.is_zero()

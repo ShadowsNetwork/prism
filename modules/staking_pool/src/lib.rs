@@ -302,10 +302,10 @@ impl<T: Trait> Module<T> {
 				Ok(())
 			})?;
 
-			let commission_to_homa = Ratio::one()
+			let commission_to_stake_earning = Ratio::one()
 				.saturating_sub(T::ClaimFeeReturnRatio::get())
 				.saturating_mul_int(fee_in_liquid_currency);
-			T::OnCommission::on_commission(liquid_currency_id, commission_to_homa);
+			T::OnCommission::on_commission(liquid_currency_id, commission_to_stake_earning);
 
 			<Module<T>>::deposit_event(RawEvent::RedeemByFreeUnbonded(
 				who.clone(),
@@ -374,10 +374,10 @@ impl<T: Trait> Module<T> {
 				Ok(())
 			})?;
 
-			let commission_to_homa = Ratio::one()
+			let commission_to_stake_earning = Ratio::one()
 				.saturating_sub(T::ClaimFeeReturnRatio::get())
 				.saturating_mul_int(fee_in_liquid_currency);
-			T::OnCommission::on_commission(liquid_currency_id, commission_to_homa);
+			T::OnCommission::on_commission(liquid_currency_id, commission_to_stake_earning);
 
 			<Module<T>>::deposit_event(RawEvent::RedeemByClaimUnbonding(
 				who.clone(),
