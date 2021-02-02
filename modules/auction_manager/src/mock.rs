@@ -117,7 +117,7 @@ ord_parameter_types! {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"dos/cdpt");
 }
 
 impl debt_treasury::Trait for Runtime {
@@ -157,7 +157,7 @@ impl PriceProvider<CurrencyId> for MockPriceSource {
 	fn unlock_price(_currency_id: CurrencyId) {}
 }
 zpes! {
-	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
+	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"dos/dexm");
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
 	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(AUSD, BTC)];

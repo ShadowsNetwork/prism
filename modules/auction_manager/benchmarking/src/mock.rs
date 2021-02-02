@@ -159,7 +159,7 @@ ord_parameter_types! {
 
 parameter_types! {
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"dos/cdpt");
 }
 
 impl debt_treasury::Trait for Runtime {
@@ -237,7 +237,7 @@ impl Convert<(CurrencyId, Balance), Balance> for MockConvert {
 }
 
 parameter_types! {
-	pub const LoansModuleId: ModuleId = ModuleId(*b"aca/loan");
+	pub const LoansModuleId: ModuleId = ModuleId(*b"dos/loan");
 }
 
 impl loans::Trait for Runtime {

@@ -132,7 +132,7 @@ impl Convert<(CurrencyId, Balance), Balance> for MockConvert {
 }
 
 parameter_types! {
-	pub const LendModuleId: ModuleId = ModuleId(*b"aca/loan");
+	pub const LendModuleId: ModuleId = ModuleId(*b"dos/loan");
 }
 
 impl lend::Trait for Runtime {
@@ -211,7 +211,7 @@ ord_parameter_types! {
 parameter_types! {
 	pub const GetStableCurrencyId: CurrencyId = AUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
-	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"dos/cdpt");
 }
 
 impl debt_treasury::Trait for Runtime {

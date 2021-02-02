@@ -186,7 +186,7 @@ impl orml_currencies::Trait for Runtime {
 parameter_types! {
 	pub const CreateClassDeposit: Balance = 200;
 	pub const CreateTokenDeposit: Balance = 100;
-	pub const NftModuleId: ModuleId = ModuleId(*b"aca/aNFT");
+	pub const NftModuleId: ModuleId = ModuleId(*b"dos/aNFT");
 }
 impl Trait for Runtime {
 	type Event = TestEvent;

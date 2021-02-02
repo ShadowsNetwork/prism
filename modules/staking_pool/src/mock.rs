@@ -203,7 +203,7 @@ parameter_types! {
 	pub MaxClaimFee: Rate = Rate::saturating_from_rational(10, 100);	// 10%
 	pub DefaultExchangeRate: ExchangeRate = ExchangeRate::saturating_from_rational(10, 100);	// 1 : 10
 	pub ClaimFeeReturnRatio: Ratio = Ratio::saturating_from_rational(80, 100);	// 80%
-	pub const StakingPoolModuleId: ModuleId = ModuleId(*b"aca/stkp");
+	pub const StakingPoolModuleId: ModuleId = ModuleId(*b"dos/stkp");
 }
 
 impl Trait for Runtime {

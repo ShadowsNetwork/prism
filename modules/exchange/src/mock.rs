@@ -95,7 +95,7 @@ parameter_types! {
 	pub const GetExchangeFee: (u32, u32) = (1, 100);
 	pub const TradingPathLimit: usize = 3;
 	pub EnabledTradingPairs : Vec<TradingPair> = vec![AUSD_DOT_PAIR, AUSD_XBTC_PAIR, DOT_XBTC_PAIR];
-	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
+	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"dos/dexm");
 }
 
 impl Trait for Runtime {

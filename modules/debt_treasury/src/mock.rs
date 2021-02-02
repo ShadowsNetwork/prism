@@ -123,7 +123,7 @@ parameter_types! {
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
 	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(AUSD, BTC)];
-	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
+	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"dos/dexm");
 }
 
 impl exchange::Trait for Runtime {
@@ -198,7 +198,7 @@ ord_parameter_types! {
 }
 
 parameter_types! {
-	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"dos/cdpt");
 }
 
 thread_local! {

@@ -113,18 +113,18 @@ impl_opaque_keys! {
 
 // Module accounts of runtime
 parameter_types! {
-	pub const ShadowTreasuryModuleId: ModuleId = ModuleId(*b"aca/trsy");
-	pub const LendModuleId: ModuleId = ModuleId(*b"aca/loan");
-	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"aca/dexm");
-	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"aca/cdpt");
-	pub const StakingPoolModuleId: ModuleId = ModuleId(*b"aca/stkp");
-	pub const MintxTreasuryModuleId: ModuleId = ModuleId(*b"aca/hztr");
-	pub const HomaTreasuryModuleId: ModuleId = ModuleId(*b"aca/hmtr");
-	pub const IncentivesModuleId: ModuleId = ModuleId(*b"aca/inct");
+	pub const ShadowTreasuryModuleId: ModuleId = ModuleId(*b"dos/trsy");
+	pub const LendModuleId: ModuleId = ModuleId(*b"dos/loan");
+	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"dos/dexm");
+	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"dos/cdpt");
+	pub const StakingPoolModuleId: ModuleId = ModuleId(*b"dos/stkp");
+	pub const MintxTreasuryModuleId: ModuleId = ModuleId(*b"dos/hztr");
+	pub const HomaTreasuryModuleId: ModuleId = ModuleId(*b"dos/hmtr");
+	pub const IncentivesModuleId: ModuleId = ModuleId(*b"dos/inct");
 	// Decentralized Sovereign Wealth Fund
-	pub const DSWFModuleId: ModuleId = ModuleId(*b"aca/dswf");
-	pub const ElectionsPhragmenModuleId: LockIdentifier = *b"aca/phre";
-	pub const NftModuleId: ModuleId = ModuleId(*b"aca/aNFT");
+	pub const DSWFModuleId: ModuleId = ModuleId(*b"dos/dswf");
+	pub const ElectionsPhragmenModuleId: LockIdentifier = *b"dos/phre";
+	pub const NftModuleId: ModuleId = ModuleId(*b"dos/aNFT");
 }
 
 pub fn get_all_module_accounts() -> Vec<AccountId> {
@@ -263,7 +263,7 @@ impl pallet_authorship::Trait for Runtime {
 }
 
 parameter_types! {
-	pub const AcaExistentialDeposit: Balance = 0;
+	pub const dosExistentialDeposit: Balance = 0;
 	// For weight estimation, we assume that the most locks on an individual account will be 50.
 	// This number may need to be adjusted in the future if this assumption no longer holds true.
 	pub const MaxLocks: u32 = 50;
@@ -271,13 +271,13 @@ parameter_types! {
 
 // `module_accounts` handles account opening/reaping, `ExistentialDeposit` in
 // `pallet_balances` must be 0
-const_assert!(AcaExistentialDeposit::get() == 0);
+const_assert!(dosExistentialDeposit::get() == 0);
 
 impl pallet_balances::Trait for Runtime {
 	type Balance = Balance;
 	type DustRemoval = ();
 	type Event = Event;
-	type ExistentialDeposit = AcaExistentialDeposit;
+	type ExistentialDeposit = dosExistentialDeposit;
 	type AccountStore = module_accounts::Module<Runtime>;
 	type MaxLocks = MaxLocks;
 	type WeightInfo = ();
@@ -1673,7 +1673,7 @@ impl_runtime_apis! {
 			let whitelist: Vec<TrackedStorageKey> = vec![
 				// Block Number
 				// frame_system::Number::<Runtime>::hashed_key().to_vec(),
-				hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef702a5c1b19ab7a04f536c519aca4983ac").to_vec().into(),
+				hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef702a5c1b19ab7a04f536c519dos4983ac").to_vec().into(),
 				// Total Issuance
 				hex_literal::hex!("c2261276cc9d1f8598ea4b6a74b15c2f57c875e4cff74148e4628f264b974c80").to_vec().into(),
 				// Execution Phase

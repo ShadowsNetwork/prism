@@ -30,7 +30,7 @@ pub fn set_ausd_balance(who: &AccountId, balance: Balance) {
 	set_balance(CurrencyId::Token(TokenSymbol::AUSD), who, balance)
 }
 
-pub fn set_aca_balance(who: &AccountId, balance: Balance) {
+pub fn set_dos_balance(who: &AccountId, balance: Balance) {
 	set_balance(CurrencyId::Token(TokenSymbol::DOS), who, balance)
 }
 

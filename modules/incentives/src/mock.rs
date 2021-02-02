@@ -213,7 +213,7 @@ parameter_types! {
 	pub const AccumulatePeriod: BlockNumber = 10;
 	pub const IncentiveCurrencyId: CurrencyId = DOS;
 	pub const SavingCurrencyId: CurrencyId = AUSD;
-	pub const IncentivesModuleId: ModuleId = ModuleId(*b"aca/inct");
+	pub const IncentivesModuleId: ModuleId = ModuleId(*b"dos/inct");
 }
 
 ord_parameter_types! {

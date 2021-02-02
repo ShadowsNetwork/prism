@@ -1,4 +1,4 @@
-use super::utils::{dollars, lookup_of_account, set_aca_balance};
+use super::utils::{dollars, lookup_of_account, set_dos_balance};
 use crate::{
 	AccountId, AccountIdConversion, Currencies, CurrencyId, MinVestedTransfer, NewAccountDeposit, Runtime,
 	ShadowsTreasuryModuleId, System, TokenSymbol, Vesting,
@@ -32,7 +32,7 @@ runtime_benchmarks! {
 
 		// extra 1 dollar to pay fees
 		let from: AccountId = ShadowsTreasuryModuleId::get().into_account();
-		set_aca_balance(&from, schedule.total_amount().unwrap() + dollars(1u32));
+		set_dos_balance(&from, schedule.total_amount().unwrap() + dollars(1u32));
 
 		let to: AccountId = account("to", 0, SEED);
 		let to_lookup = lookup_of_account(to.clone());
@@ -56,7 +56,7 @@ runtime_benchmarks! {
 
 		let from: AccountId = ShadowsTreasuryModuleId::get().into_account();
 		// extra 1 dollar to pay fees
-		set_aca_balance(&from, schedule.total_amount().unwrap() * i as u128 + dollars(1u32));
+		set_dos_balance(&from, schedule.total_amount().unwrap() * i as u128 + dollars(1u32));
 
 		let to: AccountId = account("to", 0, SEED);
 		let to_lookup = lookup_of_account(to.clone());
@@ -85,7 +85,7 @@ runtime_benchmarks! {
 		};
 
 		let to: AccountId = account("to", 0, SEED);
-		set_aca_balance(&to, schedule.total_amount().unwrap() * i as u128);
+		set_dos_balance(&to, schedule.total_amount().unwrap() * i as u128);
 		let to_lookup = lookup_of_account(to.clone());
 
 		let mut schedules = vec![];
