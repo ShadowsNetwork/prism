@@ -156,7 +156,7 @@ impl PriceProvider<CurrencyId> for MockPriceSource {
 
 	fn unlock_price(_currency_id: CurrencyId) {}
 }
-zpes! {
+parameter_types! {
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"dos/dexm");
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
