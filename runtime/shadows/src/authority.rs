@@ -2,10 +2,10 @@
 
 use crate::{
 	AccountId, AccountIdConversion, AuthoritysOriginId, BadOrigin, BlockNumber, DSWFModuleId, DispatchResult,
-	EnsureRoot, EnsureRootOrHalfGeneralCouncil, EnsureRootOrHalfStake_EarningCouncil, EnsureRootOrHalfMintxCouncil,
+	EnsureRoot, EnsureRootOrHalfGeneralCouncil, EnsureRootOrHalfMintxCouncil, EnsureRootOrHalfStake_EarningCouncil,
 	EnsureRootOrOneThirdsTechnicalCommittee, EnsureRootOrThreeFourthsGeneralCouncil,
-	EnsureRootOrTwoThirdsTechnicalCommittee, Stake_EarningTreasuryModuleId, MintxTreasuryModuleId, OneDay, Origin, OriginCaller,
-	SevenDays, ShadowTreasuryModuleId, ZeroDay, HOURS,
+	EnsureRootOrTwoThirdsTechnicalCommittee, MintxTreasuryModuleId, OneDay, Origin, OriginCaller, SevenDays,
+	ShadowTreasuryModuleId, Stake_EarningTreasuryModuleId, ZeroDay, HOURS,
 };
 pub use frame_support::traits::{schedule::Priority, EnsureOrigin, OriginTrait};
 use frame_system::ensure_root;
@@ -77,9 +77,11 @@ impl orml_authority::AsOriginId<Origin, OriginCaller> for AuthoritysOriginId {
 			AuthoritysOriginId::MintxTreasury => Origin::signed(MintxTreasuryModuleId::get().into_account())
 				.caller()
 				.clone(),
-			AuthoritysOriginId::Stake_EarningTreasury => Origin::signed(Stake_EarningTreasuryModuleId::get().into_account())
-				.caller()
-				.clone(),
+			AuthoritysOriginId::Stake_EarningTreasury => {
+				Origin::signed(Stake_EarningTreasuryModuleId::get().into_account())
+					.caller()
+					.clone()
+			}
 			AuthoritysOriginId::DSWF => Origin::signed(DSWFModuleId::get().into_account()).caller().clone(),
 		}
 	}

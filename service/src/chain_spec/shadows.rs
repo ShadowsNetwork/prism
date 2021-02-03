@@ -183,11 +183,11 @@ fn testnet_genesis(
 ) -> shadows_runtime::GenesisConfig {
 	use shadows_runtime::{
 		get_all_module_accounts, BabeConfig, BalancesConfig, BandOracleConfig, ContractsConfig, CurrencyId,
-		DEBTTreasuryConfig, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
-		Stake_EarningCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
-		OperatorMembershipBandConfig, OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig,
-		ShadowsOracleConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig,
-		TokenSymbol, TokensConfig, VestingConfig, DOLLARS,
+		DEBTTreasuryConfig, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig, IndicesConfig,
+		MintxCouncilMembershipConfig, NewAccountDeposit, OperatorMembershipBandConfig, OperatorMembershipShadowsConfig,
+		PolkadotBridgeConfig, SessionConfig, ShadowsOracleConfig, Stake_EarningCouncilMembershipConfig, StakerStatus,
+		StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig, TokenSymbol, TokensConfig,
+		VestingConfig, DOLLARS,
 	};
 
 	let new_account_deposit = NewAccountDeposit::get();
@@ -349,11 +349,11 @@ fn shadows_genesis(
 ) -> shadows_runtime::GenesisConfig {
 	use shadows_runtime::{
 		get_all_module_accounts, BabeConfig, Balance, BalancesConfig, BandOracleConfig, ContractsConfig, CurrencyId,
-		DEBTTreasuryConfig, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
-		Stake_EarningCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
-		OperatorMembershipBandConfig, OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig,
-		ShadowsOracleConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig,
-		TokenSymbol, TokensConfig, VestingConfig, CENTS, DOLLARS,
+		DEBTTreasuryConfig, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig, IndicesConfig,
+		MintxCouncilMembershipConfig, NewAccountDeposit, OperatorMembershipBandConfig, OperatorMembershipShadowsConfig,
+		PolkadotBridgeConfig, SessionConfig, ShadowsOracleConfig, Stake_EarningCouncilMembershipConfig, StakerStatus,
+		StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig, TokenSymbol, TokensConfig,
+		VestingConfig, CENTS, DOLLARS,
 	};
 
 	let new_account_deposit = NewAccountDeposit::get();

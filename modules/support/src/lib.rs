@@ -10,8 +10,8 @@ use sp_std::{
 
 pub mod stake_earning;
 pub use stake_earning::{
-	Stake_EarningProtocol, NomineesProvider, OnCommission, OnNewEra, PolkadotBridge, PolkadotBridgeCall, PolkadotBridgeState,
-	PolkadotBridgeType, PolkadotStakingLedger, PolkadotUnlockChunk,
+	NomineesProvider, OnCommission, OnNewEra, PolkadotBridge, PolkadotBridgeCall, PolkadotBridgeState,
+	PolkadotBridgeType, PolkadotStakingLedger, PolkadotUnlockChunk, Stake_EarningProtocol,
 };
 
 pub type Price = FixedU128;
