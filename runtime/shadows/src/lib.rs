@@ -119,7 +119,7 @@ parameter_types! {
 	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"dos/cdpt");
 	pub const StakingPoolModuleId: ModuleId = ModuleId(*b"dos/stkp");
 	pub const MintxTreasuryModuleId: ModuleId = ModuleId(*b"dos/hztr");
-	pub const HomaTreasuryModuleId: ModuleId = ModuleId(*b"dos/hmtr");
+	pub const Stake_EarningTreasuryModuleId: ModuleId = ModuleId(*b"dos/hmtr");
 	pub const IncentivesModuleId: ModuleId = ModuleId(*b"dos/inct");
 	// Decentralized Sovereign Wealth Fund
 	pub const DSWFModuleId: ModuleId = ModuleId(*b"dos/dswf");
@@ -135,7 +135,7 @@ pub fn get_all_module_accounts() -> Vec<AccountId> {
 		DEBTTreasuryModuleId::get().into_account(),
 		StakingPoolModuleId::get().into_account(),
 		MintxTreasuryModuleId::get().into_account(),
-		HomaTreasuryModuleId::get().into_account(),
+		Stake_EarningTreasuryModuleId::get().into_account(),
 		IncentivesModuleId::get().into_account(),
 		DSWFModuleId::get().into_account(),
 		ZeroAccountId::get(),
@@ -315,10 +315,10 @@ type EnsureRootOrHalfMintxCouncil = EnsureOneOf<
 	pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, MintxCouncilInstance>,
 >;
 
-type EnsureRootOrHalfHomaCouncil = EnsureOneOf<
+type EnsureRootOrHalfStake_EarningCouncil = EnsureOneOf<
 	AccountId,
 	EnsureRoot<AccountId>,
-	pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, HomaCouncilInstance>,
+	pallet_collective::EnsureProportionMoreThan<_1, _2, AccountId, Stake_EarningCouncilInstance>,
 >;
 
 type EnsureRootOrTwoThirdsGeneralCouncil = EnsureOneOf<
@@ -406,33 +406,33 @@ impl pallet_membership::Trait<MintxCouncilMembershipInstance> for Runtime {
 }
 
 parameter_types! {
-	pub const HomaCouncilMotionDuration: BlockNumber = 0;
-	pub const HomaCouncilMaxProposals: u32 = 100;
-	pub const HomaCouncilMaxMembers: u32 = 100;
+	pub const Stake_EarningCouncilMotionDuration: BlockNumber = 0;
+	pub const Stake_EarningCouncilMaxProposals: u32 = 100;
+	pub const Stake_EarningCouncilMaxMembers: u32 = 100;
 }
 
-type HomaCouncilInstance = pallet_collective::Instance3;
-impl pallet_collective::Trait<HomaCouncilInstance> for Runtime {
+type Stake_EarningCouncilInstance = pallet_collective::Instance3;
+impl pallet_collective::Trait<Stake_EarningCouncilInstance> for Runtime {
 	type Origin = Origin;
 	type Proposal = Call;
 	type Event = Event;
-	type MotionDuration = HomaCouncilMotionDuration;
-	type MaxProposals = HomaCouncilMaxProposals;
-	type MaxMembers = HomaCouncilMaxMembers;
+	type MotionDuration = Stake_EarningCouncilMotionDuration;
+	type MaxProposals = Stake_EarningCouncilMaxProposals;
+	type MaxMembers = Stake_EarningCouncilMaxMembers;
 	type DefaultVote = pallet_collective::PrimeDefaultVote;
 	type WeightInfo = ();
 }
 
-type HomaCouncilMembershipInstance = pallet_membership::Instance3;
-impl pallet_membership::Trait<HomaCouncilMembershipInstance> for Runtime {
+type Stake_EarningCouncilMembershipInstance = pallet_membership::Instance3;
+impl pallet_membership::Trait<Stake_EarningCouncilMembershipInstance> for Runtime {
 	type Event = Event;
 	type AddOrigin = EnsureRootOrTwoThirdsGeneralCouncil;
 	type RemoveOrigin = EnsureRootOrTwoThirdsGeneralCouncil;
 	type SwapOrigin = EnsureRootOrTwoThirdsGeneralCouncil;
 	type ResetOrigin = EnsureRootOrTwoThirdsGeneralCouncil;
 	type PrimeOrigin = EnsureRootOrTwoThirdsGeneralCouncil;
-	type MembershipInitialized = HomaCouncil;
-	type MembershipChanged = HomaCouncil;
+	type MembershipInitialized = Stake_EarningCouncil;
+	type MembershipChanged = Stake_EarningCouncil;
 }
 
 parameter_types! {
@@ -724,8 +724,8 @@ impl pallet_elections_phragmen::Trait for Runtime {
 	type Event = Event;
 	type Currency = CurrencyAdapter<Runtime, GetLDOTCurrencyId>;
 	type CurrencyToVote = CurrencyToVoteHandler;
-	type ChangeMembers = HomaCouncil;
-	type InitializeMembers = HomaCouncil;
+	type ChangeMembers = Stake_EarningCouncil;
+	type InitializeMembers = Stake_EarningCouncil;
 	type CandidacyBond = CandidacyBond;
 	type VotingBond = VotingBond;
 	type TermDuration = TermDuration;
@@ -1099,7 +1099,7 @@ impl module_incentives::Trait for Runtime {
 	type Event = Event;
 	type LendIncentivePool = ZeroAccountId;
 	type ExchangeIncentivePool = ZeroAccountId;
-	type HomaIncentivePool = ZeroAccountId;
+	type Stake_EarningIncentivePool = ZeroAccountId;
 	type AccumulatePeriod = AccumulatePeriod;
 	type IncentiveCurrencyId = GetNativeCurrencyId;
 	type SavingCurrencyId = GetStableCurrencyId;
@@ -1142,7 +1142,7 @@ impl module_staking_pool::Trait for Runtime {
 	type StakingCurrencyId = GetStakingCurrencyId;
 	type LiquidCurrencyId = GetLiquidCurrencyId;
 	type Nominees = NomineesElection;
-	type OnCommission = DealWithCommission<HomaTreasuryModuleId>;
+	type OnCommission = DealWithCommission<Stake_EarningTreasuryModuleId>;
 	type Bridge = PolkadotBridge;
 	type MaxBondRatio = MaxBondRatio;
 	type MinBondRatio = MinBondRatio;
@@ -1153,7 +1153,7 @@ impl module_staking_pool::Trait for Runtime {
 }
 
 impl module_stake_earning::Trait for Runtime {
-	type Stake_earning = StakingPool;
+	type Stake_Earning = StakingPool;
 }
 
 parameter_types! {
@@ -1334,8 +1334,8 @@ construct_runtime!(
 		GeneralCouncilMembership: pallet_membership::<Instance1>::{Module, Call, Storage, Event<T>, Config<T>},
 		MintxCouncil: pallet_collective::<Instance2>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
 		MintxCouncilMembership: pallet_membership::<Instance2>::{Module, Call, Storage, Event<T>, Config<T>},
-		HomaCouncil: pallet_collective::<Instance3>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
-		HomaCouncilMembership: pallet_membership::<Instance3>::{Module, Call, Storage, Event<T>, Config<T>},
+		Stake_EarningCouncil: pallet_collective::<Instance3>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
+		Stake_EarningCouncilMembership: pallet_membership::<Instance3>::{Module, Call, Storage, Event<T>, Config<T>},
 		TechnicalCommittee: pallet_collective::<Instance4>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
 		TechnicalCommitteeMembership: pallet_membership::<Instance4>::{Module, Call, Storage, Event<T>, Config<T>},
 
@@ -1368,8 +1368,8 @@ construct_runtime!(
 		DebtEngine: module_debt_engine::{Module, Storage, Call, Event<T>, Config, ValidateUnsigned},
 		EmergencyShutdown: module_emergency_shutdown::{Module, Storage, Call, Event<T>},
 
-		// Stake_earning
-		Stake_earning: module_stake_earning::{Module, Call},
+		// Stake_Earning
+		Stake_Earning: module_stake_earning::{Module, Call},
 		NomineesElection: module_nominees_election::{Module, Call, Storage},
 		StakingPool: module_staking_pool::{Module, Call, Storage, Event<T>},
 		PolkadotBridge: module_polkadot_bridge::{Module, Call, Storage, Event<T>, Config},

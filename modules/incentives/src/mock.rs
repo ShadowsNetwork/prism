@@ -209,7 +209,7 @@ pub type RewardsModule = orml_rewards::Module<Runtime>;
 parameter_types! {
 	pub const LendIncentivePool: AccountId = 10;
 	pub const ExchangeIncentivePool: AccountId = 11;
-	pub const HomaIncentivePool: AccountId = 12;
+	pub const Stake_EarningIncentivePool: AccountId = 12;
 	pub const AccumulatePeriod: BlockNumber = 10;
 	pub const IncentiveCurrencyId: CurrencyId = DOS;
 	pub const SavingCurrencyId: CurrencyId = AUSD;
@@ -224,7 +224,7 @@ impl Trait for Runtime {
 	type Event = TestEvent;
 	type LendIncentivePool = LendIncentivePool;
 	type ExchangeIncentivePool = ExchangeIncentivePool;
-	type HomaIncentivePool = HomaIncentivePool;
+	type Stake_EarningIncentivePool = Stake_EarningIncentivePool;
 	type AccumulatePeriod = AccumulatePeriod;
 	type IncentiveCurrencyId = IncentiveCurrencyId;
 	type SavingCurrencyId = SavingCurrencyId;
