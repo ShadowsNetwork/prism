@@ -14,12 +14,12 @@ pub type AccountId = u128;
 
 pub const ALICE: AccountId = 1;
 pub const BOB: AccountId = 2;
-pub const AUSD: CurrencyId = CurrencyId::Token(TokenSymbol::AUSD);
+pub const XUSD: CurrencyId = CurrencyId::Token(TokenSymbol::XUSD);
 pub const XBTC: CurrencyId = CurrencyId::Token(TokenSymbol::XBTC);
 pub const DOT: CurrencyId = CurrencyId::Token(TokenSymbol::DOT);
 pub const DOS: CurrencyId = CurrencyId::Token(TokenSymbol::DOS);
-pub const AUSD_XBTC_PAIR: TradingPair = TradingPair(AUSD, XBTC);
-pub const AUSD_DOT_PAIR: TradingPair = TradingPair(AUSD, DOT);
+pub const XUSD_XBTC_PAIR: TradingPair = TradingPair(XUSD, XBTC);
+pub const XUSD_DOT_PAIR: TradingPair = TradingPair(XUSD, DOT);
 pub const DOT_XBTC_PAIR: TradingPair = TradingPair(DOT, XBTC);
 
 #[derive(Clone, PartialEq, Eq, Debug)]
@@ -94,7 +94,7 @@ thread_local! {
 parameter_types! {
 	pub const GetExchangeFee: (u32, u32) = (1, 100);
 	pub const TradingPathLimit: usize = 3;
-	pub EnabledTradingPairs : Vec<TradingPair> = vec![AUSD_DOT_PAIR, AUSD_XBTC_PAIR, DOT_XBTC_PAIR];
+	pub EnabledTradingPairs : Vec<TradingPair> = vec![XUSD_DOT_PAIR, XUSD_XBTC_PAIR, DOT_XBTC_PAIR];
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"dos/dexm");
 }
 
@@ -117,8 +117,8 @@ impl Default for ExtBuilder {
 	fn default() -> Self {
 		Self {
 			endowed_accounts: vec![
-				(ALICE, AUSD, 1_000_000_000_000_000_000u128),
-				(BOB, AUSD, 1_000_000_000_000_000_000u128),
+				(ALICE, XUSD, 1_000_000_000_000_000_000u128),
+				(BOB, XUSD, 1_000_000_000_000_000_000u128),
 				(ALICE, XBTC, 1_000_000_000_000_000_000u128),
 				(BOB, XBTC, 1_000_000_000_000_000_000u128),
 				(ALICE, DOT, 1_000_000_000_000_000_000u128),

@@ -815,7 +815,7 @@ impl module_support::ExchangeRateProvider for LiquidStakingExchangeRateProvider 
 
 parameter_types! {
 	pub const GetNativeCurrencyId: CurrencyId = CurrencyId::Token(TokenSymbol::DOS);
-	pub const GetStableCurrencyId: CurrencyId = CurrencyId::Token(TokenSymbol::AUSD);
+	pub const GetStableCurrencyId: CurrencyId = CurrencyId::Token(TokenSymbol::XUSD);
 	pub const GetLDOTCurrencyId: CurrencyId = CurrencyId::Token(TokenSymbol::LDOT);
 }
 
@@ -1029,11 +1029,11 @@ parameter_types! {
 	pub const GetExchangeFee: (u32, u32) = (1, 1000);	// 0.1%
 	pub const TradingPathLimit: usize = 3;
 	pub EnabledTradingPairs: Vec<TradingPair> = vec![
-		TradingPair::new(CurrencyId::Token(TokenSymbol::AUSD), CurrencyId::Token(TokenSymbol::DOT)),
-		TradingPair::new(CurrencyId::Token(TokenSymbol::AUSD), CurrencyId::Token(TokenSymbol::XBTC)),
-		TradingPair::new(CurrencyId::Token(TokenSymbol::AUSD), CurrencyId::Token(TokenSymbol::LDOT)),
-		TradingPair::new(CurrencyId::Token(TokenSymbol::AUSD), CurrencyId::Token(TokenSymbol::DOS)),
-		TradingPair::new(CurrencyId::Token(TokenSymbol::AUSD), CurrencyId::Token(TokenSymbol::RENBTC)),
+		TradingPair::new(CurrencyId::Token(TokenSymbol::XUSD), CurrencyId::Token(TokenSymbol::DOT)),
+		TradingPair::new(CurrencyId::Token(TokenSymbol::XUSD), CurrencyId::Token(TokenSymbol::XBTC)),
+		TradingPair::new(CurrencyId::Token(TokenSymbol::XUSD), CurrencyId::Token(TokenSymbol::LDOT)),
+		TradingPair::new(CurrencyId::Token(TokenSymbol::XUSD), CurrencyId::Token(TokenSymbol::DOS)),
+		TradingPair::new(CurrencyId::Token(TokenSymbol::XUSD), CurrencyId::Token(TokenSymbol::RENBTC)),
 	];
 }
 
@@ -1065,7 +1065,7 @@ impl module_debt_treasury::Trait for Runtime {
 
 parameter_types! {
 	// All currency types except for native currency, Sort by fee charge order
-	pub AllNonNativeCurrencyIds: Vec<CurrencyId> = vec![CurrencyId::Token(TokenSymbol::AUSD), CurrencyId::Token(TokenSymbol::LDOT), CurrencyId::Token(TokenSymbol::DOT), CurrencyId::Token(TokenSymbol::XBTC), CurrencyId::Token(TokenSymbol::RENBTC)];
+	pub AllNonNativeCurrencyIds: Vec<CurrencyId> = vec![CurrencyId::Token(TokenSymbol::XUSD), CurrencyId::Token(TokenSymbol::LDOT), CurrencyId::Token(TokenSymbol::DOT), CurrencyId::Token(TokenSymbol::XBTC), CurrencyId::Token(TokenSymbol::RENBTC)];
 	pub const NewAccountDeposit: Balance = 100 * MILLICENTS;
 }
 

@@ -24,7 +24,7 @@ pub const ALICE: AccountId = 1;
 pub const BOB: AccountId = 2;
 pub const CAROL: AccountId = 3;
 pub const DOS: CurrencyId = CurrencyId::Token(TokenSymbol::DOS);
-pub const AUSD: CurrencyId = CurrencyId::Token(TokenSymbol::AUSD);
+pub const XUSD: CurrencyId = CurrencyId::Token(TokenSymbol::XUSD);
 pub const BTC: CurrencyId = CurrencyId::Token(TokenSymbol::XBTC);
 
 #[derive(Clone, PartialEq, Eq, Debug)]
@@ -115,7 +115,7 @@ ord_parameter_types! {
 }
 
 parameter_types! {
-	pub const GetStableCurrencyId: CurrencyId = AUSD;
+	pub const GetStableCurrencyId: CurrencyId = XUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
 	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"dos/cdpt");
 }
@@ -160,7 +160,7 @@ parameter_types! {
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"dos/dexm");
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
-	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(AUSD, BTC)];
+	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(XUSD, BTC)];
 }
 
 impl exchange::Trait for Runtime {
@@ -234,9 +234,9 @@ impl Default for ExtBuilder {
 	fn default() -> Self {
 		Self {
 			endowed_accounts: vec![
-				(ALICE, AUSD, 1000),
-				(BOB, AUSD, 1000),
-				(CAROL, AUSD, 1000),
+				(ALICE, XUSD, 1000),
+				(BOB, XUSD, 1000),
+				(CAROL, XUSD, 1000),
 				(ALICE, BTC, 1000),
 				(BOB, BTC, 1000),
 				(CAROL, BTC, 1000),

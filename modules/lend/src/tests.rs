@@ -5,7 +5,7 @@
 use super::*;
 use frame_support::{assert_noop, assert_ok};
 use mock::{
-	Currencies, DEBTTreasuryModule, ExtBuilder, LendModule, Runtime, System, TestEvent, ALICE, AUSD, BOB, BTC, DOT,
+	Currencies, DEBTTreasuryModule, ExtBuilder, LendModule, Runtime, System, TestEvent, ALICE, BOB, BTC, DOT, XUSD,
 };
 
 #[test]
@@ -57,7 +57,7 @@ fn adjust_position_should_work() {
 		assert_eq!(LendModule::total_positions(BTC).collateral, 0);
 		assert_eq!(LendModule::positions(BTC, &ALICE).debit, 0);
 		assert_eq!(LendModule::positions(BTC, &ALICE).collateral, 0);
-		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 0);
+		assert_eq!(Currencies::free_balance(XUSD, &ALICE), 0);
 
 		// success
 		assert_ok!(LendModule::adjust_position(&ALICE, BTC, 500, 300));
@@ -67,7 +67,7 @@ fn adjust_position_should_work() {
 		assert_eq!(LendModule::total_positions(BTC).collateral, 500);
 		assert_eq!(LendModule::positions(BTC, &ALICE).debit, 300);
 		assert_eq!(LendModule::positions(BTC, &ALICE).collateral, 500);
-		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 150);
+		assert_eq!(Currencies::free_balance(XUSD, &ALICE), 150);
 
 		let update_position_event = TestEvent::lend(RawEvent::PositionUpdated(ALICE, BTC, 500, 300));
 		assert!(System::events()

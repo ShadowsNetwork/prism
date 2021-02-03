@@ -20,11 +20,11 @@ pub type BlockNumber = u64;
 pub const ALICE: AccountId = 1;
 pub const BOB: AccountId = 2;
 pub const DOS: CurrencyId = CurrencyId::Token(TokenSymbol::DOS);
-pub const AUSD: CurrencyId = CurrencyId::Token(TokenSymbol::AUSD);
+pub const XUSD: CurrencyId = CurrencyId::Token(TokenSymbol::XUSD);
 pub const BTC: CurrencyId = CurrencyId::Token(TokenSymbol::XBTC);
 pub const DOT: CurrencyId = CurrencyId::Token(TokenSymbol::DOT);
-pub const BTC_AUSD_LP: CurrencyId = CurrencyId::EXCHANGEShare(TokenSymbol::XBTC, TokenSymbol::AUSD);
-pub const DOT_AUSD_LP: CurrencyId = CurrencyId::EXCHANGEShare(TokenSymbol::DOT, TokenSymbol::AUSD);
+pub const BTC_XUSD_LP: CurrencyId = CurrencyId::EXCHANGEShare(TokenSymbol::XBTC, TokenSymbol::XUSD);
+pub const DOT_XUSD_LP: CurrencyId = CurrencyId::EXCHANGEShare(TokenSymbol::DOT, TokenSymbol::XUSD);
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub struct Runtime;
@@ -145,10 +145,10 @@ pub struct MockEXCHANGE;
 impl EXCHANGEManager<AccountId, CurrencyId, Balance> for MockEXCHANGE {
 	fn get_liquidity_pool(currency_id_a: CurrencyId, currency_id_b: CurrencyId) -> (Balance, Balance) {
 		match (currency_id_a, currency_id_b) {
-			(AUSD, BTC) => (500, 100),
-			(AUSD, DOT) => (400, 100),
-			(BTC, AUSD) => (100, 500),
-			(DOT, AUSD) => (100, 400),
+			(XUSD, BTC) => (500, 100),
+			(XUSD, DOT) => (400, 100),
+			(BTC, XUSD) => (100, 500),
+			(DOT, XUSD) => (100, 400),
 			_ => (0, 0),
 		}
 	}
@@ -212,7 +212,7 @@ parameter_types! {
 	pub const StakeEarningIncentivePool: AccountId = 12;
 	pub const AccumulatePeriod: BlockNumber = 10;
 	pub const IncentiveCurrencyId: CurrencyId = DOS;
-	pub const SavingCurrencyId: CurrencyId = AUSD;
+	pub const SavingCurrencyId: CurrencyId = XUSD;
 	pub const IncentivesModuleId: ModuleId = ModuleId(*b"dos/inct");
 }
 

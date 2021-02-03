@@ -70,7 +70,7 @@ pub use sp_runtime::OpaqueExtrinsic as UncheckedExtrinsic;
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub enum TokenSymbol {
 	DOS = 0,
-	AUSD = 1,
+	XUSD = 1,
 	DOT = 2,
 	XBTC = 3,
 	LDOT = 4,

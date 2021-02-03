@@ -36,7 +36,7 @@ runtime_benchmarks! {
 		let auction_id: AuctionId = 0;
 
 		set_balance(currency_id, &funder, collateral_amount);
-		set_balance(CurrencyId::Token(TokenSymbol::AUSD), &bidder, bid_price);
+		set_balance(CurrencyId::Token(TokenSymbol::XUSD), &bidder, bid_price);
 		<DEBTTreasury as DEBTTreasury<_>>::deposit_collateral(&funder, currency_id, collateral_amount)?;
 		AuctionManager::new_collateral_auction(&funder, currency_id, collateral_amount, target_amount)?;
 	}: bid(RawOrigin::Signed(bidder), auction_id, bid_price)
@@ -55,8 +55,8 @@ runtime_benchmarks! {
 		let auction_id: AuctionId = 0;
 
 		set_balance(currency_id, &funder, collateral_amount);
-		set_balance(CurrencyId::Token(TokenSymbol::AUSD), &bidder, bid_price);
-		set_balance(CurrencyId::Token(TokenSymbol::AUSD), &previous_bidder, previous_bid_price);
+		set_balance(CurrencyId::Token(TokenSymbol::XUSD), &bidder, bid_price);
+		set_balance(CurrencyId::Token(TokenSymbol::XUSD), &previous_bidder, previous_bid_price);
 		<DEBTTreasury as DEBTTreasury<_>>::deposit_collateral(&funder, currency_id, collateral_amount)?;
 		AuctionManager::new_collateral_auction(&funder, currency_id, collateral_amount, target_amount)?;
 		Auction::bid(RawOrigin::Signed(previous_bidder).into(), auction_id, previous_bid_price)?;
@@ -102,7 +102,7 @@ runtime_benchmarks! {
 		let initial_amount = DOLLARS.saturating_mul(10);
 		let auction_id: AuctionId = 0;
 
-		set_balance(CurrencyId::Token(TokenSymbol::AUSD), &bidder, fix_debit_amount);
+		set_balance(CurrencyId::Token(TokenSymbol::XUSD), &bidder, fix_debit_amount);
 		AuctionManager::new_debit_auction(initial_amount ,fix_debit_amount)?;
 	}: bid(RawOrigin::Signed(bidder), auction_id, fix_debit_amount)
 
@@ -117,8 +117,8 @@ runtime_benchmarks! {
 		let bid_price = fix_debit_amount * 2;
 		let auction_id: AuctionId = 0;
 
-		set_balance(CurrencyId::Token(TokenSymbol::AUSD), &bidder, bid_price);
-		set_balance(CurrencyId::Token(TokenSymbol::AUSD), &previous_bidder, previous_bid_price);
+		set_balance(CurrencyId::Token(TokenSymbol::XUSD), &bidder, bid_price);
+		set_balance(CurrencyId::Token(TokenSymbol::XUSD), &previous_bidder, previous_bid_price);
 		AuctionManager::new_debit_auction(initial_amount ,fix_debit_amount)?;
 		Auction::bid(RawOrigin::Signed(previous_bidder).into(), auction_id, previous_bid_price)?;
 	}: bid(RawOrigin::Signed(bidder), auction_id, bid_price)
@@ -130,7 +130,7 @@ runtime_benchmarks! {
 		let fix_debit_amount = DOLLARS.saturating_mul(100);
 		let initial_amount = DOLLARS.saturating_mul(10);
 		let auction_id: AuctionId = 0;
-		set_balance(CurrencyId::Token(TokenSymbol::AUSD), &bidder, fix_debit_amount * c as u128);
+		set_balance(CurrencyId::Token(TokenSymbol::XUSD), &bidder, fix_debit_amount * c as u128);
 
 		System::set_block_number(1);
 		for auction_id in 0 .. c {

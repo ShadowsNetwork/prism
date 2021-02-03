@@ -15,7 +15,7 @@ pub type AccountId = u128;
 pub type BlockNumber = u64;
 
 pub const DOS: CurrencyId = CurrencyId::Token(TokenSymbol::DOS);
-pub const AUSD: CurrencyId = CurrencyId::Token(TokenSymbol::AUSD);
+pub const XUSD: CurrencyId = CurrencyId::Token(TokenSymbol::XUSD);
 pub const BTC: CurrencyId = CurrencyId::Token(TokenSymbol::XBTC);
 pub const DOT: CurrencyId = CurrencyId::Token(TokenSymbol::DOT);
 pub const LDOT: CurrencyId = CurrencyId::Token(TokenSymbol::LDOT);
@@ -78,7 +78,7 @@ pub struct MockDataProvider;
 impl DataProvider<CurrencyId, Price> for MockDataProvider {
 	fn get(currency_id: &CurrencyId) -> Option<Price> {
 		match currency_id {
-			&AUSD => Some(Price::saturating_from_rational(99, 100)),
+			&XUSD => Some(Price::saturating_from_rational(99, 100)),
 			&BTC => Some(Price::saturating_from_integer(5000)),
 			&DOT => Some(Price::saturating_from_integer(100)),
 			&DOS => Some(Price::zero()),
@@ -105,7 +105,7 @@ ord_parameter_types! {
 }
 
 parameter_types! {
-	pub const GetStableCurrencyId: CurrencyId = AUSD;
+	pub const GetStableCurrencyId: CurrencyId = XUSD;
 	pub const GetStakingCurrencyId: CurrencyId = DOT;
 	pub const GetLiquidCurrencyId: CurrencyId = LDOT;
 	pub StableCurrencyFixedPrice: Price = Price::one();

@@ -59,7 +59,7 @@ pub trait Trait: system::Trait + pallet_transaction_payment::Trait + orml_curren
 	/// treasury. Should be DOS
 	type NativeCurrencyId: Get<CurrencyId>;
 
-	/// Stable currency id, should be AUSD
+	/// Stable currency id, should be XUSD
 	type StableCurrencyId: Get<CurrencyId>;
 
 	/// Currency to transfer, reserve/unreserve, lock/unlock assets

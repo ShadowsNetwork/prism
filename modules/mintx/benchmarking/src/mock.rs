@@ -32,7 +32,7 @@ pub type AuctionId = u32;
 pub type BlockNumber = u64;
 
 pub const DOS: CurrencyId = CurrencyId::Token(TokenSymbol::DOS);
-pub const AUSD: CurrencyId = CurrencyId::Token(TokenSymbol::AUSD);
+pub const XUSD: CurrencyId = CurrencyId::Token(TokenSymbol::XUSD);
 pub const BTC: CurrencyId = CurrencyId::Token(TokenSymbol::XBTC);
 pub const DOT: CurrencyId = CurrencyId::Token(TokenSymbol::DOT);
 pub const LDOT: CurrencyId = CurrencyId::Token(TokenSymbol::LDOT);
@@ -169,7 +169,7 @@ ord_parameter_types! {
 }
 
 parameter_types! {
-	pub const GetStableCurrencyId: CurrencyId = AUSD;
+	pub const GetStableCurrencyId: CurrencyId = XUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
 	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"dos/cdpt");
 }

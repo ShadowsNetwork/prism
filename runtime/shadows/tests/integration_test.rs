@@ -151,7 +151,7 @@ fn emergency_shutdown_and_debt_treasury() {
 			),
 			(
 				AccountId::from(ALICE),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				2_000_000u128,
 			),
 			(
@@ -161,7 +161,7 @@ fn emergency_shutdown_and_debt_treasury() {
 			),
 			(
 				AccountId::from(BOB),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				8_000_000u128,
 			),
 			(
@@ -238,7 +238,7 @@ fn emergency_shutdown_and_debt_treasury() {
 				36_000_000
 			);
 			assert_eq!(
-				Currencies::free_balance(CurrencyId::Token(TokenSymbol::AUSD), &AccountId::from(ALICE)),
+				Currencies::free_balance(CurrencyId::Token(TokenSymbol::XUSD), &AccountId::from(ALICE)),
 				1_000_000
 			);
 			assert_eq!(
@@ -273,7 +273,7 @@ fn liquidate_debt() {
 			),
 			(
 				AccountId::from(BOB),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				amount(1_000_000),
 			),
 			(AccountId::from(BOB), CurrencyId::Token(TokenSymbol::XBTC), amount(101)),
@@ -289,7 +289,7 @@ fn liquidate_debt() {
 			assert_ok!(ExchangeModule::add_liquidity(
 				origin_of(AccountId::from(BOB)),
 				CurrencyId::Token(TokenSymbol::XBTC),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				amount(100),
 				amount(1_000_000)
 			));
@@ -411,7 +411,7 @@ fn test_exchange_module() {
 		.balances(vec![
 			(
 				AccountId::from(ALICE),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				(1_000_000_000_000_000_000u128),
 			),
 			(
@@ -421,7 +421,7 @@ fn test_exchange_module() {
 			),
 			(
 				AccountId::from(BOB),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				(1_000_000_000_000_000_000u128),
 			),
 			(
@@ -437,17 +437,17 @@ fn test_exchange_module() {
 			assert_eq!(
 				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
-					CurrencyId::Token(TokenSymbol::AUSD)
+					CurrencyId::Token(TokenSymbol::XUSD)
 				),
 				(0, 0)
 			);
 			assert_eq!(
-				Currencies::total_issuance(CurrencyId::EXCHANGEShare(TokenSymbol::AUSD, TokenSymbol::XBTC)),
+				Currencies::total_issuance(CurrencyId::EXCHANGEShare(TokenSymbol::XUSD, TokenSymbol::XBTC)),
 				0
 			);
 			assert_eq!(
 				Currencies::free_balance(
-					CurrencyId::EXCHANGEShare(TokenSymbol::AUSD, TokenSymbol::XBTC),
+					CurrencyId::EXCHANGEShare(TokenSymbol::XUSD, TokenSymbol::XBTC),
 					&AccountId::from(ALICE)
 				),
 				0
@@ -457,7 +457,7 @@ fn test_exchange_module() {
 				ExchangeModule::add_liquidity(
 					origin_of(AccountId::from(ALICE)),
 					CurrencyId::Token(TokenSymbol::XBTC),
-					CurrencyId::Token(TokenSymbol::AUSD),
+					CurrencyId::Token(TokenSymbol::XUSD),
 					0,
 					10000000
 				),
@@ -467,14 +467,14 @@ fn test_exchange_module() {
 			assert_ok!(ExchangeModule::add_liquidity(
 				origin_of(AccountId::from(ALICE)),
 				CurrencyId::Token(TokenSymbol::XBTC),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				10000,
 				10000000
 			));
 
 			let add_liquidity_event = Event::module_exchange(module_exchange::RawEvent::AddLiquidity(
 				AccountId::from(ALICE),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				10000000,
 				CurrencyId::Token(TokenSymbol::XBTC),
 				10000,
@@ -487,17 +487,17 @@ fn test_exchange_module() {
 			assert_eq!(
 				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
-					CurrencyId::Token(TokenSymbol::AUSD)
+					CurrencyId::Token(TokenSymbol::XUSD)
 				),
 				(10000, 10000000)
 			);
 			assert_eq!(
-				Currencies::total_issuance(CurrencyId::EXCHANGEShare(TokenSymbol::AUSD, TokenSymbol::XBTC)),
+				Currencies::total_issuance(CurrencyId::EXCHANGEShare(TokenSymbol::XUSD, TokenSymbol::XBTC)),
 				10000000
 			);
 			assert_eq!(
 				Currencies::free_balance(
-					CurrencyId::EXCHANGEShare(TokenSymbol::AUSD, TokenSymbol::XBTC),
+					CurrencyId::EXCHANGEShare(TokenSymbol::XUSD, TokenSymbol::XBTC),
 					&AccountId::from(ALICE)
 				),
 				10000000
@@ -505,24 +505,24 @@ fn test_exchange_module() {
 			assert_ok!(ExchangeModule::add_liquidity(
 				origin_of(AccountId::from(BOB)),
 				CurrencyId::Token(TokenSymbol::XBTC),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				1,
 				1000
 			));
 			assert_eq!(
 				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
-					CurrencyId::Token(TokenSymbol::AUSD)
+					CurrencyId::Token(TokenSymbol::XUSD)
 				),
 				(10001, 10001000)
 			);
 			assert_eq!(
-				Currencies::total_issuance(CurrencyId::EXCHANGEShare(TokenSymbol::AUSD, TokenSymbol::XBTC)),
+				Currencies::total_issuance(CurrencyId::EXCHANGEShare(TokenSymbol::XUSD, TokenSymbol::XBTC)),
 				10001000
 			);
 			assert_eq!(
 				Currencies::free_balance(
-					CurrencyId::EXCHANGEShare(TokenSymbol::AUSD, TokenSymbol::XBTC),
+					CurrencyId::EXCHANGEShare(TokenSymbol::XUSD, TokenSymbol::XBTC),
 					&AccountId::from(BOB)
 				),
 				1000
@@ -531,7 +531,7 @@ fn test_exchange_module() {
 				ExchangeModule::add_liquidity(
 					origin_of(AccountId::from(BOB)),
 					CurrencyId::Token(TokenSymbol::XBTC),
-					CurrencyId::Token(TokenSymbol::AUSD),
+					CurrencyId::Token(TokenSymbol::XUSD),
 					1,
 					999
 				),
@@ -540,17 +540,17 @@ fn test_exchange_module() {
 			assert_eq!(
 				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
-					CurrencyId::Token(TokenSymbol::AUSD)
+					CurrencyId::Token(TokenSymbol::XUSD)
 				),
 				(10001, 10001000)
 			);
 			assert_eq!(
-				Currencies::total_issuance(CurrencyId::EXCHANGEShare(TokenSymbol::AUSD, TokenSymbol::XBTC)),
+				Currencies::total_issuance(CurrencyId::EXCHANGEShare(TokenSymbol::XUSD, TokenSymbol::XBTC)),
 				10001000
 			);
 			assert_eq!(
 				Currencies::free_balance(
-					CurrencyId::EXCHANGEShare(TokenSymbol::AUSD, TokenSymbol::XBTC),
+					CurrencyId::EXCHANGEShare(TokenSymbol::XUSD, TokenSymbol::XBTC),
 					&AccountId::from(BOB)
 				),
 				1000
@@ -558,34 +558,34 @@ fn test_exchange_module() {
 			assert_ok!(ExchangeModule::add_liquidity(
 				origin_of(AccountId::from(BOB)),
 				CurrencyId::Token(TokenSymbol::XBTC),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				2,
 				1000
 			));
 			assert_eq!(
 				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
-					CurrencyId::Token(TokenSymbol::AUSD)
+					CurrencyId::Token(TokenSymbol::XUSD)
 				),
 				(10002, 10002000)
 			);
 			assert_ok!(ExchangeModule::add_liquidity(
 				origin_of(AccountId::from(BOB)),
 				CurrencyId::Token(TokenSymbol::XBTC),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				1,
 				1001
 			));
 			assert_eq!(
 				ExchangeModule::get_liquidity_pool(
 					CurrencyId::Token(TokenSymbol::XBTC),
-					CurrencyId::Token(TokenSymbol::AUSD)
+					CurrencyId::Token(TokenSymbol::XUSD)
 				),
 				(10003, 10003000)
 			);
 
 			assert_eq!(
-				Currencies::total_issuance(CurrencyId::EXCHANGEShare(TokenSymbol::AUSD, TokenSymbol::XBTC)),
+				Currencies::total_issuance(CurrencyId::EXCHANGEShare(TokenSymbol::XUSD, TokenSymbol::XBTC)),
 				10002998
 			);
 		});
@@ -633,7 +633,7 @@ fn test_mintx_module() {
 				amount(900)
 			);
 			assert_eq!(
-				Currencies::free_balance(CurrencyId::Token(TokenSymbol::AUSD), &AccountId::from(ALICE)),
+				Currencies::free_balance(CurrencyId::Token(TokenSymbol::XUSD), &AccountId::from(ALICE)),
 				amount(50)
 			);
 			assert_eq!(
@@ -673,7 +673,7 @@ fn test_mintx_module() {
 				amount(900)
 			);
 			assert_eq!(
-				Currencies::free_balance(CurrencyId::Token(TokenSymbol::AUSD), &AccountId::from(ALICE)),
+				Currencies::free_balance(CurrencyId::Token(TokenSymbol::XUSD), &AccountId::from(ALICE)),
 				amount(50)
 			);
 			assert_eq!(
@@ -698,7 +698,7 @@ fn test_debt_engine_module() {
 			),
 			(
 				AccountId::from(ALICE),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				amount(1000),
 			),
 			(
@@ -785,7 +785,7 @@ fn test_debt_engine_module() {
 
 			assert_ok!(set_oracle_price(vec![
 				(
-					CurrencyId::Token(TokenSymbol::AUSD),
+					CurrencyId::Token(TokenSymbol::XUSD),
 					Price::saturating_from_rational(1, 1)
 				),
 				(
@@ -848,7 +848,7 @@ fn test_authority_module() {
 			),
 			(
 				AccountId::from(ALICE),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				amount(1000),
 			),
 			(
@@ -858,7 +858,7 @@ fn test_authority_module() {
 			),
 			(
 				DSWFModuleId::get().into_account(),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				amount(1000),
 			),
 		])
@@ -900,7 +900,7 @@ fn test_authority_module() {
 			// DSWF transfer
 			let transfer_call = Call::Currencies(orml_currencies::Call::transfer(
 				AccountId::from(BOB).into(),
-				CurrencyId::Token(TokenSymbol::AUSD),
+				CurrencyId::Token(TokenSymbol::XUSD),
 				amount(500),
 			));
 			let dswf_call = Call::Authority(orml_authority::Call::dispatch_as(
@@ -935,13 +935,13 @@ fn test_authority_module() {
 			run_to_block(2);
 			assert_eq!(
 				Currencies::free_balance(
-					CurrencyId::Token(TokenSymbol::AUSD),
+					CurrencyId::Token(TokenSymbol::XUSD),
 					&DSWFModuleId::get().into_account()
 				),
 				amount(500)
 			);
 			assert_eq!(
-				Currencies::free_balance(CurrencyId::Token(TokenSymbol::AUSD), &AccountId::from(BOB)),
+				Currencies::free_balance(CurrencyId::Token(TokenSymbol::XUSD), &AccountId::from(BOB)),
 				amount(500)
 			);
 

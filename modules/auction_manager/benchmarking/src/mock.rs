@@ -32,7 +32,7 @@ pub type AuctionId = u32;
 pub type BlockNumber = u64;
 
 pub const DOS: CurrencyId = CurrencyId::Token(TokenSymbol::DOS);
-pub const AUSD: CurrencyId = CurrencyId::Token(TokenSymbol::AUSD);
+pub const XUSD: CurrencyId = CurrencyId::Token(TokenSymbol::XUSD);
 pub const DOT: CurrencyId = CurrencyId::Token(TokenSymbol::DOT);
 pub const LDOT: CurrencyId = CurrencyId::Token(TokenSymbol::LDOT);
 
@@ -120,7 +120,7 @@ parameter_types! {
 	pub MinimumIncrementSize: Rate = Rate::saturating_from_rational(1, 20);
 	pub const AuctionTimeToClose: u64 = 100;
 	pub const AuctionDurationSoftCap: u64 = 2000;
-	pub const GetStableCurrencyId: CurrencyId = AUSD;
+	pub const GetStableCurrencyId: CurrencyId = XUSD;
 	pub const UnsignedPriority: u64 = 1 << 20;
 }
 

@@ -12,7 +12,7 @@ use orml_benchmarking::runtime_benchmarks;
 use sp_std::prelude::*;
 
 const SEED: u32 = 0;
-const BTC_AUSD_LP: CurrencyId = CurrencyId::EXCHANGEShare(TokenSymbol::XBTC, TokenSymbol::AUSD);
+const BTC_XUSD_LP: CurrencyId = CurrencyId::EXCHANGEShare(TokenSymbol::XBTC, TokenSymbol::XUSD);
 
 fn dollar(d: u32) -> Balance {
 	let d: Balance = d.into();
@@ -26,18 +26,18 @@ runtime_benchmarks! {
 
 	deposit_exchange_share {
 		let caller: AccountId = account("caller", 0, SEED);
-		set_balance(BTC_AUSD_LP, &caller, dollar(10000));
-	}: _(RawOrigin::Signed(caller), BTC_AUSD_LP, dollar(10000))
+		set_balance(BTC_XUSD_LP, &caller, dollar(10000));
+	}: _(RawOrigin::Signed(caller), BTC_XUSD_LP, dollar(10000))
 
 	withdraw_exchange_share {
 		let caller: AccountId = account("caller", 0, SEED);
-		set_balance(BTC_AUSD_LP, &caller, dollar(10000));
+		set_balance(BTC_XUSD_LP, &caller, dollar(10000));
 		Incentives::deposit_exchange_share(
 			RawOrigin::Signed(caller.clone()).into(),
-			BTC_AUSD_LP,
+			BTC_XUSD_LP,
 			dollar(10000)
 		)?;
-	}: _(RawOrigin::Signed(caller), BTC_AUSD_LP, dollar(8000))
+	}: _(RawOrigin::Signed(caller), BTC_XUSD_LP, dollar(8000))
 
 	claim_rewards {
 		let caller: AccountId = account("caller", 0, SEED);

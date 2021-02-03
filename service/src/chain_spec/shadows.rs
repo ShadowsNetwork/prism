@@ -296,7 +296,7 @@ fn testnet_genesis(
 					Some(FixedU128::saturating_from_rational(150, 100)), // liquidation ratio
 					Some(FixedU128::saturating_from_rational(10, 100)),  // liquidation penalty rate
 					Some(FixedU128::saturating_from_rational(150, 100)), // required liquidation ratio
-					10_000_000 * DOLLARS,                                // maximum debit value in aUSD (cap)
+					10_000_000 * DOLLARS,                                // maximum debit value in xUSD (cap)
 				),
 				(
 					CurrencyId::Token(TokenSymbol::XBTC),
@@ -457,7 +457,7 @@ fn shadows_genesis(
 					Some(FixedU128::saturating_from_rational(105, 100)), // liquidation ratio
 					Some(FixedU128::saturating_from_rational(3, 100)),   // liquidation penalty rate
 					Some(FixedU128::saturating_from_rational(110, 100)), // required liquidation ratio
-					10_000_000 * DOLLARS,                                // maximum debit value in aUSD (cap)
+					10_000_000 * DOLLARS,                                // maximum debit value in xUSD (cap)
 				),
 				(
 					CurrencyId::Token(TokenSymbol::XBTC),

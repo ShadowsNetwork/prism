@@ -5,17 +5,17 @@
 use super::*;
 use frame_support::{assert_noop, assert_ok};
 use mock::{
-	ExchangeModule, ExtBuilder, Origin, Runtime, System, TestEvent, Tokens, ALICE, AUSD, AUSD_DOT_PAIR, AUSD_XBTC_PAIR,
-	BOB, DOS, DOT, XBTC,
+	ExchangeModule, ExtBuilder, Origin, Runtime, System, TestEvent, Tokens, ALICE, BOB, DOS, DOT, XBTC, XUSD,
+	XUSD_DOT_PAIR, XUSD_XBTC_PAIR,
 };
 
 #[test]
 fn get_liquidity_work() {
 	ExtBuilder::default().build().execute_with(|| {
-		LiquidityPool::insert(AUSD_DOT_PAIR, (1000, 20));
-		assert_eq!(ExchangeModule::liquidity_pool(AUSD_DOT_PAIR), (1000, 20));
-		assert_eq!(ExchangeModule::get_liquidity(AUSD, DOT), (1000, 20));
-		assert_eq!(ExchangeModule::get_liquidity(DOT, AUSD), (20, 1000));
+		LiquidityPool::insert(XUSD_DOT_PAIR, (1000, 20));
+		assert_eq!(ExchangeModule::liquidity_pool(XUSD_DOT_PAIR), (1000, 20));
+		assert_eq!(ExchangeModule::get_liquidity(XUSD, DOT), (1000, 20));
+		assert_eq!(ExchangeModule::get_liquidity(DOT, XUSD), (20, 1000));
 	});
 }
 
@@ -48,38 +48,38 @@ fn get_supply_amount_work() {
 #[test]
 fn get_target_amounts_work() {
 	ExtBuilder::default().build().execute_with(|| {
-		LiquidityPool::insert(AUSD_DOT_PAIR, (50000, 10000));
-		LiquidityPool::insert(AUSD_XBTC_PAIR, (100000, 10));
+		LiquidityPool::insert(XUSD_DOT_PAIR, (50000, 10000));
+		LiquidityPool::insert(XUSD_XBTC_PAIR, (100000, 10));
 		assert_noop!(
 			ExchangeModule::get_target_amounts(&vec![DOT], 10000, None),
 			Error::<Runtime>::InvalidTradingPathLength,
 		);
 		assert_noop!(
-			ExchangeModule::get_target_amounts(&vec![DOT, AUSD, XBTC, DOT], 10000, None),
+			ExchangeModule::get_target_amounts(&vec![DOT, XUSD, XBTC, DOT], 10000, None),
 			Error::<Runtime>::InvalidTradingPathLength,
 		);
 		assert_noop!(
-			ExchangeModule::get_target_amounts(&vec![DOT, AUSD, DOS], 10000, None),
+			ExchangeModule::get_target_amounts(&vec![DOT, XUSD, DOS], 10000, None),
 			Error::<Runtime>::TradingPairNotAllowed,
 		);
 		assert_eq!(
-			ExchangeModule::get_target_amounts(&vec![DOT, AUSD], 10000, None),
+			ExchangeModule::get_target_amounts(&vec![DOT, XUSD], 10000, None),
 			Ok(vec![10000, 24874])
 		);
 		assert_eq!(
-			ExchangeModule::get_target_amounts(&vec![DOT, AUSD], 10000, Ratio::checked_from_rational(50, 100)),
+			ExchangeModule::get_target_amounts(&vec![DOT, XUSD], 10000, Ratio::checked_from_rational(50, 100)),
 			Ok(vec![10000, 24874])
 		);
 		assert_noop!(
-			ExchangeModule::get_target_amounts(&vec![DOT, AUSD], 10000, Ratio::checked_from_rational(49, 100)),
+			ExchangeModule::get_target_amounts(&vec![DOT, XUSD], 10000, Ratio::checked_from_rational(49, 100)),
 			Error::<Runtime>::ExceedPriceImpactLimit,
 		);
 		assert_eq!(
-			ExchangeModule::get_target_amounts(&vec![DOT, AUSD, XBTC], 10000, None),
+			ExchangeModule::get_target_amounts(&vec![DOT, XUSD, XBTC], 10000, None),
 			Ok(vec![10000, 24874, 1])
 		);
 		assert_noop!(
-			ExchangeModule::get_target_amounts(&vec![DOT, AUSD, XBTC], 100, None),
+			ExchangeModule::get_target_amounts(&vec![DOT, XUSD, XBTC], 100, None),
 			Error::<Runtime>::ZeroTargetAmount,
 		);
 		assert_noop!(
@@ -92,34 +92,34 @@ fn get_target_amounts_work() {
 #[test]
 fn get_supply_amounts_work() {
 	ExtBuilder::default().build().execute_with(|| {
-		LiquidityPool::insert(AUSD_DOT_PAIR, (50000, 10000));
-		LiquidityPool::insert(AUSD_XBTC_PAIR, (100000, 10));
+		LiquidityPool::insert(XUSD_DOT_PAIR, (50000, 10000));
+		LiquidityPool::insert(XUSD_XBTC_PAIR, (100000, 10));
 		assert_noop!(
 			ExchangeModule::get_supply_amounts(&vec![DOT], 10000, None),
 			Error::<Runtime>::InvalidTradingPathLength,
 		);
 		assert_noop!(
-			ExchangeModule::get_supply_amounts(&vec![DOT, AUSD, XBTC, DOT], 10000, None),
+			ExchangeModule::get_supply_amounts(&vec![DOT, XUSD, XBTC, DOT], 10000, None),
 			Error::<Runtime>::InvalidTradingPathLength,
 		);
 		assert_noop!(
-			ExchangeModule::get_supply_amounts(&vec![DOT, AUSD, DOS], 10000, None),
+			ExchangeModule::get_supply_amounts(&vec![DOT, XUSD, DOS], 10000, None),
 			Error::<Runtime>::TradingPairNotAllowed,
 		);
 		assert_eq!(
-			ExchangeModule::get_supply_amounts(&vec![DOT, AUSD], 24874, None),
+			ExchangeModule::get_supply_amounts(&vec![DOT, XUSD], 24874, None),
 			Ok(vec![10000, 24874])
 		);
 		assert_eq!(
-			ExchangeModule::get_supply_amounts(&vec![DOT, AUSD], 25000, Ratio::checked_from_rational(50, 100)),
+			ExchangeModule::get_supply_amounts(&vec![DOT, XUSD], 25000, Ratio::checked_from_rational(50, 100)),
 			Ok(vec![10102, 25000])
 		);
 		assert_noop!(
-			ExchangeModule::get_supply_amounts(&vec![DOT, AUSD], 25000, Ratio::checked_from_rational(49, 100)),
+			ExchangeModule::get_supply_amounts(&vec![DOT, XUSD], 25000, Ratio::checked_from_rational(49, 100)),
 			Error::<Runtime>::ExceedPriceImpactLimit,
 		);
 		assert_noop!(
-			ExchangeModule::get_supply_amounts(&vec![DOT, AUSD, XBTC], 10000, None),
+			ExchangeModule::get_supply_amounts(&vec![DOT, XUSD, XBTC], 10000, None),
 			Error::<Runtime>::ZeroSupplyAmount,
 		);
 		assert_noop!(
@@ -132,29 +132,29 @@ fn get_supply_amounts_work() {
 #[test]
 fn _swap_work() {
 	ExtBuilder::default().build().execute_with(|| {
-		LiquidityPool::insert(AUSD_DOT_PAIR, (50000, 10000));
+		LiquidityPool::insert(XUSD_DOT_PAIR, (50000, 10000));
 
-		assert_eq!(ExchangeModule::get_liquidity(AUSD, DOT), (50000, 10000));
-		ExchangeModule::_swap(AUSD, DOT, 1000, 1000);
-		assert_eq!(ExchangeModule::get_liquidity(AUSD, DOT), (51000, 9000));
-		ExchangeModule::_swap(DOT, AUSD, 100, 800);
-		assert_eq!(ExchangeModule::get_liquidity(AUSD, DOT), (50200, 9100));
+		assert_eq!(ExchangeModule::get_liquidity(XUSD, DOT), (50000, 10000));
+		ExchangeModule::_swap(XUSD, DOT, 1000, 1000);
+		assert_eq!(ExchangeModule::get_liquidity(XUSD, DOT), (51000, 9000));
+		ExchangeModule::_swap(DOT, XUSD, 100, 800);
+		assert_eq!(ExchangeModule::get_liquidity(XUSD, DOT), (50200, 9100));
 	});
 }
 
 #[test]
 fn _swap_by_path_work() {
 	ExtBuilder::default().build().execute_with(|| {
-		LiquidityPool::insert(AUSD_DOT_PAIR, (50000, 10000));
-		LiquidityPool::insert(AUSD_XBTC_PAIR, (100000, 10));
+		LiquidityPool::insert(XUSD_DOT_PAIR, (50000, 10000));
+		LiquidityPool::insert(XUSD_XBTC_PAIR, (100000, 10));
 
-		assert_eq!(ExchangeModule::get_liquidity(AUSD, DOT), (50000, 10000));
-		assert_eq!(ExchangeModule::get_liquidity(AUSD, XBTC), (100000, 10));
-		ExchangeModule::_swap_by_path(&vec![DOT, AUSD], &vec![10000, 25000]);
-		assert_eq!(ExchangeModule::get_liquidity(AUSD, DOT), (25000, 20000));
-		ExchangeModule::_swap_by_path(&vec![DOT, AUSD, XBTC], &vec![4000, 10000, 2]);
-		assert_eq!(ExchangeModule::get_liquidity(AUSD, DOT), (15000, 24000));
-		assert_eq!(ExchangeModule::get_liquidity(AUSD, XBTC), (110000, 8));
+		assert_eq!(ExchangeModule::get_liquidity(XUSD, DOT), (50000, 10000));
+		assert_eq!(ExchangeModule::get_liquidity(XUSD, XBTC), (100000, 10));
+		ExchangeModule::_swap_by_path(&vec![DOT, XUSD], &vec![10000, 25000]);
+		assert_eq!(ExchangeModule::get_liquidity(XUSD, DOT), (25000, 20000));
+		ExchangeModule::_swap_by_path(&vec![DOT, XUSD, XBTC], &vec![4000, 10000, 2]);
+		assert_eq!(ExchangeModule::get_liquidity(XUSD, DOT), (15000, 24000));
+		assert_eq!(ExchangeModule::get_liquidity(XUSD, XBTC), (110000, 8));
 	});
 }
 
@@ -164,34 +164,34 @@ fn add_liquidity_work() {
 		System::set_block_number(1);
 
 		assert_noop!(
-			ExchangeModule::add_liquidity(Origin::signed(ALICE), DOS, AUSD, 100_000_000, 100_000_000),
+			ExchangeModule::add_liquidity(Origin::signed(ALICE), DOS, XUSD, 100_000_000, 100_000_000),
 			Error::<Runtime>::TradingPairNotAllowed
 		);
 		assert_noop!(
-			ExchangeModule::add_liquidity(Origin::signed(ALICE), AUSD, DOT, 0, 100_000_000),
+			ExchangeModule::add_liquidity(Origin::signed(ALICE), XUSD, DOT, 0, 100_000_000),
 			Error::<Runtime>::InvalidLiquidityIncrement
 		);
 
-		assert_eq!(ExchangeModule::get_liquidity(AUSD, DOT), (0, 0));
-		assert_eq!(Tokens::free_balance(AUSD, &ExchangeModule::account_id()), 0);
+		assert_eq!(ExchangeModule::get_liquidity(XUSD, DOT), (0, 0));
+		assert_eq!(Tokens::free_balance(XUSD, &ExchangeModule::account_id()), 0);
 		assert_eq!(Tokens::free_balance(DOT, &ExchangeModule::account_id()), 0);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
+			Tokens::free_balance(XUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
 			0
 		);
-		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 1_000_000_000_000_000_000);
+		assert_eq!(Tokens::free_balance(XUSD, &ALICE), 1_000_000_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &ALICE), 1_000_000_000_000_000_000);
 
 		assert_ok!(ExchangeModule::add_liquidity(
 			Origin::signed(ALICE),
-			AUSD,
+			XUSD,
 			DOT,
 			5_000_000_000_000,
 			1_000_000_000_000
 		));
 		let add_liquidity_event_1 = TestEvent::exchange(RawEvent::AddLiquidity(
 			ALICE,
-			AUSD,
+			XUSD,
 			5_000_000_000_000,
 			DOT,
 			1_000_000_000_000,
@@ -202,11 +202,11 @@ fn add_liquidity_work() {
 			.any(|record| record.event == add_liquidity_event_1));
 
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, DOT),
+			ExchangeModule::get_liquidity(XUSD, DOT),
 			(5_000_000_000_000, 1_000_000_000_000)
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD, &ExchangeModule::account_id()),
+			Tokens::free_balance(XUSD, &ExchangeModule::account_id()),
 			5_000_000_000_000
 		);
 		assert_eq!(
@@ -214,28 +214,28 @@ fn add_liquidity_work() {
 			1_000_000_000_000
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
+			Tokens::free_balance(XUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
 			5_000_000_000_000
 		);
-		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 999_995_000_000_000_000);
+		assert_eq!(Tokens::free_balance(XUSD, &ALICE), 999_995_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &ALICE), 999_999_000_000_000_000);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &BOB),
+			Tokens::free_balance(XUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &BOB),
 			0
 		);
-		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1_000_000_000_000_000_000);
+		assert_eq!(Tokens::free_balance(XUSD, &BOB), 1_000_000_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &BOB), 1_000_000_000_000_000_000);
 
 		assert_ok!(ExchangeModule::add_liquidity(
 			Origin::signed(BOB),
-			AUSD,
+			XUSD,
 			DOT,
 			50_000_000_000_000,
 			8_000_000_000_000
 		));
 		let add_liquidity_event_2 = TestEvent::exchange(RawEvent::AddLiquidity(
 			BOB,
-			AUSD,
+			XUSD,
 			40_000_000_000_000,
 			DOT,
 			8_000_000_000_000,
@@ -246,11 +246,11 @@ fn add_liquidity_work() {
 			.any(|record| record.event == add_liquidity_event_2));
 
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, DOT),
+			ExchangeModule::get_liquidity(XUSD, DOT),
 			(45_000_000_000_000, 9_000_000_000_000)
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD, &ExchangeModule::account_id()),
+			Tokens::free_balance(XUSD, &ExchangeModule::account_id()),
 			45_000_000_000_000
 		);
 		assert_eq!(
@@ -258,10 +258,10 @@ fn add_liquidity_work() {
 			9_000_000_000_000
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &BOB),
+			Tokens::free_balance(XUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &BOB),
 			40_000_000_000_000
 		);
-		assert_eq!(Tokens::free_balance(AUSD, &BOB), 999_960_000_000_000_000);
+		assert_eq!(Tokens::free_balance(XUSD, &BOB), 999_960_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &BOB), 999_992_000_000_000_000);
 	});
 }
@@ -273,7 +273,7 @@ fn remove_liquidity_work() {
 
 		assert_ok!(ExchangeModule::add_liquidity(
 			Origin::signed(ALICE),
-			AUSD,
+			XUSD,
 			DOT,
 			5_000_000_000_000,
 			1_000_000_000_000
@@ -281,7 +281,7 @@ fn remove_liquidity_work() {
 		assert_noop!(
 			ExchangeModule::remove_liquidity(
 				Origin::signed(ALICE),
-				AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(),
+				XUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(),
 				DOT,
 				100_000_000
 			),
@@ -289,11 +289,11 @@ fn remove_liquidity_work() {
 		);
 
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, DOT),
+			ExchangeModule::get_liquidity(XUSD, DOT),
 			(5_000_000_000_000, 1_000_000_000_000)
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD, &ExchangeModule::account_id()),
+			Tokens::free_balance(XUSD, &ExchangeModule::account_id()),
 			5_000_000_000_000
 		);
 		assert_eq!(
@@ -301,21 +301,21 @@ fn remove_liquidity_work() {
 			1_000_000_000_000
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
+			Tokens::free_balance(XUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
 			5_000_000_000_000
 		);
-		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 999_995_000_000_000_000);
+		assert_eq!(Tokens::free_balance(XUSD, &ALICE), 999_995_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &ALICE), 999_999_000_000_000_000);
 
 		assert_ok!(ExchangeModule::remove_liquidity(
 			Origin::signed(ALICE),
-			AUSD,
+			XUSD,
 			DOT,
 			4_000_000_000_000
 		));
 		let remove_liquidity_event_1 = TestEvent::exchange(RawEvent::RemoveLiquidity(
 			ALICE,
-			AUSD,
+			XUSD,
 			4_000_000_000_000,
 			DOT,
 			800_000_000_000,
@@ -326,11 +326,11 @@ fn remove_liquidity_work() {
 			.any(|record| record.event == remove_liquidity_event_1));
 
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, DOT),
+			ExchangeModule::get_liquidity(XUSD, DOT),
 			(1_000_000_000_000, 200_000_000_000)
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD, &ExchangeModule::account_id()),
+			Tokens::free_balance(XUSD, &ExchangeModule::account_id()),
 			1_000_000_000_000
 		);
 		assert_eq!(
@@ -338,21 +338,21 @@ fn remove_liquidity_work() {
 			200_000_000_000
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
+			Tokens::free_balance(XUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
 			1_000_000_000_000
 		);
-		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 999_999_000_000_000_000);
+		assert_eq!(Tokens::free_balance(XUSD, &ALICE), 999_999_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &ALICE), 999_999_800_000_000_000);
 
 		assert_ok!(ExchangeModule::remove_liquidity(
 			Origin::signed(ALICE),
-			AUSD,
+			XUSD,
 			DOT,
 			1_000_000_000_000
 		));
 		let remove_liquidity_event_2 = TestEvent::exchange(RawEvent::RemoveLiquidity(
 			ALICE,
-			AUSD,
+			XUSD,
 			1_000_000_000_000,
 			DOT,
 			200_000_000_000,
@@ -362,14 +362,14 @@ fn remove_liquidity_work() {
 			.iter()
 			.any(|record| record.event == remove_liquidity_event_2));
 
-		assert_eq!(ExchangeModule::get_liquidity(AUSD, DOT), (0, 0));
-		assert_eq!(Tokens::free_balance(AUSD, &ExchangeModule::account_id()), 0);
+		assert_eq!(ExchangeModule::get_liquidity(XUSD, DOT), (0, 0));
+		assert_eq!(Tokens::free_balance(XUSD, &ExchangeModule::account_id()), 0);
 		assert_eq!(Tokens::free_balance(DOT, &ExchangeModule::account_id()), 0);
 		assert_eq!(
-			Tokens::free_balance(AUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
+			Tokens::free_balance(XUSD_DOT_PAIR.get_exchange_share_currency_id().unwrap(), &ALICE),
 			0
 		);
-		assert_eq!(Tokens::free_balance(AUSD, &ALICE), 1_000_000_000_000_000_000);
+		assert_eq!(Tokens::free_balance(XUSD, &ALICE), 1_000_000_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &ALICE), 1_000_000_000_000_000_000);
 	});
 }
@@ -381,29 +381,29 @@ fn do_swap_with_exact_supply_work() {
 
 		assert_ok!(ExchangeModule::add_liquidity(
 			Origin::signed(ALICE),
-			AUSD,
+			XUSD,
 			DOT,
 			500_000_000_000_000,
 			100_000_000_000_000
 		));
 		assert_ok!(ExchangeModule::add_liquidity(
 			Origin::signed(ALICE),
-			AUSD,
+			XUSD,
 			XBTC,
 			100_000_000_000_000,
 			10_000_000_000
 		));
 
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, DOT),
+			ExchangeModule::get_liquidity(XUSD, DOT),
 			(500_000_000_000_000, 100_000_000_000_000)
 		);
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, XBTC),
+			ExchangeModule::get_liquidity(XUSD, XBTC),
 			(100_000_000_000_000, 10_000_000_000)
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD, &ExchangeModule::account_id()),
+			Tokens::free_balance(XUSD, &ExchangeModule::account_id()),
 			600_000_000_000_000
 		);
 		assert_eq!(
@@ -414,14 +414,14 @@ fn do_swap_with_exact_supply_work() {
 			Tokens::free_balance(XBTC, &ExchangeModule::account_id()),
 			10_000_000_000
 		);
-		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1_000_000_000_000_000_000);
+		assert_eq!(Tokens::free_balance(XUSD, &BOB), 1_000_000_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &BOB), 1_000_000_000_000_000_000);
 		assert_eq!(Tokens::free_balance(XBTC, &BOB), 1_000_000_000_000_000_000);
 
 		assert_noop!(
 			ExchangeModule::do_swap_with_exact_supply(
 				&BOB,
-				&[DOT, AUSD],
+				&[DOT, XUSD],
 				100_000_000_000_000,
 				250_000_000_000_000,
 				None
@@ -431,7 +431,7 @@ fn do_swap_with_exact_supply_work() {
 		assert_noop!(
 			ExchangeModule::do_swap_with_exact_supply(
 				&BOB,
-				&[DOT, AUSD],
+				&[DOT, XUSD],
 				100_000_000_000_000,
 				0,
 				Ratio::checked_from_rational(10, 100)
@@ -439,7 +439,7 @@ fn do_swap_with_exact_supply_work() {
 			Error::<Runtime>::ExceedPriceImpactLimit,
 		);
 		assert_noop!(
-			ExchangeModule::do_swap_with_exact_supply(&BOB, &[DOT, AUSD, XBTC, DOT], 100_000_000_000_000, 0, None),
+			ExchangeModule::do_swap_with_exact_supply(&BOB, &[DOT, XUSD, XBTC, DOT], 100_000_000_000_000, 0, None),
 			Error::<Runtime>::InvalidTradingPathLength,
 		);
 		assert_noop!(
@@ -449,29 +449,29 @@ fn do_swap_with_exact_supply_work() {
 
 		assert_ok!(ExchangeModule::do_swap_with_exact_supply(
 			&BOB,
-			&[DOT, AUSD],
+			&[DOT, XUSD],
 			100_000_000_000_000,
 			200_000_000_000_000,
 			None
 		));
 		let swap_event_1 = TestEvent::exchange(RawEvent::Swap(
 			BOB,
-			vec![DOT, AUSD],
+			vec![DOT, XUSD],
 			100_000_000_000_000,
 			248_743_718_592_964,
 		));
 		assert!(System::events().iter().any(|record| record.event == swap_event_1));
 
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, DOT),
+			ExchangeModule::get_liquidity(XUSD, DOT),
 			(251_256_281_407_036, 200_000_000_000_000)
 		);
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, XBTC),
+			ExchangeModule::get_liquidity(XUSD, XBTC),
 			(100_000_000_000_000, 10_000_000_000)
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD, &ExchangeModule::account_id()),
+			Tokens::free_balance(XUSD, &ExchangeModule::account_id()),
 			351_256_281_407_036
 		);
 		assert_eq!(
@@ -482,35 +482,35 @@ fn do_swap_with_exact_supply_work() {
 			Tokens::free_balance(XBTC, &ExchangeModule::account_id()),
 			10_000_000_000
 		);
-		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1_000_248_743_718_592_964);
+		assert_eq!(Tokens::free_balance(XUSD, &BOB), 1_000_248_743_718_592_964);
 		assert_eq!(Tokens::free_balance(DOT, &BOB), 999_900_000_000_000_000);
 		assert_eq!(Tokens::free_balance(XBTC, &BOB), 1_000_000_000_000_000_000);
 
 		assert_ok!(ExchangeModule::do_swap_with_exact_supply(
 			&BOB,
-			&[DOT, AUSD, XBTC],
+			&[DOT, XUSD, XBTC],
 			200_000_000_000_000,
 			1,
 			None
 		));
 		let swap_event_2 = TestEvent::exchange(RawEvent::Swap(
 			BOB,
-			vec![DOT, AUSD, XBTC],
+			vec![DOT, XUSD, XBTC],
 			200_000_000_000_000,
 			5_530_663_837,
 		));
 		assert!(System::events().iter().any(|record| record.event == swap_event_2));
 
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, DOT),
+			ExchangeModule::get_liquidity(XUSD, DOT),
 			(126_259_437_892_983, 400_000_000_000_000)
 		);
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, XBTC),
+			ExchangeModule::get_liquidity(XUSD, XBTC),
 			(224_996_843_514_053, 4_469_336_163)
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD, &ExchangeModule::account_id()),
+			Tokens::free_balance(XUSD, &ExchangeModule::account_id()),
 			351_256_281_407_036
 		);
 		assert_eq!(
@@ -518,7 +518,7 @@ fn do_swap_with_exact_supply_work() {
 			400_000_000_000_000
 		);
 		assert_eq!(Tokens::free_balance(XBTC, &ExchangeModule::account_id()), 4_469_336_163);
-		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1_000_248_743_718_592_964);
+		assert_eq!(Tokens::free_balance(XUSD, &BOB), 1_000_248_743_718_592_964);
 		assert_eq!(Tokens::free_balance(DOT, &BOB), 999_700_000_000_000_000);
 		assert_eq!(Tokens::free_balance(XBTC, &BOB), 1_000_000_005_530_663_837);
 	});
@@ -531,29 +531,29 @@ fn do_swap_with_exact_target_work() {
 
 		assert_ok!(ExchangeModule::add_liquidity(
 			Origin::signed(ALICE),
-			AUSD,
+			XUSD,
 			DOT,
 			500_000_000_000_000,
 			100_000_000_000_000
 		));
 		assert_ok!(ExchangeModule::add_liquidity(
 			Origin::signed(ALICE),
-			AUSD,
+			XUSD,
 			XBTC,
 			100_000_000_000_000,
 			10_000_000_000
 		));
 
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, DOT),
+			ExchangeModule::get_liquidity(XUSD, DOT),
 			(500_000_000_000_000, 100_000_000_000_000)
 		);
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, XBTC),
+			ExchangeModule::get_liquidity(XUSD, XBTC),
 			(100_000_000_000_000, 10_000_000_000)
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD, &ExchangeModule::account_id()),
+			Tokens::free_balance(XUSD, &ExchangeModule::account_id()),
 			600_000_000_000_000
 		);
 		assert_eq!(
@@ -564,14 +564,14 @@ fn do_swap_with_exact_target_work() {
 			Tokens::free_balance(XBTC, &ExchangeModule::account_id()),
 			10_000_000_000
 		);
-		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1_000_000_000_000_000_000);
+		assert_eq!(Tokens::free_balance(XUSD, &BOB), 1_000_000_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &BOB), 1_000_000_000_000_000_000);
 		assert_eq!(Tokens::free_balance(XBTC, &BOB), 1_000_000_000_000_000_000);
 
 		assert_noop!(
 			ExchangeModule::do_swap_with_exact_target(
 				&BOB,
-				&[DOT, AUSD],
+				&[DOT, XUSD],
 				250_000_000_000_000,
 				100_000_000_000_000,
 				None
@@ -581,7 +581,7 @@ fn do_swap_with_exact_target_work() {
 		assert_noop!(
 			ExchangeModule::do_swap_with_exact_target(
 				&BOB,
-				&[DOT, AUSD],
+				&[DOT, XUSD],
 				250_000_000_000_000,
 				200_000_000_000_000,
 				Ratio::checked_from_rational(10, 100)
@@ -591,7 +591,7 @@ fn do_swap_with_exact_target_work() {
 		assert_noop!(
 			ExchangeModule::do_swap_with_exact_target(
 				&BOB,
-				&[DOT, AUSD, XBTC, DOT],
+				&[DOT, XUSD, XBTC, DOT],
 				250_000_000_000_000,
 				200_000_000_000_000,
 				None
@@ -611,29 +611,29 @@ fn do_swap_with_exact_target_work() {
 
 		assert_ok!(ExchangeModule::do_swap_with_exact_target(
 			&BOB,
-			&[DOT, AUSD],
+			&[DOT, XUSD],
 			250_000_000_000_000,
 			200_000_000_000_000,
 			None
 		));
 		let swap_event_1 = TestEvent::exchange(RawEvent::Swap(
 			BOB,
-			vec![DOT, AUSD],
+			vec![DOT, XUSD],
 			101_010_101_010_102,
 			250_000_000_000_000,
 		));
 		assert!(System::events().iter().any(|record| record.event == swap_event_1));
 
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, DOT),
+			ExchangeModule::get_liquidity(XUSD, DOT),
 			(250_000_000_000_000, 201_010_101_010_102)
 		);
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, XBTC),
+			ExchangeModule::get_liquidity(XUSD, XBTC),
 			(100_000_000_000_000, 10_000_000_000)
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD, &ExchangeModule::account_id()),
+			Tokens::free_balance(XUSD, &ExchangeModule::account_id()),
 			350_000_000_000_000
 		);
 		assert_eq!(
@@ -644,35 +644,35 @@ fn do_swap_with_exact_target_work() {
 			Tokens::free_balance(XBTC, &ExchangeModule::account_id()),
 			10_000_000_000
 		);
-		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1_000_250_000_000_000_000);
+		assert_eq!(Tokens::free_balance(XUSD, &BOB), 1_000_250_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &BOB), 999_898_989_898_989_898);
 		assert_eq!(Tokens::free_balance(XBTC, &BOB), 1_000_000_000_000_000_000);
 
 		assert_ok!(ExchangeModule::do_swap_with_exact_target(
 			&BOB,
-			&[DOT, AUSD, XBTC],
+			&[DOT, XUSD, XBTC],
 			5_000_000_000,
 			2_000_000_000_000_000,
 			None
 		));
 		let swap_event_2 = TestEvent::exchange(RawEvent::Swap(
 			BOB,
-			vec![DOT, AUSD, XBTC],
+			vec![DOT, XUSD, XBTC],
 			137_654_580_386_993,
 			5_000_000_000,
 		));
 		assert!(System::events().iter().any(|record| record.event == swap_event_2));
 
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, DOT),
+			ExchangeModule::get_liquidity(XUSD, DOT),
 			(148_989_898_989_898, 338_664_681_397_095)
 		);
 		assert_eq!(
-			ExchangeModule::get_liquidity(AUSD, XBTC),
+			ExchangeModule::get_liquidity(XUSD, XBTC),
 			(201_010_101_010_102, 5_000_000_000)
 		);
 		assert_eq!(
-			Tokens::free_balance(AUSD, &ExchangeModule::account_id()),
+			Tokens::free_balance(XUSD, &ExchangeModule::account_id()),
 			350_000_000_000_000
 		);
 		assert_eq!(
@@ -680,7 +680,7 @@ fn do_swap_with_exact_target_work() {
 			338_664_681_397_095
 		);
 		assert_eq!(Tokens::free_balance(XBTC, &ExchangeModule::account_id()), 5_000_000_000);
-		assert_eq!(Tokens::free_balance(AUSD, &BOB), 1_000_250_000_000_000_000);
+		assert_eq!(Tokens::free_balance(XUSD, &BOB), 1_000_250_000_000_000_000);
 		assert_eq!(Tokens::free_balance(DOT, &BOB), 999_761_335_318_602_905);
 		assert_eq!(Tokens::free_balance(XBTC, &BOB), 1_000_000_005_000_000_000);
 	});

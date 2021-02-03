@@ -20,7 +20,7 @@ pub const ALICE: AccountId = 1;
 pub const BOB: AccountId = 2;
 pub const CAROL: AccountId = 3;
 pub const DOS: CurrencyId = CurrencyId::Token(TokenSymbol::DOS);
-pub const AUSD: CurrencyId = CurrencyId::Token(TokenSymbol::AUSD);
+pub const XUSD: CurrencyId = CurrencyId::Token(TokenSymbol::XUSD);
 pub const BTC: CurrencyId = CurrencyId::Token(TokenSymbol::XBTC);
 
 #[derive(Clone, PartialEq, Eq, Debug)]
@@ -147,7 +147,7 @@ parameter_types! {
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"dos/dexm");
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
-	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(AUSD, DOS), TradingPair::new(AUSD, BTC)];
+	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(XUSD, DOS), TradingPair::new(XUSD, BTC)];
 }
 
 impl exchange::Trait for Runtime {
@@ -162,11 +162,11 @@ impl exchange::Trait for Runtime {
 pub type EXCHANGEModule = exchange::Module<Runtime>;
 
 parameter_types! {
-	pub AllNonNativeCurrencyIds: Vec<CurrencyId> = vec![AUSD, BTC];
+	pub AllNonNativeCurrencyIds: Vec<CurrencyId> = vec![XUSD, BTC];
 	pub const NewAccountDeposit: Balance = 100;
 	pub const TreasuryModuleId: ModuleId = ModuleId(*b"py/trsry");
 	pub MaxSlippageSwapWithEXCHANGE: Ratio = Ratio::one();
-	pub const StableCurrencyId: CurrencyId = AUSD;
+	pub const StableCurrencyId: CurrencyId = XUSD;
 }
 
 impl Trait for Runtime {
@@ -191,7 +191,7 @@ pub struct ExtBuilder {
 impl Default for ExtBuilder {
 	fn default() -> Self {
 		Self {
-			endowed_accounts: vec![(ALICE, AUSD, 10000), (ALICE, BTC, 1000)],
+			endowed_accounts: vec![(ALICE, XUSD, 10000), (ALICE, BTC, 1000)],
 		}
 	}
 }

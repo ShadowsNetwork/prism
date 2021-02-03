@@ -23,7 +23,7 @@ pub const ALICE: AccountId = 1;
 pub const BOB: AccountId = 2;
 pub const CAROL: AccountId = 3;
 pub const DOS: CurrencyId = CurrencyId::Token(TokenSymbol::DOS);
-pub const AUSD: CurrencyId = CurrencyId::Token(TokenSymbol::AUSD);
+pub const XUSD: CurrencyId = CurrencyId::Token(TokenSymbol::XUSD);
 pub const BTC: CurrencyId = CurrencyId::Token(TokenSymbol::XBTC);
 pub const DOT: CurrencyId = CurrencyId::Token(TokenSymbol::DOT);
 pub const LDOT: CurrencyId = CurrencyId::Token(TokenSymbol::LDOT);
@@ -161,8 +161,8 @@ impl MockPriceSource {
 impl PriceProvider<CurrencyId> for MockPriceSource {
 	fn get_relative_price(base: CurrencyId, quote: CurrencyId) -> Option<Price> {
 		match (base, quote) {
-			(AUSD, BTC) => RELATIVE_PRICE.with(|v| *v.borrow_mut()),
-			(BTC, AUSD) => RELATIVE_PRICE.with(|v| *v.borrow_mut()),
+			(XUSD, BTC) => RELATIVE_PRICE.with(|v| *v.borrow_mut()),
+			(BTC, XUSD) => RELATIVE_PRICE.with(|v| *v.borrow_mut()),
 			_ => None,
 		}
 	}
@@ -221,7 +221,7 @@ impl AuctionManager<AccountId> for MockAuctionManager {
 }
 
 parameter_types! {
-	pub const GetStableCurrencyId: CurrencyId = AUSD;
+	pub const GetStableCurrencyId: CurrencyId = XUSD;
 	pub const MaxAuctionsCount: u32 = 10_000;
 	pub const DEBTTreasuryModuleId: ModuleId = ModuleId(*b"dos/cdpt");
 }
@@ -243,7 +243,7 @@ parameter_types! {
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"dos/dexm");
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
-	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(AUSD, BTC), TradingPair::new(AUSD, DOT)];
+	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(XUSD, BTC), TradingPair::new(XUSD, DOT)];
 }
 
 impl exchange::Trait for Runtime {
@@ -329,7 +329,7 @@ impl Default for ExtBuilder {
 				(CAROL, BTC, 100),
 				(ALICE, DOT, 1000),
 				(BOB, DOT, 1000),
-				(CAROL, AUSD, 1000),
+				(CAROL, XUSD, 1000),
 			],
 		}
 	}

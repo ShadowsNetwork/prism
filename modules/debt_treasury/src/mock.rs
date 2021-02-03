@@ -18,7 +18,7 @@ pub type AuctionId = u32;
 pub const ALICE: AccountId = 0;
 pub const BOB: AccountId = 1;
 pub const DOS: CurrencyId = CurrencyId::Token(TokenSymbol::DOS);
-pub const AUSD: CurrencyId = CurrencyId::Token(TokenSymbol::AUSD);
+pub const XUSD: CurrencyId = CurrencyId::Token(TokenSymbol::XUSD);
 pub const BTC: CurrencyId = CurrencyId::Token(TokenSymbol::XBTC);
 
 #[derive(Clone, PartialEq, Eq, Debug)]
@@ -119,10 +119,10 @@ impl orml_currencies::Trait for Runtime {
 pub type Currencies = orml_currencies::Module<Runtime>;
 
 parameter_types! {
-	pub const GetStableCurrencyId: CurrencyId = AUSD;
+	pub const GetStableCurrencyId: CurrencyId = XUSD;
 	pub const GetExchangeFee: (u32, u32) = (0, 100);
 	pub const TradingPathLimit: usize = 3;
-	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(AUSD, BTC)];
+	pub EnabledTradingPairs : Vec<TradingPair> = vec![TradingPair::new(XUSD, BTC)];
 	pub const EXCHANGEModuleId: ModuleId = ModuleId(*b"dos/dexm");
 }
 
@@ -226,9 +226,9 @@ impl Default for ExtBuilder {
 	fn default() -> Self {
 		Self {
 			endowed_accounts: vec![
-				(ALICE, AUSD, 1000),
+				(ALICE, XUSD, 1000),
 				(ALICE, BTC, 1000),
-				(BOB, AUSD, 1000),
+				(BOB, XUSD, 1000),
 				(BOB, BTC, 1000),
 			],
 		}

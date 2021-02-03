@@ -4,7 +4,7 @@
 
 use super::*;
 use frame_support::{assert_noop, assert_ok};
-use mock::{ExtBuilder, IngesterModule, Origin, System, TestEvent, AUSD, BTC, DOS, DOT, LDOT};
+use mock::{ExtBuilder, IngesterModule, Origin, System, TestEvent, BTC, DOS, DOT, LDOT, XUSD};
 use sp_runtime::{traits::BadOrigin, FixedPointNumber};
 
 #[test]
@@ -25,7 +25,7 @@ fn get_price_from_oracle() {
 #[test]
 fn get_price_of_stable_currency_id() {
 	ExtBuilder::default().build().execute_with(|| {
-		assert_eq!(IngesterModule::get_price(AUSD), Some(Price::one()));
+		assert_eq!(IngesterModule::get_price(XUSD), Some(Price::one()));
 	});
 }
 
@@ -43,11 +43,11 @@ fn get_price_of_liquid_currency_id() {
 fn get_relative_price_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_eq!(
-			IngesterModule::get_relative_price(DOT, AUSD),
+			IngesterModule::get_relative_price(DOT, XUSD),
 			Some(Price::saturating_from_rational(100, 1))
 		);
 		assert_eq!(
-			IngesterModule::get_relative_price(BTC, AUSD),
+			IngesterModule::get_relative_price(BTC, XUSD),
 			Some(Price::saturating_from_rational(5000, 1))
 		);
 		assert_eq!(
@@ -55,10 +55,10 @@ fn get_relative_price_work() {
 			Some(Price::saturating_from_rational(1, 2))
 		);
 		assert_eq!(
-			IngesterModule::get_relative_price(AUSD, AUSD),
+			IngesterModule::get_relative_price(XUSD, XUSD),
 			Some(Price::saturating_from_rational(1, 1))
 		);
-		assert_eq!(IngesterModule::get_relative_price(AUSD, DOS), None);
+		assert_eq!(IngesterModule::get_relative_price(XUSD, DOS), None);
 	});
 }
 

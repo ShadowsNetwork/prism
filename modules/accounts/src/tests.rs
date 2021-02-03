@@ -8,12 +8,12 @@ use frame_support::{
 	weights::{DispatchClass, DispatchInfo, Pays},
 };
 use mock::{
-	Accounts, Call, Currencies, EXCHANGEModule, ExtBuilder, NewAccountDeposit, Origin, Runtime, System, ALICE, AUSD,
-	BOB, BTC, CAROL, DOS,
+	Accounts, Call, Currencies, EXCHANGEModule, ExtBuilder, NewAccountDeposit, Origin, Runtime, System, ALICE, BOB,
+	BTC, CAROL, DOS, XUSD,
 };
 use orml_traits::MultiCurrency;
 
-const CALL: &<Runtime as system::Trait>::Call = &Call::Currencies(orml_currencies::Call::transfer(BOB, AUSD, 12));
+const CALL: &<Runtime as system::Trait>::Call = &Call::Currencies(orml_currencies::Call::transfer(BOB, XUSD, 12));
 
 const CALL2: &<Runtime as system::Trait>::Call =
 	&Call::Currencies(orml_currencies::Call::transfer_native_currency(BOB, 12));
@@ -119,11 +119,11 @@ fn open_account_successfully_when_transfer_non_native() {
 		assert_ok!(EXCHANGEModule::add_liquidity(
 			Origin::signed(ALICE),
 			DOS,
-			AUSD,
+			XUSD,
 			10000,
 			100
 		));
-		assert_ok!(EXCHANGEModule::add_liquidity(Origin::signed(ALICE), BTC, AUSD, 10, 200));
+		assert_ok!(EXCHANGEModule::add_liquidity(Origin::signed(ALICE), BTC, XUSD, 10, 200));
 
 		assert_eq!(Accounts::is_explicit(&BOB), false);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(BTC, &BOB), 0);
@@ -132,8 +132,8 @@ fn open_account_successfully_when_transfer_non_native() {
 			<Currencies as MultiReservableCurrency<_>>::reserved_balance(DOS, &BOB),
 			0
 		);
-		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, AUSD), (10000, 100));
-		assert_eq!(EXCHANGEModule::get_liquidity_pool(BTC, AUSD), (10, 200));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, XUSD), (10000, 100));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(BTC, XUSD), (10, 200));
 
 		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(BTC, &ALICE, &BOB, 10));
 
@@ -144,8 +144,8 @@ fn open_account_successfully_when_transfer_non_native() {
 			<Currencies as MultiReservableCurrency<_>>::reserved_balance(DOS, &BOB),
 			100
 		);
-		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, AUSD), (9900, 102));
-		assert_eq!(EXCHANGEModule::get_liquidity_pool(BTC, AUSD), (11, 198));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, XUSD), (9900, 102));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(BTC, XUSD), (11, 198));
 	});
 }
 
@@ -156,26 +156,26 @@ fn open_account_failed_when_transfer_non_native() {
 		assert_ok!(EXCHANGEModule::add_liquidity(
 			Origin::signed(ALICE),
 			DOS,
-			AUSD,
+			XUSD,
 			200,
 			100
 		));
-		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, AUSD), (200, 100));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, XUSD), (200, 100));
 
 		assert_eq!(Accounts::is_explicit(&Accounts::treasury_account_id()), false);
 		assert_eq!(Accounts::is_explicit(&BOB), false);
-		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(AUSD, &BOB), 0);
+		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(XUSD, &BOB), 0);
 		assert_eq!(
-			<Currencies as MultiCurrency<_>>::free_balance(AUSD, &Accounts::treasury_account_id()),
+			<Currencies as MultiCurrency<_>>::free_balance(XUSD, &Accounts::treasury_account_id()),
 			0
 		);
 
-		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(AUSD, &ALICE, &BOB, 99));
+		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(XUSD, &ALICE, &BOB, 99));
 		assert_eq!(Accounts::is_explicit(&BOB), false);
 		assert_eq!(Accounts::is_explicit(&Accounts::treasury_account_id()), false);
-		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(AUSD, &BOB), 99);
+		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(XUSD, &BOB), 99);
 		assert_eq!(
-			<Currencies as MultiCurrency<_>>::free_balance(AUSD, &Accounts::treasury_account_id()),
+			<Currencies as MultiCurrency<_>>::free_balance(XUSD, &Accounts::treasury_account_id()),
 			0
 		);
 	});
@@ -225,14 +225,14 @@ fn close_account_and_does_not_specific_receiver() {
 		assert_eq!(Accounts::is_explicit(&BOB), false);
 		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(DOS, &ALICE, &BOB, 500));
 		assert_eq!(Accounts::is_explicit(&BOB), true);
-		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(AUSD, &ALICE, &BOB, 1000));
+		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(XUSD, &ALICE, &BOB, 1000));
 		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(BTC, &ALICE, &BOB, 300));
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(DOS, &BOB), 400);
 		assert_eq!(
 			<Currencies as MultiReservableCurrency<_>>::reserved_balance(DOS, &BOB),
 			100
 		);
-		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(AUSD, &BOB), 1000);
+		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(XUSD, &BOB), 1000);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(BTC, &BOB), 300);
 		assert_eq!(
 			<Currencies as MultiCurrency<_>>::free_balance(DOS, &Accounts::treasury_account_id()),
@@ -243,7 +243,7 @@ fn close_account_and_does_not_specific_receiver() {
 			0
 		);
 		assert_eq!(
-			<Currencies as MultiCurrency<_>>::free_balance(AUSD, &Accounts::treasury_account_id()),
+			<Currencies as MultiCurrency<_>>::free_balance(XUSD, &Accounts::treasury_account_id()),
 			0
 		);
 		assert_eq!(
@@ -258,7 +258,7 @@ fn close_account_and_does_not_specific_receiver() {
 			<Currencies as MultiReservableCurrency<_>>::reserved_balance(DOS, &BOB),
 			0
 		);
-		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(AUSD, &BOB), 0);
+		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(XUSD, &BOB), 0);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(BTC, &BOB), 0);
 		assert_eq!(
 			<Currencies as MultiCurrency<_>>::free_balance(DOS, &Accounts::treasury_account_id()),
@@ -269,7 +269,7 @@ fn close_account_and_does_not_specific_receiver() {
 			100
 		);
 		assert_eq!(
-			<Currencies as MultiCurrency<_>>::free_balance(AUSD, &Accounts::treasury_account_id()),
+			<Currencies as MultiCurrency<_>>::free_balance(XUSD, &Accounts::treasury_account_id()),
 			1000
 		);
 		assert_eq!(
@@ -285,7 +285,7 @@ fn close_account_and_specific_receiver() {
 		assert_eq!(Accounts::is_explicit(&BOB), false);
 		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(DOS, &ALICE, &BOB, 500));
 		assert_eq!(Accounts::is_explicit(&BOB), true);
-		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(AUSD, &ALICE, &BOB, 1000));
+		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(XUSD, &ALICE, &BOB, 1000));
 		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(BTC, &ALICE, &BOB, 300));
 
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(DOS, &BOB), 400);
@@ -293,7 +293,7 @@ fn close_account_and_specific_receiver() {
 			<Currencies as MultiReservableCurrency<_>>::reserved_balance(DOS, &BOB),
 			NewAccountDeposit::get()
 		);
-		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(AUSD, &BOB), 1000);
+		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(XUSD, &BOB), 1000);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(BTC, &BOB), 300);
 		assert_eq!(Accounts::is_explicit(&CAROL), false);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(DOS, &CAROL), 0);
@@ -301,7 +301,7 @@ fn close_account_and_specific_receiver() {
 			<Currencies as MultiReservableCurrency<_>>::reserved_balance(DOS, &CAROL),
 			0
 		);
-		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(AUSD, &CAROL), 0);
+		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(XUSD, &CAROL), 0);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(BTC, &CAROL), 0);
 		assert_eq!(Accounts::is_explicit(&Accounts::treasury_account_id()), false);
 		assert_eq!(
@@ -313,7 +313,7 @@ fn close_account_and_specific_receiver() {
 			0
 		);
 		assert_eq!(
-			<Currencies as MultiCurrency<_>>::free_balance(AUSD, &Accounts::treasury_account_id()),
+			<Currencies as MultiCurrency<_>>::free_balance(XUSD, &Accounts::treasury_account_id()),
 			0
 		);
 		assert_eq!(
@@ -329,7 +329,7 @@ fn close_account_and_specific_receiver() {
 			<Currencies as MultiReservableCurrency<_>>::reserved_balance(DOS, &BOB),
 			0
 		);
-		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(AUSD, &BOB), 0);
+		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(XUSD, &BOB), 0);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(BTC, &BOB), 0);
 		assert_eq!(Accounts::is_explicit(&CAROL), true);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(DOS, &CAROL), 400);
@@ -337,7 +337,7 @@ fn close_account_and_specific_receiver() {
 			<Currencies as MultiReservableCurrency<_>>::reserved_balance(DOS, &CAROL),
 			100
 		);
-		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(AUSD, &CAROL), 1000);
+		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(XUSD, &CAROL), 1000);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(BTC, &CAROL), 300);
 	});
 }
@@ -347,24 +347,24 @@ fn charges_fee_when_validate_and_native_is_not_enough() {
 	ExtBuilder::default().build().execute_with(|| {
 		// open account for BOB
 		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(DOS, &ALICE, &BOB, 100));
-		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(AUSD, &ALICE, &BOB, 1000));
+		assert_ok!(<Currencies as MultiCurrency<_>>::transfer(XUSD, &ALICE, &BOB, 1000));
 		assert_eq!(Accounts::is_explicit(&BOB), true);
 		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(DOS, &BOB), 0);
 		assert_eq!(
 			<Currencies as MultiReservableCurrency<_>>::reserved_balance(DOS, &BOB),
 			100
 		);
-		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(AUSD, &BOB), 1000);
+		assert_eq!(<Currencies as MultiCurrency<_>>::free_balance(XUSD, &BOB), 1000);
 
 		// add liquidity to EXCHANGE
 		assert_ok!(EXCHANGEModule::add_liquidity(
 			Origin::signed(ALICE),
 			DOS,
-			AUSD,
+			XUSD,
 			10000,
 			1000
 		));
-		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, AUSD), (10000, 1000));
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, XUSD), (10000, 1000));
 
 		let fee = 500 * 2 + 1000; // len * byte + weight
 		assert_eq!(
@@ -376,7 +376,7 @@ fn charges_fee_when_validate_and_native_is_not_enough() {
 		);
 
 		assert_eq!(Currencies::free_balance(DOS, &BOB), 0);
-		assert_eq!(Currencies::free_balance(AUSD, &BOB), 749);
-		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, AUSD), (10000 - 2000, 1251));
+		assert_eq!(Currencies::free_balance(XUSD, &BOB), 749);
+		assert_eq!(EXCHANGEModule::get_liquidity_pool(DOS, XUSD), (10000 - 2000, 1251));
 	});
 }

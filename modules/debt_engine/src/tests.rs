@@ -362,22 +362,22 @@ fn adjust_position_work() {
 			Change::NewValue(10000),
 		));
 		assert_noop!(
-			DEBTEngineModule::adjust_position(&ALICE, AUSD, 100, 50),
+			DEBTEngineModule::adjust_position(&ALICE, XUSD, 100, 50),
 			Error::<Runtime>::InvalidCollateralType,
 		);
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 1000);
-		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 0);
+		assert_eq!(Currencies::free_balance(XUSD, &ALICE), 0);
 		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
 		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 0);
 		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 100, 50));
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
-		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 50);
+		assert_eq!(Currencies::free_balance(XUSD, &ALICE), 50);
 		assert_eq!(LendModule::positions(BTC, ALICE).debit, 50);
 		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 100);
 		assert_eq!(DEBTEngineModule::adjust_position(&ALICE, BTC, 0, 20).is_ok(), false);
 		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 0, -20));
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
-		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 30);
+		assert_eq!(Currencies::free_balance(XUSD, &ALICE), 30);
 		assert_eq!(LendModule::positions(BTC, ALICE).debit, 30);
 		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 100);
 	});
@@ -416,7 +416,7 @@ fn liquidate_unsafe_debt_by_collateral_auction() {
 		));
 		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 100, 50));
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
-		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 50);
+		assert_eq!(Currencies::free_balance(XUSD, &ALICE), 50);
 		assert_eq!(LendModule::positions(BTC, ALICE).debit, 50);
 		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 100);
 		assert_noop!(
@@ -447,7 +447,7 @@ fn liquidate_unsafe_debt_by_collateral_auction() {
 
 		assert_eq!(DEBTTreasuryModule::debit_pool(), 50);
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
-		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 50);
+		assert_eq!(Currencies::free_balance(XUSD, &ALICE), 50);
 		assert_eq!(LendModule::positions(BTC, ALICE).debit, 0);
 		assert_eq!(LendModule::positions(BTC, ALICE).collateral, 0);
 
@@ -485,7 +485,7 @@ fn on_finalize_work() {
 		assert_eq!(DEBTEngineModule::debit_exchange_rate(DOT), None);
 		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 100, 30));
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
-		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 30);
+		assert_eq!(Currencies::free_balance(XUSD, &ALICE), 30);
 		DEBTEngineModule::on_finalize(2);
 		assert_eq!(
 			DEBTEngineModule::debit_exchange_rate(BTC),
@@ -500,7 +500,7 @@ fn on_finalize_work() {
 		assert_eq!(DEBTEngineModule::debit_exchange_rate(DOT), None);
 		assert_ok!(DEBTEngineModule::adjust_position(&ALICE, BTC, 0, -30));
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 900);
-		assert_eq!(Currencies::free_balance(AUSD, &ALICE), 0);
+		assert_eq!(Currencies::free_balance(XUSD, &ALICE), 0);
 		DEBTEngineModule::on_finalize(4);
 		assert_eq!(
 			DEBTEngineModule::debit_exchange_rate(BTC),

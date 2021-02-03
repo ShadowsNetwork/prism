@@ -39,7 +39,7 @@ pub enum PoolId {
 	Lend(CurrencyId),
 	/// Rewards(DOS) pool for market makers who provide exchange liquidity
 	ExchangeIncentive(CurrencyId),
-	/// Rewards(AUSD) pool for liquidators who provide exchange liquidity to
+	/// Rewards(XUSD) pool for liquidators who provide exchange liquidity to
 	/// participate automatic liquidation
 	ExchangeSaving(CurrencyId),
 	/// Rewards(DOS) pool for users who staking by StakeEarning protocol
@@ -90,13 +90,13 @@ pub trait Trait:
 	/// The incentive reward type (should be DOS)
 	type IncentiveCurrencyId: Get<CurrencyId>;
 
-	/// The saving reward type (should be AUSD)
+	/// The saving reward type (should be XUSD)
 	type SavingCurrencyId: Get<CurrencyId>;
 
 	/// The origin which may update incentive related params
 	type UpdateOrigin: EnsureOrigin<Self::Origin>;
 
-	/// CDP treasury to issue rewards in AUSD
+	/// CDP treasury to issue rewards in XUSD
 	type DEBTTreasury: DEBTTreasury<Self::AccountId, Balance = Balance, CurrencyId = CurrencyId>;
 
 	/// Currency for transfer/issue assets
@@ -152,7 +152,7 @@ decl_module! {
 		/// The incentive reward type (should be DOS)
 		const IncentiveCurrencyId: CurrencyId = T::IncentiveCurrencyId::get();
 
-		/// The saving reward type (should be AUSD)
+		/// The saving reward type (should be XUSD)
 		const SavingCurrencyId: CurrencyId = T::SavingCurrencyId::get();
 
 		#[weight = <T as Trait>::WeightInfo::deposit_exchange_share()]

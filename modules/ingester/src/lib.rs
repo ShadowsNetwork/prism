@@ -37,7 +37,7 @@ pub trait Trait: system::Trait {
 	/// The data source, such as Oracle.
 	type Source: DataProvider<CurrencyId, Price> + DataFeeder<CurrencyId, Price, Self::AccountId>;
 
-	/// The stable currency id, it should be AUSD in Shadows.
+	/// The stable currency id, it should be XUSD in Shadows.
 	type GetStableCurrencyId: Get<CurrencyId>;
 
 	/// The fixed ingester of stable currency, it should be 1 USD in Shadows.
