@@ -83,7 +83,7 @@ fn get_liquidation_ratio_work() {
 		);
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
-			DOS,
+			BTC,
 			Change::NewValue(Some(Rate::saturating_from_rational(1, 100000))),
 			Change::NewValue(Some(Ratio::saturating_from_rational(5, 2))),
 			Change::NewValue(Some(Rate::saturating_from_rational(2, 10))),
@@ -362,7 +362,7 @@ fn adjust_position_work() {
 			Change::NewValue(10000),
 		));
 		assert_noop!(
-			DEBTEngineModule::adjust_position(&ALICE, DOS, 100, 50),
+			DEBTEngineModule::adjust_position(&ALICE, AUSD, 100, 50),
 			Error::<Runtime>::InvalidCollateralType,
 		);
 		assert_eq!(Currencies::free_balance(BTC, &ALICE), 1000);

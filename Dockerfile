@@ -1,7 +1,7 @@
 # Based from https://github.com/paritytech/substrate/blob/master/.maintain/Dockerfile
 
 FROM phusion/baseimage:0.10.2 as builder
-LABEL maintainer="hello@shadows.network"
+LABEL maintainer="shadows.blockchain@gmail.com"
 LABEL description="This is the build stage for Shadows Node. Here we create the binary."
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -17,15 +17,15 @@ RUN apt-get update && \
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
 	export PATH="$PATH:$HOME/.cargo/bin" && \
-	rustup toolchain install nightly-2020-09-27 && \
-	rustup target add wasm32-unknown-unknown --toolchain nightly-2020-09-27 && \
-	rustup default stable && \
+	rustup toolchain install nightly-2020-10-05 && \
+	rustup target add wasm32-unknown-unknown --toolchain nightly-2020-10-05 && \
+	rustup default nightly-2020-10-05 && \
 	cargo build "--$PROFILE"
 
 # ===== SECOND STAGE ======
 
 FROM phusion/baseimage:0.10.2
-LABEL maintainer="hello@shadows.network"
+LABEL maintainer="shadows.blockchain@gmail.com"
 LABEL description="This is the 2nd stage: a very small image where we copy the Shadows Node binary."
 ARG PROFILE=release
 

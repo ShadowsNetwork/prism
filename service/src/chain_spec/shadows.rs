@@ -103,11 +103,11 @@ pub fn latest_shadows_testnet_config() -> Result<ChainSpec, String> {
 	properties.insert("tokenSymbol".into(), "DOS".into());
 	properties.insert("tokenDecimals".into(), 18.into());
 
-	let wasm_binary = shadows_runtime::WASM_BINARY.ok_or("Mandala runtime wasm binary not available")?;
+	let wasm_binary = shadows_runtime::WASM_BINARY.ok_or("Shadows runtime wasm binary not available")?;
 
 	Ok(ChainSpec::from_genesis(
-		"Shadows Mandala TC5",
-		"shadows5",
+		"Shadows Testnet",
+		"shadows",
 		ChainType::Live,
 		// SECRET="..."
 		// ./target/debug/subkey inspect "$SECRET//shadows//root"

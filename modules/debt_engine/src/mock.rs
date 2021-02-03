@@ -283,7 +283,7 @@ parameter_types! {
 	pub const MinimumDebitValue: Balance = 2;
 	pub MaxSlippageSwapWithEXCHANGE: Ratio = Ratio::saturating_from_rational(50, 100);
 	pub const UnsignedPriority: u64 = 1 << 20;
-	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![DOS, DOT];
+	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![DOS, DOT, BTC];
 }
 
 impl Trait for Runtime {
