@@ -51,4 +51,4 @@ RUN mkdir /shadows/data
 
 VOLUME ["/shadows/data"]
 
-ENTRYPOINT ["/usr/local/bin/shadows"]
+ENTRYPOINT ["/usr/local/bin/shadows","--ws-external","--rpc-external","--rpc-cors=all"]
