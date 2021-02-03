@@ -10,8 +10,8 @@ use sp_runtime::{
 };
 use sp_std::prelude::*;
 use support::{
-	ExchangeRate, Stake_EarningProtocol, NomineesProvider, OnCommission, OnNewEra, PolkadotBridge, PolkadotBridgeCall,
-	PolkadotBridgeState, PolkadotBridgeType, Rate, Ratio,
+	ExchangeRate, NomineesProvider, OnCommission, OnNewEra, PolkadotBridge, PolkadotBridgeCall, PolkadotBridgeState,
+	PolkadotBridgeType, Rate, Ratio, Stake_EarningProtocol,
 };
 
 mod mock;
@@ -34,8 +34,8 @@ pub trait Trait: system::Trait {
 	type DefaultExchangeRate: Get<ExchangeRate>;
 	type ClaimFeeReturnRatio: Get<Ratio>;
 
-	/// The staking pool's module id, keep all staking currency belong to Stake_Earning
-	/// protocol.
+	/// The staking pool's module id, keep all staking currency belong to
+	/// Stake_earning protocol.
 	type ModuleId: Get<ModuleId>;
 
 	// TODO: add RewardFeeRatio

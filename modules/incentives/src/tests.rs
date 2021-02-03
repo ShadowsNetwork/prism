@@ -240,7 +240,10 @@ fn update_stake_earning_incentive_reward_works() {
 		);
 		assert_eq!(IncentivesModule::stake_earning_incentive_reward(), 0);
 
-		assert_ok!(IncentivesModule::update_stake_earning_incentive_reward(Origin::signed(4), 100));
+		assert_ok!(IncentivesModule::update_stake_earning_incentive_reward(
+			Origin::signed(4),
+			100
+		));
 		assert_eq!(IncentivesModule::stake_earning_incentive_reward(), 100);
 	});
 }
@@ -556,10 +559,16 @@ fn pay_out_works_works() {
 		assert_eq!(TokensModule::free_balance(AUSD, &ExchangeIncentivePool::get()), 9000);
 		assert_eq!(TokensModule::free_balance(AUSD, &ALICE), 1000);
 
-		assert_eq!(TokensModule::free_balance(DOS, &Stake_EarningIncentivePool::get()), 10000);
+		assert_eq!(
+			TokensModule::free_balance(DOS, &Stake_EarningIncentivePool::get()),
+			10000
+		);
 		assert_eq!(TokensModule::free_balance(DOS, &BOB), 1000);
 		IncentivesModule::payout(&BOB, PoolId::Stake_Earning, 3000);
-		assert_eq!(TokensModule::free_balance(DOS, &Stake_EarningIncentivePool::get()), 7000);
+		assert_eq!(
+			TokensModule::free_balance(DOS, &Stake_EarningIncentivePool::get()),
+			7000
+		);
 		assert_eq!(TokensModule::free_balance(DOS, &BOB), 4000);
 	});
 }
@@ -575,7 +584,10 @@ fn accumulate_reward_works() {
 			Origin::signed(4),
 			vec![(BTC_AUSD_LP, 100), (DOT_AUSD_LP, 200),],
 		));
-		assert_ok!(IncentivesModule::update_stake_earning_incentive_reward(Origin::signed(4), 30));
+		assert_ok!(IncentivesModule::update_stake_earning_incentive_reward(
+			Origin::signed(4),
+			30
+		));
 		assert_ok!(IncentivesModule::update_exchange_saving_rates(
 			Origin::signed(4),
 			vec![
