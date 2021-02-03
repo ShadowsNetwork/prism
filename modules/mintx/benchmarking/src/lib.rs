@@ -81,9 +81,9 @@ benchmarks! {
 		}
 	}: _(RawOrigin::Signed(caller))
 
-	// `adjust_loan`, best case:
+	// `issue`, best case:
 	// adjust both collateral and debit
-	adjust_loan {
+	issue {
 		let u in 0 .. 1000;
 
 		let caller: T::AccountId = account("caller", u, SEED);
@@ -114,7 +114,7 @@ benchmarks! {
 		)?;
 	}: _(RawOrigin::Signed(caller), currency_id, collateral_amount, debit_amount)
 
-	transfer_loan_from {
+	transfer_from {
 		let u in 0 .. 1000;
 
 		let currency_id: CurrencyId = <T as debt_engine::Trait>::CollateralCurrencyIds::get()[0];
@@ -145,7 +145,7 @@ benchmarks! {
 		)?;
 
 		// initialize sender's loan
-		Mintx::<T>::adjust_loan(
+		Mintx::<T>::issue(
 			RawOrigin::Signed(sender.clone()).into(),
 			currency_id,
 			collateral_amount,
@@ -190,9 +190,9 @@ mod tests {
 	}
 
 	#[test]
-	fn adjust_loan() {
+	fn issue() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(test_benchmark_adjust_loan::<Runtime>());
+			assert_ok!(test_benchmark_issue::<Runtime>());
 		});
 	}
 }

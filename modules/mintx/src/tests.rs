@@ -69,7 +69,7 @@ fn unauthorize_all_should_work() {
 }
 
 #[test]
-fn transfer_loan_from_should_work() {
+fn transfer_from_should_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
@@ -80,9 +80,9 @@ fn transfer_loan_from_should_work() {
 			Change::NewValue(Some(Ratio::saturating_from_rational(9, 5))),
 			Change::NewValue(10000),
 		));
-		assert_ok!(MintxModule::adjust_loan(Origin::signed(ALICE), DOS, 100, 50));
+		assert_ok!(MintxModule::issue(Origin::signed(ALICE), DOS, 100, 50));
 		assert_ok!(MintxModule::authorize(Origin::signed(ALICE), DOS, BOB));
-		assert_ok!(MintxModule::transfer_loan_from(Origin::signed(BOB), DOS, ALICE));
+		assert_ok!(MintxModule::transfer_from(Origin::signed(BOB), DOS, ALICE));
 		assert_eq!(LendModule::positions(DOS, BOB).collateral, 100);
 		assert_eq!(LendModule::positions(DOS, BOB).debit, 50);
 	});
@@ -92,14 +92,14 @@ fn transfer_loan_from_should_work() {
 fn transfer_unauthorization_lend_should_not_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_noop!(
-			MintxModule::transfer_loan_from(Origin::signed(ALICE), BTC, BOB),
+			MintxModule::transfer_from(Origin::signed(ALICE), BTC, BOB),
 			Error::<Runtime>::NoAuthorization,
 		);
 	});
 }
 
 #[test]
-fn adjust_loan_should_work() {
+fn issue_should_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		assert_ok!(DEBTEngineModule::set_collateral_params(
 			Origin::signed(1),
@@ -110,7 +110,7 @@ fn adjust_loan_should_work() {
 			Change::NewValue(Some(Ratio::saturating_from_rational(9, 5))),
 			Change::NewValue(10000),
 		));
-		assert_ok!(MintxModule::adjust_loan(Origin::signed(ALICE), DOS, 100, 50));
+		assert_ok!(MintxModule::issue(Origin::signed(ALICE), DOS, 100, 50));
 		assert_eq!(LendModule::positions(DOS, ALICE).collateral, 100);
 		assert_eq!(LendModule::positions(DOS, ALICE).debit, 50);
 	});
@@ -121,11 +121,11 @@ fn on_emergency_shutdown_should_work() {
 	ExtBuilder::default().build().execute_with(|| {
 		mock_shutdown();
 		assert_noop!(
-			MintxModule::adjust_loan(Origin::signed(ALICE), BTC, 100, 50),
+			MintxModule::issue(Origin::signed(ALICE), BTC, 100, 50),
 			Error::<Runtime>::AlreadyShutdown,
 		);
 		assert_noop!(
-			MintxModule::transfer_loan_from(Origin::signed(ALICE), BTC, BOB),
+			MintxModule::transfer_from(Origin::signed(ALICE), BTC, BOB),
 			Error::<Runtime>::AlreadyShutdown,
 		);
 	});

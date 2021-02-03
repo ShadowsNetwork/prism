@@ -25,8 +25,8 @@ pub trait WeightInfo {
 	fn authorize() -> Weight;
 	fn unauthorize() -> Weight;
 	fn unauthorize_all(c: u32) -> Weight;
-	fn adjust_loan() -> Weight;
-	fn transfer_loan_from() -> Weight;
+	fn issue() -> Weight;
+	fn transfer_from() -> Weight;
 }
 
 pub trait Trait: system::Trait + debt_engine::Trait {
@@ -88,8 +88,8 @@ decl_module! {
 		/// -------------------
 		/// Base Weight: 246.2 µs
 		/// # </weight>
-		#[weight = <T as Trait>::WeightInfo::adjust_loan()]
-		pub fn adjust_loan(
+		#[weight = <T as Trait>::WeightInfo::issue()]
+		pub fn issue(
 			origin,
 			currency_id: CurrencyId,
 			collateral_adjustment: Amount,
@@ -120,8 +120,8 @@ decl_module! {
 		/// -------------------
 		/// Base Weight: 178.2 µs
 		/// # </weight>
-		#[weight = <T as Trait>::WeightInfo::transfer_loan_from()]
-		pub fn transfer_loan_from(
+		#[weight = <T as Trait>::WeightInfo::transfer_from()]
+		pub fn transfer_from(
 			origin,
 			currency_id: CurrencyId,
 			from: T::AccountId,

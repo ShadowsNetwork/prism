@@ -53,9 +53,9 @@ runtime_benchmarks! {
 		}
 	}: _(RawOrigin::Signed(caller))
 
-	// `adjust_loan`, best case:
+	// `issue`, best case:
 	// adjust both collateral and debit
-	adjust_loan {
+	issue {
 		let caller: AccountId = account("caller", 0, SEED);
 		let currency_id: CurrencyId = CollateralCurrencyIds::get()[0];
 		let min_debit_value = MinimumDebitValue::get();
@@ -84,7 +84,7 @@ runtime_benchmarks! {
 		)?;
 	}: _(RawOrigin::Signed(caller), currency_id, collateral_amount.try_into().unwrap(), debit_amount)
 
-	transfer_loan_from {
+	transfer_from {
 		let currency_id: CurrencyId = CollateralCurrencyIds::get()[0];
 		let sender: AccountId = account("sender", 0, SEED);
 		let receiver: AccountId = account("receiver", 0, SEED);
@@ -113,7 +113,7 @@ runtime_benchmarks! {
 		)?;
 
 		// initialize sender's loan
-		Mintx::adjust_loan(
+		Mintx::issue(
 			RawOrigin::Signed(sender.clone()).into(),
 			currency_id,
 			collateral_amount.try_into().unwrap(),
@@ -163,9 +163,9 @@ mod tests {
 	}
 
 	#[test]
-	fn test_adjust_loan() {
+	fn test_issue() {
 		new_test_ext().execute_with(|| {
-			assert_ok!(test_benchmark_adjust_loan());
+			assert_ok!(test_benchmark_issue());
 		});
 	}
 }

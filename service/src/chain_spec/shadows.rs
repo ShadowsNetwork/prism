@@ -185,7 +185,7 @@ fn testnet_genesis(
 		get_all_module_accounts, BabeConfig, BalancesConfig, BandOracleConfig, ContractsConfig, CurrencyId,
 		DEBTTreasuryConfig, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig, IndicesConfig,
 		MintxCouncilMembershipConfig, NewAccountDeposit, OperatorMembershipBandConfig, OperatorMembershipShadowsConfig,
-		PolkadotBridgeConfig, SessionConfig, ShadowsOracleConfig, Stake_EarningCouncilMembershipConfig, StakerStatus,
+		PolkadotBridgeConfig, SessionConfig, ShadowsOracleConfig, StakeEarningCouncilMembershipConfig, StakerStatus,
 		StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig, TokenSymbol, TokensConfig,
 		VestingConfig, DOLLARS,
 	};
@@ -245,7 +245,7 @@ fn testnet_genesis(
 			phantom: Default::default(),
 		}),
 		pallet_collective_Instance3: Some(Default::default()),
-		pallet_membership_Instance3: Some(Stake_EarningCouncilMembershipConfig {
+		pallet_membership_Instance3: Some(StakeEarningCouncilMembershipConfig {
 			members: vec![root_key.clone()],
 			phantom: Default::default(),
 		}),
@@ -351,7 +351,7 @@ fn shadows_genesis(
 		get_all_module_accounts, BabeConfig, Balance, BalancesConfig, BandOracleConfig, ContractsConfig, CurrencyId,
 		DEBTTreasuryConfig, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig, IndicesConfig,
 		MintxCouncilMembershipConfig, NewAccountDeposit, OperatorMembershipBandConfig, OperatorMembershipShadowsConfig,
-		PolkadotBridgeConfig, SessionConfig, ShadowsOracleConfig, Stake_EarningCouncilMembershipConfig, StakerStatus,
+		PolkadotBridgeConfig, SessionConfig, ShadowsOracleConfig, StakeEarningCouncilMembershipConfig, StakerStatus,
 		StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig, TokenSymbol, TokensConfig,
 		VestingConfig, CENTS, DOLLARS,
 	};
@@ -411,7 +411,7 @@ fn shadows_genesis(
 			phantom: Default::default(),
 		}),
 		pallet_collective_Instance3: Some(Default::default()),
-		pallet_membership_Instance3: Some(Stake_EarningCouncilMembershipConfig {
+		pallet_membership_Instance3: Some(StakeEarningCouncilMembershipConfig {
 			members: vec![root_key.clone()],
 			phantom: Default::default(),
 		}),

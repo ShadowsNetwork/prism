@@ -90,7 +90,7 @@ pub enum AuthoritysOriginId {
 	Root,
 	ShadowTreasury,
 	MintxTreasury,
-	Stake_EarningTreasury,
+	StakeEarningTreasury,
 	DSWF,
 }
 

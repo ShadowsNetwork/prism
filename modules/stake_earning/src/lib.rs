@@ -6,7 +6,7 @@ use frame_system::{self as system, ensure_signed};
 use orml_utilities::with_transaction_result;
 use primitives::{Balance, EraIndex};
 use sp_runtime::RuntimeDebug;
-use support::Stake_EarningProtocol;
+use support::StakeEarningProtocol;
 
 #[derive(Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq)]
 pub enum RedeemStrategy {
@@ -16,7 +16,7 @@ pub enum RedeemStrategy {
 }
 
 pub trait Trait: system::Trait {
-	type Stake_Earning: Stake_EarningProtocol<Self::AccountId, Balance, EraIndex>;
+	type StakeEarning: StakeEarningProtocol<Self::AccountId, Balance, EraIndex>;
 }
 
 decl_module! {
@@ -25,7 +25,7 @@ decl_module! {
 		pub fn mint(origin, #[compact] amount: Balance) {
 			with_transaction_result(|| {
 				let who = ensure_signed(origin)?;
-				T::Stake_Earning::mint(&who, amount)?;
+				T::StakeEarning::mint(&who, amount)?;
 				Ok(())
 			})?;
 		}
@@ -36,13 +36,13 @@ decl_module! {
 				let who = ensure_signed(origin)?;
 				match strategy {
 					RedeemStrategy::Immediately => {
-						T::Stake_Earning::redeem_by_free_unbonded(&who, amount)?;
+						T::StakeEarning::redeem_by_free_unbonded(&who, amount)?;
 					},
 					RedeemStrategy::Target(target_era) => {
-						T::Stake_Earning::redeem_by_claim_unbonding(&who, amount, target_era)?;
+						T::StakeEarning::redeem_by_claim_unbonding(&who, amount, target_era)?;
 					},
 					RedeemStrategy::WaitForUnbonding => {
-						T::Stake_Earning::redeem_by_unbond(&who, amount)?;
+						T::StakeEarning::redeem_by_unbond(&who, amount)?;
 					},
 				}
 				Ok(())
@@ -53,7 +53,7 @@ decl_module! {
 		pub fn withdraw_redemption(origin) {
 			with_transaction_result(|| {
 				let who = ensure_signed(origin)?;
-				T::Stake_Earning::withdraw_redemption(&who)?;
+				T::StakeEarning::withdraw_redemption(&who)?;
 				Ok(())
 			})?;
 		}

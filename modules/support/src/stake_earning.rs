@@ -65,7 +65,7 @@ impl<Balance, CurrencyId> OnCommission<Balance, CurrencyId> for () {
 	fn on_commission(_currency_id: CurrencyId, _amount: Balance) {}
 }
 
-pub trait Stake_EarningProtocol<AccountId, Balance, EraIndex> {
+pub trait StakeEarningProtocol<AccountId, Balance, EraIndex> {
 	type Balance: Decode + Encode + Debug + Eq + PartialEq + Clone + HasCompact;
 
 	fn mint(who: &AccountId, amount: Balance) -> sp_std::result::Result<Balance, DispatchError>;

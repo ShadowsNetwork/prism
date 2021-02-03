@@ -42,8 +42,8 @@ pub enum PoolId {
 	/// Rewards(AUSD) pool for liquidators who provide exchange liquidity to
 	/// participate automatic liquidation
 	ExchangeSaving(CurrencyId),
-	/// Rewards(DOS) pool for users who staking by Stake_Earning protocol
-	Stake_Earning,
+	/// Rewards(DOS) pool for users who staking by StakeEarning protocol
+	StakeEarning,
 }
 
 decl_error! {
@@ -81,8 +81,8 @@ pub trait Trait:
 	/// ExchangeSaving PoolId
 	type ExchangeIncentivePool: Get<Self::AccountId>;
 
-	/// The vault account to keep rewards for type Stake_EarningIncentive PoolId
-	type Stake_EarningIncentivePool: Get<Self::AccountId>;
+	/// The vault account to keep rewards for type StakeEarningIncentive PoolId
+	type StakeEarningIncentivePool: Get<Self::AccountId>;
 
 	/// The period to accumulate rewards
 	type AccumulatePeriod: Get<Self::BlockNumber>;
@@ -123,8 +123,8 @@ decl_storage! {
 		/// Mapping from exchange liquidity currency type to its lend incentive reward amount per period
 		pub EXCHANGEIncentiveRewards get(fn exchange_incentive_rewards): map hasher(twox_64_concat) CurrencyId => Balance;
 
-		/// Stake_Earning incentive reward amount
-		pub Stake_EarningIncentiveReward get(fn stake_earning_incentive_reward): Balance;
+		/// StakeEarning incentive reward amount
+		pub StakeEarningIncentiveReward get(fn stake_earning_incentive_reward): Balance;
 
 		/// Mapping from exchange liquidity currency type to its saving rate
 		pub EXCHANGESavingRates get(fn exchange_saving_rates): map hasher(twox_64_concat) CurrencyId => Rate;
@@ -143,8 +143,8 @@ decl_module! {
 		/// The vault account to keep rewards for type ExchangeIncentive and ExchangeSaving PoolId
 		const ExchangeIncentivePool: T::AccountId = T::ExchangeIncentivePool::get();
 
-		/// The vault account to keep rewards for type Stake_EarningIncentive PoolId
-		const Stake_EarningIncentivePool: T::AccountId = T::Stake_EarningIncentivePool::get();
+		/// The vault account to keep rewards for type StakeEarningIncentive PoolId
+		const StakeEarningIncentivePool: T::AccountId = T::StakeEarningIncentivePool::get();
 
 		/// The period to accumulate rewards
 		const AccumulatePeriod: T::BlockNumber = T::AccumulatePeriod::get();
@@ -253,7 +253,7 @@ decl_module! {
 		) {
 			with_transaction_result(|| {
 				T::UpdateOrigin::ensure_origin(origin)?;
-				Stake_EarningIncentiveReward::put(update);
+				StakeEarningIncentiveReward::put(update);
 				Ok(())
 			})?;
 		}
@@ -408,14 +408,14 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 							}
 						}
 
-						PoolId::Stake_Earning => {
+						PoolId::StakeEarning => {
 							let incentive_reward = Self::stake_earning_incentive_reward();
 
 							// TODO: transfer from RESERVED TREASURY instead of issuing
 							if !incentive_reward.is_zero()
 								&& T::Currency::deposit(
 									incentive_currency_id,
-									&T::Stake_EarningIncentivePool::get(),
+									&T::StakeEarningIncentivePool::get(),
 									incentive_reward,
 								)
 								.is_ok()
@@ -444,7 +444,7 @@ impl<T: Trait> RewardHandler<T::AccountId, T::BlockNumber> for Module<T> {
 			PoolId::Lend(_) => (T::LendIncentivePool::get(), T::IncentiveCurrencyId::get()),
 			PoolId::ExchangeIncentive(_) => (T::ExchangeIncentivePool::get(), T::IncentiveCurrencyId::get()),
 			PoolId::ExchangeSaving(_) => (T::ExchangeIncentivePool::get(), T::SavingCurrencyId::get()),
-			PoolId::Stake_Earning => (T::Stake_EarningIncentivePool::get(), T::IncentiveCurrencyId::get()),
+			PoolId::StakeEarning => (T::StakeEarningIncentivePool::get(), T::IncentiveCurrencyId::get()),
 		};
 
 		// payout the reward to user from the pool. it should not affect the

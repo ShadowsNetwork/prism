@@ -18,12 +18,12 @@ impl<T: frame_system::Trait> module_mintx::WeightInfo for WeightInfo<T> {
 	fn unauthorize_all(c: u32) -> Weight {
 		(79_165_000 as Weight).saturating_add(DbWeight::get().writes((1 as Weight).saturating_mul(c as Weight)))
 	}
-	fn adjust_loan() -> Weight {
+	fn issue() -> Weight {
 		(544_147_000 as Weight)
 			.saturating_add(DbWeight::get().reads(24 as Weight))
 			.saturating_add(DbWeight::get().writes(10 as Weight))
 	}
-	fn transfer_loan_from() -> Weight {
+	fn transfer_from() -> Weight {
 		(682_312_000 as Weight)
 			.saturating_add(DbWeight::get().reads(21 as Weight))
 			.saturating_add(DbWeight::get().writes(8 as Weight))
