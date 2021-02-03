@@ -1222,23 +1222,6 @@ impl pallet_proxy::Trait for Runtime {
 }
 
 parameter_types! {
-	pub const RENBTCCurrencyId: CurrencyId = CurrencyId::Token(TokenSymbol::RENBTC);
-	pub const RenVmPublickKey: [u8; 20] = hex!["4b939fc8ade87cb50b78987b1dda927460dc456a"];
-	pub const RENBTCIdentifier: [u8; 32] = hex!["0000000000000000000000000a9add98c076448cbcfacf5e457da12ddbef4a8f"];
-	pub const RenvmBridgeUnsignedPriority: TransactionPriority = TransactionPriority::max_value() / 3;
-	pub const BurnEventStoreDuration: BlockNumber = DAYS;
-}
-
-impl ecosystem_renvm_bridge::Trait for Runtime {
-	type Event = Event;
-	type Currency = Currency<Runtime, RENBTCCurrencyId>;
-	type PublicKey = RenVmPublickKey;
-	type CurrencyIdentifier = RENBTCIdentifier;
-	type UnsignedPriority = RenvmBridgeUnsignedPriority;
-	type BurnEventStoreDuration = BurnEventStoreDuration;
-}
-
-parameter_types! {
 	pub const TombstoneDeposit: Balance = 16 * MILLICENTS;
 	pub const RentByteFee: Balance = 4 * MILLICENTS;
 	pub const RentDepositOffset: Balance = 1000 * MILLICENTS;
@@ -1377,9 +1360,6 @@ construct_runtime!(
 		// Shadow Other
 		Incentives: module_incentives::{Module, Storage, Call, Event<T>},
 		NFT: module_nft::{Module, Call, Event<T>},
-
-		// Ecosystem modules
-		RenVmBridge: ecosystem_renvm_bridge::{Module, Call, Storage, Event<T>, ValidateUnsigned},
 
 		// Smart contracts
 		Contracts: pallet_contracts::{Module, Call, Config, Storage, Event<T>},

@@ -47,9 +47,6 @@ members = [
 	"orml/traits",
 	"orml/utilities",
 	"orml/vesting",
-
-	"ecosystem-modules/template/template",
-	"ecosystem-modules/ren/renvm-bridge",
 ]
 
 # The list of dependencies below (which can be both direct and indirect dependencies) are crates
