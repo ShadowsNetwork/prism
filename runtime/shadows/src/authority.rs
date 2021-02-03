@@ -2,9 +2,9 @@
 
 use crate::{
 	AccountId, AccountIdConversion, AuthoritysOriginId, BadOrigin, BlockNumber, DSWFModuleId, DispatchResult,
-	EnsureRoot, EnsureRootOrHalfGeneralCouncil, EnsureRootOrHalfHomaCouncil, EnsureRootOrHalfMintxCouncil,
+	EnsureRoot, EnsureRootOrHalfGeneralCouncil, EnsureRootOrHalfStake_EarningCouncil, EnsureRootOrHalfMintxCouncil,
 	EnsureRootOrOneThirdsTechnicalCommittee, EnsureRootOrThreeFourthsGeneralCouncil,
-	EnsureRootOrTwoThirdsTechnicalCommittee, HomaTreasuryModuleId, MintxTreasuryModuleId, OneDay, Origin, OriginCaller,
+	EnsureRootOrTwoThirdsTechnicalCommittee, Stake_EarningTreasuryModuleId, MintxTreasuryModuleId, OneDay, Origin, OriginCaller,
 	SevenDays, ShadowTreasuryModuleId, ZeroDay, HOURS,
 };
 pub use frame_support::traits::{schedule::Priority, EnsureOrigin, OriginTrait};
@@ -20,7 +20,7 @@ impl orml_authority::AuthorityConfig<Origin, OriginCaller, BlockNumber> for Auth
 			Ok(frame_system::RawOrigin::Signed(caller)) => {
 				if caller == ShadowTreasuryModuleId::get().into_account()
 					|| caller == MintxTreasuryModuleId::get().into_account()
-					|| caller == HomaTreasuryModuleId::get().into_account()
+					|| caller == Stake_EarningTreasuryModuleId::get().into_account()
 					|| caller == DSWFModuleId::get().into_account()
 				{
 					Ok(())
@@ -77,7 +77,7 @@ impl orml_authority::AsOriginId<Origin, OriginCaller> for AuthoritysOriginId {
 			AuthoritysOriginId::MintxTreasury => Origin::signed(MintxTreasuryModuleId::get().into_account())
 				.caller()
 				.clone(),
-			AuthoritysOriginId::HomaTreasury => Origin::signed(HomaTreasuryModuleId::get().into_account())
+			AuthoritysOriginId::Stake_EarningTreasury => Origin::signed(Stake_EarningTreasuryModuleId::get().into_account())
 				.caller()
 				.clone(),
 			AuthoritysOriginId::DSWF => Origin::signed(DSWFModuleId::get().into_account()).caller().clone(),
@@ -106,8 +106,8 @@ impl orml_authority::AsOriginId<Origin, OriginCaller> for AuthoritysOriginId {
 				>>::ensure_origin(origin)
 				.map_or_else(|_| Err(BadOrigin.into()), |_| Ok(()))
 			}
-			AuthoritysOriginId::HomaTreasury => {
-				<EnsureDelayed<OneDay, EnsureRootOrHalfHomaCouncil, BlockNumber, OriginCaller> as EnsureOrigin<
+			AuthoritysOriginId::Stake_EarningTreasury => {
+				<EnsureDelayed<OneDay, EnsureRootOrHalfStake_EarningCouncil, BlockNumber, OriginCaller> as EnsureOrigin<
 					Origin,
 				>>::ensure_origin(origin)
 				.map_or_else(|_| Err(BadOrigin.into()), |_| Ok(()))

@@ -10,7 +10,7 @@ use sp_runtime::{
 };
 use sp_std::prelude::*;
 use support::{
-	ExchangeRate, HomaProtocol, NomineesProvider, OnCommission, OnNewEra, PolkadotBridge, PolkadotBridgeCall,
+	ExchangeRate, Stake_EarningProtocol, NomineesProvider, OnCommission, OnNewEra, PolkadotBridge, PolkadotBridgeCall,
 	PolkadotBridgeState, PolkadotBridgeType, Rate, Ratio,
 };
 
@@ -34,7 +34,7 @@ pub trait Trait: system::Trait {
 	type DefaultExchangeRate: Get<ExchangeRate>;
 	type ClaimFeeReturnRatio: Get<Ratio>;
 
-	/// The staking pool's module id, keep all staking currency belong to Stake_earning
+	/// The staking pool's module id, keep all staking currency belong to Stake_Earning
 	/// protocol.
 	type ModuleId: Get<ModuleId>;
 
@@ -482,7 +482,7 @@ impl<T: Trait> OnNewEra<EraIndex> for Module<T> {
 	}
 }
 
-impl<T: Trait> HomaProtocol<T::AccountId, Balance, EraIndex> for Module<T> {
+impl<T: Trait> Stake_EarningProtocol<T::AccountId, Balance, EraIndex> for Module<T> {
 	type Balance = Balance;
 
 	/// This function must to be called in `with_transaction_result` scope to

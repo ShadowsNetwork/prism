@@ -184,7 +184,7 @@ fn testnet_genesis(
 	use shadows_runtime::{
 		get_all_module_accounts, BabeConfig, BalancesConfig, BandOracleConfig, ContractsConfig, CurrencyId,
 		DEBTTreasuryConfig, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
-		HomaCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
+		Stake_EarningCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
 		OperatorMembershipBandConfig, OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig,
 		ShadowsOracleConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig,
 		TokenSymbol, TokensConfig, VestingConfig, DOLLARS,
@@ -245,7 +245,7 @@ fn testnet_genesis(
 			phantom: Default::default(),
 		}),
 		pallet_collective_Instance3: Some(Default::default()),
-		pallet_membership_Instance3: Some(HomaCouncilMembershipConfig {
+		pallet_membership_Instance3: Some(Stake_EarningCouncilMembershipConfig {
 			members: vec![root_key.clone()],
 			phantom: Default::default(),
 		}),
@@ -350,7 +350,7 @@ fn shadows_genesis(
 	use shadows_runtime::{
 		get_all_module_accounts, BabeConfig, Balance, BalancesConfig, BandOracleConfig, ContractsConfig, CurrencyId,
 		DEBTTreasuryConfig, DebtEngineConfig, GeneralCouncilMembershipConfig, GrandpaConfig,
-		HomaCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
+		Stake_EarningCouncilMembershipConfig, IndicesConfig, MintxCouncilMembershipConfig, NewAccountDeposit,
 		OperatorMembershipBandConfig, OperatorMembershipShadowsConfig, PolkadotBridgeConfig, SessionConfig,
 		ShadowsOracleConfig, StakerStatus, StakingConfig, SudoConfig, SystemConfig, TechnicalCommitteeMembershipConfig,
 		TokenSymbol, TokensConfig, VestingConfig, CENTS, DOLLARS,
@@ -411,7 +411,7 @@ fn shadows_genesis(
 			phantom: Default::default(),
 		}),
 		pallet_collective_Instance3: Some(Default::default()),
-		pallet_membership_Instance3: Some(HomaCouncilMembershipConfig {
+		pallet_membership_Instance3: Some(Stake_EarningCouncilMembershipConfig {
 			members: vec![root_key.clone()],
 			phantom: Default::default(),
 		}),

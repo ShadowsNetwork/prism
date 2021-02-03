@@ -10,7 +10,7 @@ use sp_std::{
 
 pub mod stake_earning;
 pub use stake_earning::{
-	HomaProtocol, NomineesProvider, OnCommission, OnNewEra, PolkadotBridge, PolkadotBridgeCall, PolkadotBridgeState,
+	Stake_EarningProtocol, NomineesProvider, OnCommission, OnNewEra, PolkadotBridge, PolkadotBridgeCall, PolkadotBridgeState,
 	PolkadotBridgeType, PolkadotStakingLedger, PolkadotUnlockChunk,
 };
 
