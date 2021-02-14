@@ -1,239 +1,135 @@
 [package]
-authors = ['Substrate DevHub <https://github.com/substrate-developer-hub>']
+name = 'shadows-runtime'
+description = 'Shadows Runtime'
+homepage = 'https://shadows.network'
+license = 'GPL-3.0-only'
+version = '0.1.0'
+authors = ["ShadowsNetwork"]
 edition = '2018'
-homepage = 'https://substrate.dev'
-license = 'Unlicense'
-name = 'node-template-runtime'
-repository = 'https://github.com/substrate-developer-hub/substrate-node-template/'
-version = '2.0.0-rc6'
 
-[package.metadata.docs.rs]
-targets = ['x86_64-unknown-linux-gnu']
+[dependencies]
+serde = { version = "1.0.101", default-features = false, optional = true, features = ["derive"] }
+parity-scale-codec = { version = "1.3.0", default-features = false, features = ["derive"] }
+log = "0.4.8"
+hex-literal = "0.3.1"
 
-[dependencies.codec]
-default-features = false
-features = ['derive']
-package = 'parity-scale-codec'
-version = '1.3.4'
+precompiles = { path = "precompiles/", default-features = false }
+account = { path = "account/", default-features = false }
+pallet-ethereum-chain-id = { path = "../pallets/ethereum-chain-id", default-features = false }
+stake = { path = "../pallets/stake", default-features = false }
 
-[dependencies.frame-executive]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
+# Substrate dependencies
+pallet-aura = { git = "https://github.com/paritytech/substrate.git", default-features = false, branch = "master", optional = true }
+sp-std = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+sp-api = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+sp-io = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+sp-version = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+sp-runtime = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+sp-core = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+sp-session = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+sp-offchain = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+sp-block-builder = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+sp-transaction-pool = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+sp-inherents = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
 
-[dependencies.frame-support]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
+frame-support = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+frame-executive = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+frame-system = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+pallet-balances = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+pallet-randomness-collective-flip = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+pallet-timestamp = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+pallet-sudo = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+pallet-transaction-payment = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
 
-[dependencies.frame-system]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
+frame-system-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/paritytech/substrate", default-features = false, branch = "master" }
+pallet-evm = { git = "https://github.com/shadowsnetwork/frontier", default-features = false, branch = "v0.5-hotfixes" }
 
-[dependencies.frame-system-rpc-runtime-api]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
+sp-consensus-aura = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "master", optional = true }
+pallet-grandpa = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "master", optional = true }
 
-[dependencies.pallet-babe]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
+pallet-ethereum = { default-features = false, git = "https://github.com/shadowsnetwork/frontier", branch = "v0.5-hotfixes" }
+fp-rpc = { default-features = false, git = "https://github.com/shadowsnetwork/frontier", branch = "v0.5-hotfixes" }
 
-[dependencies.pallet-balances]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
+shadows-rpc-primitives-txpool = { path = "../primitives/rpc/txpool", default-features = false }
 
-[dependencies.pallet-grandpa]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
+# Cumulus dependencies
+cumulus-runtime = { git = "https://github.com/paritytech/cumulus",  default-features = false, branch = "master" }
+cumulus-parachain-upgrade = { git = "https://github.com/paritytech/cumulus",  default-features = false, branch = "master" }
+cumulus-primitives = { git = "https://github.com/paritytech/cumulus",  default-features = false, branch = "master" }
 
-[dependencies.pallet-randomness-collective-flip]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
+# TODO Why can't this come directly from cumulus
+parachain-info = { path = "../pallets/parachain-info", default-features = false }
+author-inherent = { path = "../pallets/author-inherent", default-features = false }
 
-[dependencies.pallet-sudo]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.pallet-timestamp]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.pallet-transaction-payment]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.pallet-transaction-payment-rpc-runtime-api]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.serde]
-features = ['derive']
-optional = true
-version = '1.0.101'
-
-[dependencies.sp-api]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.sp-block-builder]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.sp-consensus-babe]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '0.8.0-rc6'
-
-[dependencies.sp-core]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.sp-inherents]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.sp-offchain]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.sp-runtime]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.sp-session]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.sp-std]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.sp-transaction-pool]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.sp-version]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-
-[dependencies.pallet-staking]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.pallet-staking-reward-curve]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.pallet-session]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-features = ['historical']
-
-[dependencies.sp-staking]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.pallet-generic-asset]
-default-features = false
-git = 'https://github.com/paritytech/substrate.git'
-tag = 'v2.0.0-rc6'
-version = '2.0.0-rc6'
-
-[dependencies.template]
-default-features = false
-package = 'pallet-template'
-path = '../pallets/template'
-version = '2.0.0-rc6'
+[build-dependencies]
+substrate-wasm-builder = { version = "3.0.0", git = "https://github.com/paritytech/substrate.git", branch = "master" }
 
 [features]
-default = ['std']
+# By default, we build the parachain runtime
+default = [
+	"std"
+	# parachain-only dependencies can't be conditionally included here.
+	# Default feature dependencies must not be optional (aparently)
+]
+# Standalone runtime is enabled by a feature
+standalone = [
+	"pallet-aura",
+	"sp-consensus-aura",
+	"pallet-grandpa",
+]
 std = [
-    'codec/std',
-    'frame-executive/std',
-    'frame-support/std',
-    'frame-system/std',
-    'frame-system-rpc-runtime-api/std',
-    'pallet-babe/std',
-    'pallet-balances/std',
-    'pallet-grandpa/std',
-    'pallet-randomness-collective-flip/std',
-    'pallet-sudo/std',
-    'pallet-timestamp/std',
-    'pallet-transaction-payment/std',
-    'pallet-generic-asset/std',
-    'pallet-transaction-payment-rpc-runtime-api/std',
-    'serde',
-    'sp-api/std',
-    'sp-block-builder/std',
-    'sp-consensus-babe/std',
-    'sp-core/std',
-    'sp-inherents/std',
-    'sp-offchain/std',
-    'sp-runtime/std',
-    'sp-session/std',
-    'sp-staking/std',
-    'pallet-staking/std',
-    'pallet-session/std',
-    'sp-std/std',
-    'sp-transaction-pool/std',
-    'sp-version/std',
-    'template/std',
+	"parity-scale-codec/std",
+	"serde",
+	"sp-api/std",
+	"sp-std/std",
+	"sp-io/std",
+	"sp-core/std",
+	"sp-runtime/std",
+	"sp-version/std",
+	"sp-offchain/std",
+	"sp-session/std",
+	"sp-block-builder/std",
+	"sp-transaction-pool/std",
+	"sp-inherents/std",
+	"frame-support/std",
+	"frame-executive/std",
+	"frame-system/std",
+	"pallet-balances/std",
+	"pallet-randomness-collective-flip/std",
+	"pallet-timestamp/std",
+	"pallet-sudo/std",
+	"pallet-transaction-payment/std",
+	"pallet-ethereum/std",
+	"pallet-evm/std",
+	"shadows-rpc-primitives-txpool/std",
+	"fp-rpc/std",
+	"frame-system-rpc-runtime-api/std",
+	"pallet-transaction-payment-rpc-runtime-api/std",
+	"pallet-ethereum-chain-id/std",
+	"author-inherent/std",
+
+	# TODO These dependencies are only necessary when building without the standalone feature. I don't
+	# see a way to express that. Everything is correct, like this, but we unnecessarily build these
+	# dependencies when building the standalone runtime which is a big waste of CPU time as one of them
+	# builds all the polkadot runtimes. See https://github.com/paritytech/cumulus/issues/175
+	"parachain-info/std",
+	"cumulus-runtime/std",
+	"cumulus-parachain-upgrade/std",
+	# "cumulus-message-broker/std",
+	# "cumulus-upward-message/std",
+	"cumulus-primitives/std",
+	# "cumulus-token-dealer/std",
+	# TODO These dependencies are only necessary when _both_  the `std` _and_ `standalone` features
+	# are enabled. I don't see a way to express that. Everything is correct, like this, but we
+	# unnecessarily build these dependencies when building the parachain runtime.
+	"pallet-aura/std",
+	"pallet-grandpa/std",
+	"account/std",
+	"stake/std",
 ]
 
-[build-dependencies.wasm-builder-runner]
-git = 'https://github.com/paritytech/substrate.git'
-package = 'substrate-wasm-builder-runner'
-tag = 'v2.0.0-rc6'
-version = '1.0.5'
+# Will be enabled by the `wasm-builder` when building the runtime for WASM.
+runtime-wasm = [
+	# "cumulus-upward-message/runtime-wasm",
+]
