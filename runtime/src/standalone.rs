@@ -28,7 +28,7 @@ macro_rules! runtime_standalone {
 
 		/// This runtime version.
 		pub const VERSION: RuntimeVersion = RuntimeVersion {
-			spec_name: create_runtime_str!("shadows-standalone"),
+			spec_name: create_runtime_str!("ombre"),
 			impl_name: create_runtime_str!("shadows-standalone"),
 			authoring_version: 3,
 			spec_version: 11,
