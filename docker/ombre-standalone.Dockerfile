@@ -1,27 +1,45 @@
-# Node for Ombre Alphanet.
-#
-# Requires to run from repository root and to copy the binary in the build folder (part of the release workflow)
+# Inspired by Polkadot Dockerfile
+
+FROM phusion/baseimage:0.11 as builder
+LABEL maintainer "contact@shadows.link"
+LABEL description="This is the build stage for Shadows. Here we create the binary."
+
+ARG PROFILE=release
+WORKDIR /shadows
+
+COPY . /shadows
+
+# Download Shadows repo
+RUN apt-get update && \
+	apt-get upgrade -y && \
+	apt-get install -y cmake pkg-config libssl-dev git clang
+
+# Download rust dependencies and build the rust binary
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+	export PATH=$PATH:$HOME/.cargo/bin && \
+	scripts/init.sh && \
+	cd node/standalone \
+	cargo build --$PROFILE
+
+# ===== SECOND STAGE ======
 
 FROM phusion/baseimage:0.11
 LABEL maintainer "contact@shadows.link"
-LABEL description="this is the standalone node running Ombre"
+LABEL description="This is the 2nd stage: a very small image where we copy the Shadows binary."
 ARG PROFILE=release
+COPY --from=builder /shadows/node/standalone/target/$PROFILE/ombre-standalone /usr/local/bin
 
 RUN mv /usr/share/ca* /tmp && \
 	rm -rf /usr/share/*  && \
 	mv /tmp/ca-certificates /usr/share/ && \
 	rm -rf /usr/lib/python* && \
-	useradd -m -u 1000 -U -s /bin/sh -d /ombre shadows && \
-	mkdir -p /ombre/.local/share/ombre && \
-	chown -R shadows:shadows /ombre && \
-	ln -s /ombre/.local/share/ombre /data && \
+	useradd -m -u 1000 -U -s /bin/sh -d /shadows shadows && \
+	mkdir -p /shadows/.local/share/shadows && \
+	chown -R shadows:shadows /shadows/.local && \
+	ln -s /shadows/.local/share/shadows /data && \
 	rm -rf /usr/bin /usr/sbin
 
-
 USER shadows
-
-COPY --chown=shadows build/standalone /ombre
-RUN chmod uog+x /ombre/ombre-standalone
 
 # 30333 for p2p traffic
 # 9933 for RPC call
@@ -29,11 +47,6 @@ RUN chmod uog+x /ombre/ombre-standalone
 # 9615 for Prometheus (metrics)
 EXPOSE 30333 9933 9944 9615
 
-CMD ["/ombre/ombre-standalone", \
-	"--dev" \
-	"--tmp" \
-	"--charlie" \
-	"--port","30333", \
-	"--rpc-port","9933", \
-	"--ws-port","9944", \
-	]
+VOLUME ["/data"]
+
+CMD ["/usr/local/bin/ombre-standalone"]
