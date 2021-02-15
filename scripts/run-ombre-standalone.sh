@@ -57,6 +57,8 @@ $EXECUTABLE \
   --port $((STANDALONE_PORT)) \
   --rpc-port $((STANDALONE_PORT + 1)) \
   --ws-port $((STANDALONE_PORT + 2)) \
+  --ws-external \
+  --rpc-external \
   --validator \
   --author-id 6Be02d1d3665660d22FF9624b7BE0551ee1Ac91b \
   --rpc-cors all \
