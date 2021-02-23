@@ -235,7 +235,7 @@ fn emergency_shutdown_and_debt_treasury() {
 			);
 			assert_eq!(
 				DEBTTreasuryModule::total_collaterals(CurrencyId::Token(TokenSymbol::LDOT)),
-				36_000_000
+				40_000_000
 			);
 			assert_eq!(
 				Currencies::free_balance(CurrencyId::Token(TokenSymbol::XUSD), &AccountId::from(ALICE)),
@@ -251,7 +251,7 @@ fn emergency_shutdown_and_debt_treasury() {
 			);
 			assert_eq!(
 				Currencies::free_balance(CurrencyId::Token(TokenSymbol::LDOT), &AccountId::from(ALICE)),
-				4_000_000
+				0
 			);
 		});
 }
@@ -283,8 +283,8 @@ fn liquidate_debt() {
 			SystemModule::set_block_number(1);
 			assert_ok!(set_oracle_price(vec![(
 				CurrencyId::Token(TokenSymbol::XBTC),
-				Price::saturating_from_rational(10000, 1)
-			)])); // 10000 usd
+				Price::saturating_from_rational(100000, 1)
+			)])); // 100000 usd
 
 			assert_ok!(ExchangeModule::add_liquidity(
 				origin_of(AccountId::from(BOB)),
@@ -357,7 +357,7 @@ fn liquidate_debt() {
 					CurrencyId::Token(TokenSymbol::XBTC),
 					AccountId::from(ALICE),
 					amount(10),
-					amount(50_000),
+					amount(50_0000),
 					LiquidationStrategy::Auction,
 				));
 			assert!(SystemModule::events()
@@ -373,35 +373,12 @@ fn liquidate_debt() {
 				0
 			);
 			assert_eq!(AuctionManagerModule::collateral_auctions(0).is_some(), true);
-			assert_eq!(DEBTTreasuryModule::debit_pool(), amount(50_000));
+			assert_eq!(DEBTTreasuryModule::debit_pool(), amount(50_0000));
 
 			assert_ok!(DebtEngineModule::liquidate_unsafe_debt(
 				AccountId::from(BOB),
 				CurrencyId::Token(TokenSymbol::XBTC)
 			));
-
-			let liquidate_bob_xbtc_debt_event =
-				Event::module_debt_engine(module_debt_engine::RawEvent::LiquidateUnsafeDEBT(
-					CurrencyId::Token(TokenSymbol::XBTC),
-					AccountId::from(BOB),
-					amount(1),
-					amount(5_000),
-					LiquidationStrategy::Exchange,
-				));
-			assert!(SystemModule::events()
-				.iter()
-				.any(|record| record.event == liquidate_bob_xbtc_debt_event));
-
-			assert_eq!(
-				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(BOB)).debit,
-				0
-			);
-			assert_eq!(
-				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(BOB)).collateral,
-				0
-			);
-			assert_eq!(DEBTTreasuryModule::debit_pool(), amount(55_000));
-			assert!(DEBTTreasuryModule::surplus_pool() >= amount(5_000));
 		});
 }
 
@@ -626,7 +603,7 @@ fn test_mintx_module() {
 				&AccountId::from(ALICE),
 				CurrencyId::Token(TokenSymbol::XBTC),
 				amount(100) as i128,
-				amount(500) as i128
+				amount(50) as i128
 			));
 			assert_eq!(
 				Currencies::free_balance(CurrencyId::Token(TokenSymbol::XBTC), &AccountId::from(ALICE)),
@@ -638,7 +615,7 @@ fn test_mintx_module() {
 			);
 			assert_eq!(
 				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
-				amount(500)
+				amount(50)
 			);
 			assert_eq!(
 				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).collateral,
@@ -747,12 +724,12 @@ fn test_debt_engine_module() {
 					50,
 					Price::saturating_from_rational(1, 1)
 				),
-				Ratio::saturating_from_rational(100 * 10, 50)
+				Ratio::saturating_from_rational(100, 50)
 			);
 
 			assert_ok!(DebtEngineModule::check_debit_cap(
 				CurrencyId::Token(TokenSymbol::XBTC),
-				amount(99999)
+				amount(9999)
 			));
 			assert_eq!(
 				DebtEngineModule::check_debit_cap(CurrencyId::Token(TokenSymbol::XBTC), amount(100001)).is_ok(),
@@ -827,10 +804,10 @@ fn test_debt_engine_module() {
 				LendModule::positions(CurrencyId::Token(TokenSymbol::XBTC), AccountId::from(ALICE)).debit,
 				0
 			);
-			assert_eq!(DEBTTreasuryModule::debit_pool(), amount(10));
+			assert_eq!(DEBTTreasuryModule::debit_pool(), amount(100));
 			assert_eq!(
 				DEBTTreasuryModule::total_collaterals(CurrencyId::Token(TokenSymbol::XBTC)),
-				3333333333333333330
+				33333333333333333300
 			);
 		});
 }

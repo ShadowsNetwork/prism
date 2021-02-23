@@ -92,7 +92,6 @@ module-polkadot-bridge = { path = "../../modules/polkadot_bridge", default-featu
 module-mintx-benchmarking = { path = "../../modules/mintx/benchmarking", default-features = false, optional = true }
 module-debt-engine-benchmarking = { path = "../../modules/debt_engine/benchmarking", default-features = false, optional = true }
 module-emergency-shutdown-benchmarking = { path = "../../modules/emergency_shutdown/benchmarking", default-features = false, optional = true }
-module-auction-manager-benchmarking = { path = "../../modules/auction_manager/benchmarking", default-features = false, optional = true }
 module-nft-benchmarking = { path = "../../modules/nft/benchmarking", default-features = false, optional = true }
 primitives = { package = "shadows-primitives", path = "../../primitives", default-features = false }
 runtime-common = { path = "../common", default-features = false }
@@ -194,7 +193,6 @@ runtime-benchmarks = [
 	"sp-runtime/runtime-benchmarks",
 	"orml-authority/runtime-benchmarks",
 
-	"module-auction-manager-benchmarking",
 	"module-debt-engine-benchmarking",
 	"module-debt-treasury/runtime-benchmarks",
 	"module-exchange/runtime-benchmarks",

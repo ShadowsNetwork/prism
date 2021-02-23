@@ -930,51 +930,6 @@ macro_rules! impl_benchmark_test {
 	};
 }
 
-/// This macro adds pallet benchmarks to a `Vec<BenchmarkBatch>` object.
-///
-/// First create an object that holds in the input parameters for the benchmark:
-///
-/// ```ignore
-/// let params = (&config, &whitelist);
-/// ```
-///
-/// The `whitelist` is a parameter you pass to control the DB read/write
-/// tracking. We use a vector of [TrackedStorageKey], which is a simple struct
-/// used to set if a key has been read or written to.
-///
-/// For values that should be skipped entirely, we can just pass `key.into()`.
-/// For example:
-///
-/// ```
-/// use frame_benchmarking::TrackedStorageKey;
-/// use hex_literal;
-/// let whitelist: Vec<TrackedStorageKey> = vec![
-///     // Block Number
-///     hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef702a5c1b19ab7a04f536c519dos4983ac").to_vec().into(),
-///     // Total Issuance
-///     hex_literal::hex!("c2261276cc9d1f8598ea4b6a74b15c2f57c875e4cff74148e4628f264b974c80").to_vec().into(),
-///     // Execution Phase
-///     hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef7ff553b5a9862a516939d82b3d3d8661a").to_vec().into(),
-///     // Event Count
-///     hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef70a98fdbe9ce6c55837576c60c7af3850").to_vec().into(),
-/// ];
-/// ```
-///
-/// Then define a mutable local variable to hold your `BenchmarkBatch` object:
-/// ```ignore
-/// let mut batches = Vec::<BenchmarkBatch>::new();
-/// ````
-///
-/// Then add the pallets you want to benchmark to this object, using their crate
-/// name and generated module struct:
-/// ```ignore
-/// add_benchmark!(params, batches, pallet_balances, Balances);
-/// add_benchmark!(params, batches, pallet_session, SessionBench::<Runtime>);
-/// add_benchmark!(params, batches, frame_system, SystemBench::<Runtime>);
-/// ...
-/// ```
-///
-/// At the end of `dispatch_benchmark`, you should return this batches object.
 #[macro_export]
 macro_rules! add_benchmark {
 	( $params:ident, $batches:ident, $name:ident, $( $location:tt )* ) => (

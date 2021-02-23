@@ -983,7 +983,7 @@ where
 }
 
 parameter_types! {
-	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![CurrencyId::Token(TokenSymbol::DOT), CurrencyId::Token(TokenSymbol::DOS)];
+	pub CollateralCurrencyIds: Vec<CurrencyId> = vec![CurrencyId::Token(TokenSymbol::DOT), CurrencyId::Token(TokenSymbol::DOS), CurrencyId::Token(TokenSymbol::XBTC)];
 	pub DefaultLiquidationRatio: Ratio = Ratio::saturating_from_rational(110, 100);
 	pub DefaultDebitExchangeRate: ExchangeRate = ExchangeRate::saturating_from_rational(1, 1);
 	pub DefaultLiquidationPenalty: Rate = Rate::saturating_from_rational(5, 100);
