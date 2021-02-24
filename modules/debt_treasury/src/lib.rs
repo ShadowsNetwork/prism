@@ -1,3 +1,5 @@
+// The code of this module refers to acala's cdp_engine module
+// https://github.com/AcalaNetwork/Acala/tree/master/modules/cdp_engin
 //! # DEBT Treasury Module
 //!
 //! ## Overview
