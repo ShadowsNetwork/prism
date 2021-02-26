@@ -1,0 +1,11 @@
+Shadows
+Copyright 2021 The Shadows Network
+
+This product includes software developed at
+The Shadows Network (http://shadows.link/).
+
+The Initial Developer of some parts of the Project, which are copied from, derived from, or
+inspired by Acala Network, Mainly include debt_engine, debt_treasury, lend modules (https://github.com/AcalaNetwork/Acala).
+
+The Initial Developer of the Modules under the orml folder, which are copied from, derived from, or
+inspired by open-runtime-module-library (https://github.com/open-web3-stack/open-runtime-module-library).
