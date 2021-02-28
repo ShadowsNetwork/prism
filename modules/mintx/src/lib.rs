@@ -1,3 +1,5 @@
+// The code of this module refers to acala's honzon module
+// https://github.com/AcalaNetwork/Acala/tree/master/modules/honzon
 //! # Mintx Module
 //!
 //! ## Overview
