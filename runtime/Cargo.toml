@@ -1,6 +1,6 @@
 [package]
 name = "node-template-runtime"
-version = "2.0.0"
+version = "3.0.0"
 authors = ["Anonymous"]
 edition = "2018"
 license = "Unlicense"
@@ -12,43 +12,44 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
 codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false, features = ["derive"] }
+funty = { version = "=1.1.0", default-features = false } # https://github.com/bitvecto-rs/bitvec/issues/105
 
-pallet-aura = { version = "3.0.0", default-features = false, path = "../../../frame/aura" }
-pallet-balances = { version = "3.0.0", default-features = false, path = "../../../frame/balances" }
-frame-support = { version = "3.0.0", default-features = false, path = "../../../frame/support" }
-pallet-grandpa = { version = "3.0.0", default-features = false, path = "../../../frame/grandpa" }
-pallet-randomness-collective-flip = { version = "3.0.0", default-features = false, path = "../../../frame/randomness-collective-flip" }
-pallet-sudo = { version = "3.0.0", default-features = false, path = "../../../frame/sudo" }
-frame-system = { version = "3.0.0", default-features = false, path = "../../../frame/system" }
-pallet-timestamp = { version = "3.0.0", default-features = false, path = "../../../frame/timestamp" }
-pallet-transaction-payment = { version = "3.0.0", default-features = false, path = "../../../frame/transaction-payment" }
-frame-executive = { version = "3.0.0", default-features = false, path = "../../../frame/executive" }
+pallet-aura = { version = "3.0.0", default-features = false }
+pallet-balances = { version = "3.0.0", default-features = false }
+frame-support = { version = "3.0.0", default-features = false }
+pallet-grandpa = { version = "3.0.0", default-features = false }
+pallet-randomness-collective-flip = { version = "3.0.0", default-features = false }
+pallet-sudo = { version = "3.0.0", default-features = false }
+frame-system = { version = "3.0.0", default-features = false }
+pallet-timestamp = { version = "3.0.0", default-features = false }
+pallet-transaction-payment = { version = "3.0.0", default-features = false }
+frame-executive = { version = "3.0.0", default-features = false }
 serde = { version = "1.0.101", optional = true, features = ["derive"] }
-sp-api = { version = "3.0.0", default-features = false, path = "../../../primitives/api" }
-sp-block-builder = { path = "../../../primitives/block-builder", default-features = false, version = "3.0.0"}
-sp-consensus-aura = { version = "0.9.0", default-features = false, path = "../../../primitives/consensus/aura" }
-sp-core = { version = "3.0.0", default-features = false, path = "../../../primitives/core" }
-sp-inherents = { path = "../../../primitives/inherents", default-features = false, version = "3.0.0"}
-sp-offchain = { version = "3.0.0", default-features = false, path = "../../../primitives/offchain" }
-sp-runtime = { version = "3.0.0", default-features = false, path = "../../../primitives/runtime" }
-sp-session = { version = "3.0.0", default-features = false, path = "../../../primitives/session" }
-sp-std = { version = "3.0.0", default-features = false, path = "../../../primitives/std" }
-sp-transaction-pool = { version = "3.0.0", default-features = false, path = "../../../primitives/transaction-pool" }
-sp-version = { version = "3.0.0", default-features = false, path = "../../../primitives/version" }
+sp-api = { version = "3.0.0", default-features = false }
+sp-block-builder = { default-features = false, version = "3.0.0"}
+sp-consensus-aura = { version = "0.9.0", default-features = false }
+sp-core = { version = "3.0.0", default-features = false }
+sp-inherents = { default-features = false, version = "3.0.0"}
+sp-offchain = { version = "3.0.0", default-features = false }
+sp-runtime = { version = "3.0.0", default-features = false }
+sp-session = { version = "3.0.0", default-features = false }
+sp-std = { version = "3.0.0", default-features = false }
+sp-transaction-pool = { version = "3.0.0", default-features = false }
+sp-version = { version = "3.0.0", default-features = false }
 
 # Used for the node template's RPCs
-frame-system-rpc-runtime-api = { version = "3.0.0", default-features = false, path = "../../../frame/system/rpc/runtime-api/" }
-pallet-transaction-payment-rpc-runtime-api = { version = "3.0.0", default-features = false, path = "../../../frame/transaction-payment/rpc/runtime-api/" }
+frame-system-rpc-runtime-api = { version = "3.0.0", default-features = false }
+pallet-transaction-payment-rpc-runtime-api = { version = "3.0.0", default-features = false }
 
 # Used for runtime benchmarking
-frame-benchmarking = { version = "3.1.0", default-features = false, path = "../../../frame/benchmarking", optional = true }
-frame-system-benchmarking = { version = "3.0.0", default-features = false, path = "../../../frame/system/benchmarking", optional = true }
+frame-benchmarking = { version = "3.0.0", default-features = false, optional = true }
+frame-system-benchmarking = { version = "3.0.0", default-features = false, optional = true }
 hex-literal = { version = "0.3.1", optional = true }
 
-template = { version = "2.0.0", default-features = false, path = "../pallets/template", package = "pallet-template" }
+template = { version = "3.0.0", default-features = false, package = "pallet-template", path = "../pallets/template" }
 
 [build-dependencies]
-substrate-wasm-builder = { version = "4.0.0", path = "../../../utils/wasm-builder" }
+substrate-wasm-builder = { version = "4.0.0" }
 
 [features]
 default = ["std"]
@@ -89,5 +90,4 @@ runtime-benchmarks = [
 	"frame-system/runtime-benchmarks",
 	"pallet-balances/runtime-benchmarks",
 	"pallet-timestamp/runtime-benchmarks",
-	"template/runtime-benchmarks",
 ]
