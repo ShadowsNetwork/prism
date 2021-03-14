@@ -1,16 +1,1 @@
-# md book build directory
-book
-
-# MacOS thing
-**/.DS_Store
-
-# Rust directories
-**/target
-**/scripts/tmp
-**/node_modules
-
-# Spec/Wasm build directory
-/build/
-
-# idea
-/.idea
+# md book build directorybook# MacOS thing**/.DS_Store# Rust directories**/target**/scripts/tmp**/node_modules# Spec/Wasm build directory/build/# idea/.idea
