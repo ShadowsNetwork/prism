@@ -9,6 +9,7 @@ members = [
 ]
 
 [patch.crates-io]
+# Substrate dependencies
 frame-benchmarking = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features=false }
 frame-benchmarking-cli = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features=false }
 frame-executive = { git = "https://github.com/paritytech/substrate.git", branch="master", default-features=false }

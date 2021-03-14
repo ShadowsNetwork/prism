@@ -1656,7 +1656,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "node-template-runtime"
+name = "shadows-runtime"
 version = "3.0.0"
 dependencies = [
  "frame-benchmarking",

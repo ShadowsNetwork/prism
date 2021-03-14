@@ -1,5 +1,5 @@
 [package]
-name = "node-template-runtime"
+name = "shadows-runtime"
 version = "3.0.0"
 authors = ["Anonymous"]
 edition = "2018"
