@@ -1,12 +1,13 @@
 use sp_core::{Pair, Public, sr25519};
 use shadows_runtime::{
-	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig,
+	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig,EVMAccount,EVMConfig,
 	SudoConfig, SystemConfig, WASM_BINARY, Signature
 };
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_finality_grandpa::AuthorityId as GrandpaId;
 use sp_runtime::traits::{Verify, IdentifyAccount};
 use sc_service::ChainType;
+use std::collections::BTreemap；
 
 // The URL for the telemetry server.
 // const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
@@ -153,5 +154,9 @@ fn testnet_genesis(
 			// Assign network admin rights.
 			key: root_key,
 		},
+		pallet_evm: Some(EVMConfig {
+			account: BTreemap::new(),
+		}),
+		pallet_ethereum: Some(EthereumConfig{}),
 	}
 }
