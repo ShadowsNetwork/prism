@@ -1,6 +1,6 @@
 [package]
 name = "shadows-runtime"
-version = "3.0.0"
+version = "0.0.1"
 authors = ["Anonymous"]
 edition = "2018"
 license = "Unlicense"
@@ -12,8 +12,6 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
 codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false, features = ["derive"] }
-funty = { version = "=1.1.0", default-features = false } # https://github.com/bitvecto-rs/bitvec/issues/105
-
 pallet-aura = { version = "3.0.0", default-features = false }
 pallet-balances = { version = "3.0.0", default-features = false }
 frame-support = { version = "3.0.0", default-features = false }
@@ -21,6 +19,7 @@ pallet-grandpa = { version = "3.0.0", default-features = false }
 pallet-randomness-collective-flip = { version = "3.0.0", default-features = false }
 pallet-sudo = { version = "3.0.0", default-features = false }
 frame-system = { version = "3.0.0", default-features = false }
+frame-system-rpc-runtime-api = { version = "3.0.0", default-features = false }
 pallet-timestamp = { version = "3.0.0", default-features = false }
 pallet-transaction-payment = { version = "3.0.0", default-features = false }
 frame-executive = { version = "3.0.0", default-features = false }
@@ -37,8 +36,14 @@ sp-std = { version = "3.0.0", default-features = false }
 sp-transaction-pool = { version = "3.0.0", default-features = false }
 sp-version = { version = "3.0.0", default-features = false }
 
+# evm and rpc
+pallet-evm = {version = "3.0.0", default-features = false}
+pallet-ethereum = { version = "0.1.0", default-features = false}
+pallet-evm-precompile-sha3fips = { version = "3.0.0", default-features = false}
+pallet-evm-precompile-simple = { version = "3.0.0", default-features = false}
+fp-rpc = { version = "0.1.0", default-features = false}
+
 # Used for the node template's RPCs
-frame-system-rpc-runtime-api = { version = "3.0.0", default-features = false }
 pallet-transaction-payment-rpc-runtime-api = { version = "3.0.0", default-features = false }
 
 # Used for runtime benchmarking
@@ -55,8 +60,10 @@ substrate-wasm-builder = { version = "4.0.0" }
 default = ["std"]
 std = [
 	"codec/std",
+	"serde",
 	"frame-executive/std",
 	"frame-support/std",
+	"fp-rpc/std",
 	"pallet-aura/std",
 	"pallet-balances/std",
 	"pallet-grandpa/std",
@@ -65,6 +72,9 @@ std = [
 	"pallet-timestamp/std",
 	"pallet-transaction-payment/std",
 	"pallet-transaction-payment-rpc-runtime-api/std",
+	"pallet-evm/std",
+	"pallet-evm-precompile-simple/std",
+	"pallet-evm-precompile-sha3fips/std",
 	"serde",
 	"sp-api/std",
 	"sp-block-builder/std",

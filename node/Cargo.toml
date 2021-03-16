@@ -51,7 +51,7 @@ pallet-transaction-payment-rpc = "3.0.0"
 frame-benchmarking = "3.0.0"
 frame-benchmarking-cli = "3.0.0"
 
-shadows-runtime = { version = "3.0.0", path = "../runtime" }
+shadows-runtime = { version = "0.0.1", path = "../runtime" }
 
 [build-dependencies]
 substrate-build-script-utils = "3.0.0"
