@@ -1567,6 +1567,112 @@ dependencies = [
 ]
 
 [[package]]
+name = "fc-consensus"
+version = "0.1.0"
+dependencies = [
+ "derive_more",
+ "fc-db",
+ "fp-consensus",
+ "fp-rpc",
+ "futures 0.3.13",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-block-builder 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-timestamp 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "fc-db"
+version = "0.1.0"
+dependencies = [
+ "kvdb",
+ "kvdb-rocksdb",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-database 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "fc-mapping-sync"
+version = "0.1.0"
+dependencies = [
+ "fc-consensus",
+ "fc-db",
+ "fp-consensus",
+ "fp-rpc",
+ "futures 0.3.13",
+ "futures-timer 3.0.2",
+ "log",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "fc-rpc"
+version = "0.1.0"
+dependencies = [
+ "ethereum",
+ "ethereum-types 0.11.0",
+ "fc-consensus",
+ "fc-db",
+ "fc-rpc-core",
+ "fp-consensus",
+ "fp-evm",
+ "fp-rpc",
+ "fp-storage",
+ "futures 0.3.13",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-core-client 14.2.0",
+ "jsonrpc-derive 14.2.2",
+ "jsonrpc-pubsub 15.1.0",
+ "libsecp256k1",
+ "log",
+ "pallet-ethereum",
+ "pallet-evm",
+ "parity-scale-codec 2.0.1",
+ "rand 0.7.3",
+ "rlp 0.5.0",
+ "rustc-hex",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-network 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-rpc 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-service 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sha3 0.8.2",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-storage 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-transaction-pool 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "fc-rpc-core"
+version = "0.1.0"
+dependencies = [
+ "ethereum-types 0.11.0",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-core-client 14.2.0",
+ "jsonrpc-derive 14.2.2",
+ "jsonrpc-pubsub 15.1.0",
+ "rustc-hex",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "fdlimit"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1676,7 +1782,15 @@ dependencies = [
 [[package]]
 name = "fork-tree"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "parity-scale-codec 2.0.1",
+]
+
+[[package]]
+name = "fork-tree"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
 ]
@@ -1694,7 +1808,6 @@ dependencies = [
 [[package]]
 name = "fp-consensus"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/frontier?branch=master#a6e2e3ff4945720f5d6b0a8637e3644f0c322df7"
 dependencies = [
  "ethereum",
  "parity-scale-codec 2.0.1",
@@ -1708,7 +1821,6 @@ dependencies = [
 [[package]]
 name = "fp-evm"
 version = "0.8.0"
-source = "git+https://github.com/paritytech/frontier?branch=master#a6e2e3ff4945720f5d6b0a8637e3644f0c322df7"
 dependencies = [
  "evm",
  "impl-trait-for-tuples 0.1.3",
@@ -1721,7 +1833,6 @@ dependencies = [
 [[package]]
 name = "fp-rpc"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/frontier?branch=master#a6e2e3ff4945720f5d6b0a8637e3644f0c322df7"
 dependencies = [
  "ethereum",
  "ethereum-types 0.11.0",
@@ -1737,7 +1848,6 @@ dependencies = [
 [[package]]
 name = "fp-storage"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/frontier?branch=master#a6e2e3ff4945720f5d6b0a8637e3644f0c322df7"
 dependencies = [
  "ethereum",
  "ethereum-types 0.9.2",
@@ -1771,7 +1881,7 @@ dependencies = [
 [[package]]
 name = "frame-benchmarking"
 version = "3.1.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "frame-support 3.0.0 (git+https://github.com/paritytech/substrate.git)",
  "frame-system 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -1790,7 +1900,7 @@ dependencies = [
 [[package]]
 name = "frame-benchmarking-cli"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "Inflector",
  "chrono",
@@ -1852,7 +1962,7 @@ dependencies = [
 [[package]]
 name = "frame-metadata"
 version = "13.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "serde",
@@ -1916,7 +2026,7 @@ dependencies = [
 [[package]]
 name = "frame-support"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "bitflags",
  "frame-metadata 13.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -1967,7 +2077,7 @@ dependencies = [
 [[package]]
 name = "frame-support-procedural"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "Inflector",
  "frame-support-procedural-tools 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -2004,7 +2114,7 @@ dependencies = [
 [[package]]
 name = "frame-support-procedural-tools"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "frame-support-procedural-tools-derive 3.0.0 (git+https://github.com/paritytech/substrate.git)",
  "proc-macro-crate 1.0.0",
@@ -2037,7 +2147,7 @@ dependencies = [
 [[package]]
 name = "frame-support-procedural-tools-derive"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2081,7 +2191,7 @@ dependencies = [
 [[package]]
 name = "frame-system"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "frame-support 3.0.0 (git+https://github.com/paritytech/substrate.git)",
  "impl-trait-for-tuples 0.2.1",
@@ -2098,7 +2208,7 @@ dependencies = [
 [[package]]
 name = "frame-system-rpc-runtime-api"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -2922,18 +3032,47 @@ dependencies = [
 
 [[package]]
 name = "jsonrpc-client-transports"
+version = "14.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2773fa94a2a1fd51efb89a8f45b8861023dbb415d18d3c9235ae9388d780f9ec"
+dependencies = [
+ "failure",
+ "futures 0.1.31",
+ "jsonrpc-core 14.2.0",
+ "jsonrpc-pubsub 14.2.0",
+ "log",
+ "serde",
+ "serde_json",
+ "url 1.7.2",
+]
+
+[[package]]
+name = "jsonrpc-client-transports"
 version = "15.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "489b9c612e60c766f751ab40fcb43cbb55a1e10bb44a9b4307ed510ca598cbd7"
 dependencies = [
  "failure",
  "futures 0.1.31",
- "jsonrpc-core",
- "jsonrpc-pubsub",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-pubsub 15.1.0",
  "log",
  "serde",
  "serde_json",
  "url 1.7.2",
+]
+
+[[package]]
+name = "jsonrpc-core"
+version = "14.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a0747307121ffb9703afd93afbd0fb4f854c38fb873f2c8b90e0e902f27c7b62"
+dependencies = [
+ "futures 0.1.31",
+ "log",
+ "serde",
+ "serde_derive",
+ "serde_json",
 ]
 
 [[package]]
@@ -2951,11 +3090,32 @@ dependencies = [
 
 [[package]]
 name = "jsonrpc-core-client"
+version = "14.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "34221123bc79b66279a3fde2d3363553835b43092d629b34f2e760c44dc94713"
+dependencies = [
+ "jsonrpc-client-transports 14.2.1",
+]
+
+[[package]]
+name = "jsonrpc-core-client"
 version = "15.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6f764902d7b891344a0acb65625f32f6f7c6db006952143bd650209fbe7d94db"
 dependencies = [
- "jsonrpc-client-transports",
+ "jsonrpc-client-transports 15.1.0",
+]
+
+[[package]]
+name = "jsonrpc-derive"
+version = "14.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d0e77e8812f02155b85a677a96e1d16b60181950c0636199bc4528524fba98dc"
+dependencies = [
+ "proc-macro-crate 0.1.5",
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
@@ -2977,7 +3137,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4fb5c4513b7b542f42da107942b7b759f27120b5cc894729f88254b28dff44b7"
 dependencies = [
  "hyper 0.12.36",
- "jsonrpc-core",
+ "jsonrpc-core 15.1.0",
  "jsonrpc-server-utils",
  "log",
  "net2",
@@ -2991,7 +3151,7 @@ version = "15.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf50e53e4eea8f421a7316c5f63e395f7bc7c4e786a6dc54d76fab6ff7aa7ce7"
 dependencies = [
- "jsonrpc-core",
+ "jsonrpc-core 15.1.0",
  "jsonrpc-server-utils",
  "log",
  "parity-tokio-ipc",
@@ -3001,11 +3161,24 @@ dependencies = [
 
 [[package]]
 name = "jsonrpc-pubsub"
+version = "14.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2d44f5602a11d657946aac09357956d2841299ed422035edf140c552cb057986"
+dependencies = [
+ "jsonrpc-core 14.2.0",
+ "log",
+ "parking_lot 0.10.2",
+ "rand 0.7.3",
+ "serde",
+]
+
+[[package]]
+name = "jsonrpc-pubsub"
 version = "15.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "639558e0604013be9787ae52f798506ae42bf4220fe587bdc5625871cc8b9c77"
 dependencies = [
- "jsonrpc-core",
+ "jsonrpc-core 15.1.0",
  "log",
  "parking_lot 0.10.2",
  "rand 0.7.3",
@@ -3020,7 +3193,7 @@ checksum = "72f1f3990650c033bd8f6bd46deac76d990f9bbfb5f8dc8c4767bf0a00392176"
 dependencies = [
  "bytes 0.4.12",
  "globset",
- "jsonrpc-core",
+ "jsonrpc-core 15.1.0",
  "lazy_static",
  "log",
  "tokio 0.1.22",
@@ -3034,7 +3207,7 @@ version = "15.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6596fe75209b73a2a75ebe1dce4e60e03b88a2b25e8807b667597f6315150d22"
 dependencies = [
- "jsonrpc-core",
+ "jsonrpc-core 15.1.0",
  "jsonrpc-server-utils",
  "log",
  "parity-ws",
@@ -3111,6 +3284,9 @@ name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
+dependencies = [
+ "spin",
+]
 
 [[package]]
 name = "lazycell"
@@ -4018,8 +4194,8 @@ dependencies = [
  "approx",
  "generic-array 0.13.3",
  "matrixmultiply",
- "num-complex",
- "num-rational",
+ "num-complex 0.2.4",
+ "num-rational 0.2.4",
  "num-traits",
  "rand 0.7.3",
  "rand_distr",
@@ -4080,10 +4256,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "num"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8b7a8e9be5e039e2ff869df49155f1c06bd01ade2117ec783e56ab0932b67a8f"
+dependencies = [
+ "num-bigint 0.3.2",
+ "num-complex 0.3.1",
+ "num-integer",
+ "num-iter",
+ "num-rational 0.3.2",
+ "num-traits",
+]
+
+[[package]]
 name = "num-bigint"
 version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "090c7f9998ee0ff65aa5b723e4009f7b217707f1fb5ea551329cc4d6231fb304"
+dependencies = [
+ "autocfg",
+ "num-integer",
+ "num-traits",
+]
+
+[[package]]
+name = "num-bigint"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7d0a3d5e207573f948a9e5376662aa743a2ea13f7c50a554d7af443a73fbfeba"
 dependencies = [
  "autocfg",
  "num-integer",
@@ -4101,6 +4302,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "num-complex"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "747d632c0c558b87dbabbe6a82f3b4ae03720d0646ac5b7b4dae89394be5f2c5"
+dependencies = [
+ "num-traits",
+]
+
+[[package]]
 name = "num-integer"
 version = "0.1.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4111,13 +4321,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "num-iter"
+version = "0.1.42"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b2021c8337a54d21aca0d59a92577a029af9431cb59b909b03252b9c164fad59"
+dependencies = [
+ "autocfg",
+ "num-integer",
+ "num-traits",
+]
+
+[[package]]
 name = "num-rational"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5c000134b5dbf44adc5cb772486d335293351644b801551abe8f75c84cfa4aef"
 dependencies = [
  "autocfg",
- "num-bigint",
+ "num-bigint 0.2.6",
+ "num-integer",
+ "num-traits",
+]
+
+[[package]]
+name = "num-rational"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "12ac428b1cb17fce6f731001d307d351ec70a6d202fc2e60f7d4c5e42d8f4f07"
+dependencies = [
+ "autocfg",
+ "num-bigint 0.3.2",
  "num-integer",
  "num-traits",
 ]
@@ -4257,9 +4490,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-dynamic-fee"
+version = "0.1.0"
+dependencies = [
+ "frame-support 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "frame-system 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "parity-scale-codec 2.0.1",
+ "serde",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
 name = "pallet-ethereum"
 version = "0.1.0"
-source = "git+https://github.com/paritytech/frontier?branch=master#a6e2e3ff4945720f5d6b0a8637e3644f0c322df7"
 dependencies = [
  "ethereum",
  "ethereum-types 0.11.0",
@@ -4279,6 +4525,7 @@ dependencies = [
  "rustc-hex",
  "serde",
  "sha3 0.8.2",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
@@ -4287,7 +4534,6 @@ dependencies = [
 [[package]]
 name = "pallet-evm"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/frontier?branch=master#a6e2e3ff4945720f5d6b0a8637e3644f0c322df7"
 dependencies = [
  "evm",
  "evm-gasometer 0.23.0",
@@ -4309,9 +4555,65 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-evm-precompile-blake2"
+version = "3.0.0"
+dependencies = [
+ "evm",
+ "fp-evm",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "pallet-evm-precompile-bn128"
+version = "3.0.0"
+dependencies = [
+ "evm",
+ "fp-evm",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-bn",
+]
+
+[[package]]
+name = "pallet-evm-precompile-dispatch"
+version = "3.0.0"
+dependencies = [
+ "evm",
+ "fp-evm",
+ "frame-support 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "pallet-evm",
+ "parity-scale-codec 2.0.1",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "pallet-evm-precompile-ed25519"
+version = "3.0.0"
+dependencies = [
+ "ed25519-dalek",
+ "evm",
+ "fp-evm",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "pallet-evm-precompile-modexp"
+version = "3.0.0"
+dependencies = [
+ "evm",
+ "fp-evm",
+ "hex",
+ "num",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
 name = "pallet-evm-precompile-sha3fips"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/frontier?branch=master#a6e2e3ff4945720f5d6b0a8637e3644f0c322df7"
 dependencies = [
  "evm",
  "fp-evm",
@@ -4323,7 +4625,6 @@ dependencies = [
 [[package]]
 name = "pallet-evm-precompile-simple"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/frontier?branch=master#a6e2e3ff4945720f5d6b0a8637e3644f0c322df7"
 dependencies = [
  "evm",
  "fp-evm",
@@ -4453,7 +4754,7 @@ dependencies = [
 [[package]]
 name = "pallet-transaction-payment"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "frame-support 3.0.0 (git+https://github.com/paritytech/substrate.git)",
  "frame-system 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -4469,11 +4770,11 @@ dependencies = [
 [[package]]
 name = "pallet-transaction-payment-rpc"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
- "jsonrpc-core",
- "jsonrpc-core-client",
- "jsonrpc-derive",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-core-client 15.1.0",
+ "jsonrpc-derive 15.1.0",
  "pallet-transaction-payment-rpc-runtime-api",
  "parity-scale-codec 2.0.1",
  "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -4486,7 +4787,7 @@ dependencies = [
 [[package]]
 name = "pallet-transaction-payment-rpc-runtime-api"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "pallet-transaction-payment",
  "parity-scale-codec 2.0.1",
@@ -5230,6 +5531,15 @@ dependencies = [
 
 [[package]]
 name = "rand"
+version = "0.5.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c618c47cd3ebd209790115ab837de41425723956ad3ce2e6a7f09890947cacb9"
+dependencies = [
+ "rand_core 0.3.1",
+]
+
+[[package]]
+name = "rand"
 version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6a6b1679d49b24bbfe0c803429aa1874472f50d9b363131f0e89fc356b544d03"
@@ -5715,7 +6025,7 @@ dependencies = [
 [[package]]
 name = "sc-basic-authorship"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "futures 0.3.13",
  "futures-timer 3.0.2",
@@ -5756,7 +6066,23 @@ dependencies = [
 [[package]]
 name = "sc-block-builder"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "parity-scale-codec 2.0.1",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-block-builder 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-state-machine 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-block-builder"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -5794,7 +6120,28 @@ dependencies = [
 [[package]]
 name = "sc-chain-spec"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "impl-trait-for-tuples 0.2.1",
+ "parity-scale-codec 2.0.1",
+ "sc-chain-spec-derive 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-consensus-babe 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-consensus-epochs 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-finality-grandpa 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-network 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-telemetry 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "serde",
+ "serde_json",
+ "sp-chain-spec 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus-babe 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-chain-spec"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "impl-trait-for-tuples 0.2.1",
  "parity-scale-codec 2.0.1",
@@ -5827,7 +6174,18 @@ dependencies = [
 [[package]]
 name = "sc-chain-spec-derive"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "proc-macro-crate 1.0.0",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "sc-chain-spec-derive"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "proc-macro-crate 1.0.0",
  "proc-macro2",
@@ -5877,7 +6235,7 @@ dependencies = [
 [[package]]
 name = "sc-cli"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "chrono",
  "fdlimit",
@@ -5950,7 +6308,41 @@ dependencies = [
 [[package]]
 name = "sc-client-api"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "derive_more",
+ "fnv",
+ "futures 0.3.13",
+ "hash-db",
+ "kvdb",
+ "lazy_static",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "sc-executor 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-database 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-externalities 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-keystore 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-state-machine 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-storage 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-transaction-pool 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-trie 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-version 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-client-api"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "derive_more",
  "fnv",
@@ -6015,7 +6407,37 @@ dependencies = [
 [[package]]
 name = "sc-client-db"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "blake2-rfc",
+ "hash-db",
+ "kvdb",
+ "kvdb-memorydb",
+ "kvdb-rocksdb",
+ "linked-hash-map",
+ "log",
+ "parity-db",
+ "parity-scale-codec 2.0.1",
+ "parity-util-mem",
+ "parking_lot 0.11.1",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-executor 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-state-db 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-arithmetic 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-database 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-state-machine 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-trie 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-client-db"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "blake2-rfc",
  "hash-db",
@@ -6055,7 +6477,18 @@ dependencies = [
 [[package]]
 name = "sc-consensus"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-consensus"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git)",
  "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -6066,7 +6499,7 @@ dependencies = [
 [[package]]
 name = "sc-consensus-aura"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "derive_more",
  "futures 0.3.13",
@@ -6107,8 +6540,8 @@ dependencies = [
  "futures-timer 3.0.2",
  "log",
  "merlin",
- "num-bigint",
- "num-rational",
+ "num-bigint 0.2.6",
+ "num-rational 0.2.4",
  "num-traits",
  "parity-scale-codec 2.0.1",
  "parking_lot 0.11.1",
@@ -6145,7 +6578,53 @@ dependencies = [
 [[package]]
 name = "sc-consensus-babe"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "derive_more",
+ "fork-tree 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "futures 0.3.13",
+ "futures-timer 3.0.2",
+ "log",
+ "merlin",
+ "num-bigint 0.2.6",
+ "num-rational 0.2.4",
+ "num-traits",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "pdqselect",
+ "rand 0.7.3",
+ "retain_mut",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-consensus-epochs 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-consensus-slots 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-consensus-uncles 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-keystore 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-telemetry 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "schnorrkel",
+ "serde",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-application-crypto 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-block-builder 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus-babe 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus-slots 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus-vrf 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-keystore 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-timestamp 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-version 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-consensus-babe"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "derive_more",
  "fork-tree 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -6153,8 +6632,8 @@ dependencies = [
  "futures-timer 3.0.2",
  "log",
  "merlin",
- "num-bigint",
- "num-rational",
+ "num-bigint 0.2.6",
+ "num-rational 0.2.4",
  "num-traits",
  "parity-scale-codec 2.0.1",
  "parking_lot 0.11.1",
@@ -6205,7 +6684,20 @@ dependencies = [
 [[package]]
 name = "sc-consensus-epochs"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "fork-tree 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-consensus-epochs"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "fork-tree 3.0.0 (git+https://github.com/paritytech/substrate.git)",
  "parity-scale-codec 2.0.1",
@@ -6245,7 +6737,33 @@ dependencies = [
 [[package]]
 name = "sc-consensus-slots"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "futures 0.3.13",
+ "futures-timer 3.0.2",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-telemetry 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-application-crypto 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-arithmetic 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus-slots 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-state-machine 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-trie 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "thiserror",
+]
+
+[[package]]
+name = "sc-consensus-slots"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "futures 0.3.13",
  "futures-timer 3.0.2",
@@ -6286,7 +6804,21 @@ dependencies = [
 [[package]]
 name = "sc-consensus-uncles"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "log",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-authorship 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-consensus-uncles"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "log",
  "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -6330,7 +6862,35 @@ dependencies = [
 [[package]]
 name = "sc-executor"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "derive_more",
+ "lazy_static",
+ "libsecp256k1",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "parity-wasm 0.41.0",
+ "parking_lot 0.11.1",
+ "sc-executor-common 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-executor-wasmi 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-externalities 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-panic-handler 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime-interface 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-serializer 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-tasks 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-trie 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-version 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-wasm-interface 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "wasmi",
+]
+
+[[package]]
+name = "sc-executor"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "derive_more",
  "lazy_static",
@@ -6375,7 +6935,23 @@ dependencies = [
 [[package]]
 name = "sc-executor-common"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "derive_more",
+ "parity-scale-codec 2.0.1",
+ "parity-wasm 0.41.0",
+ "sp-allocator 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-serializer 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-wasm-interface 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "thiserror",
+ "wasmi",
+]
+
+[[package]]
+name = "sc-executor-common"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "derive_more",
  "parity-scale-codec 2.0.1",
@@ -6407,7 +6983,22 @@ dependencies = [
 [[package]]
 name = "sc-executor-wasmi"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "log",
+ "parity-scale-codec 2.0.1",
+ "sc-executor-common 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-allocator 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime-interface 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-wasm-interface 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "wasmi",
+]
+
+[[package]]
+name = "sc-executor-wasmi"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "log",
  "parity-scale-codec 2.0.1",
@@ -6480,7 +7071,46 @@ dependencies = [
 [[package]]
 name = "sc-finality-grandpa"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "derive_more",
+ "dyn-clone",
+ "finality-grandpa 0.14.0",
+ "fork-tree 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "futures 0.3.13",
+ "futures-timer 3.0.2",
+ "linked-hash-map",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "pin-project 1.0.5",
+ "rand 0.7.3",
+ "sc-block-builder 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-keystore 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-network 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-network-gossip 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-telemetry 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "serde_json",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-application-crypto 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-arithmetic 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-finality-grandpa 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-keystore 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-finality-grandpa"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "derive_more",
  "dyn-clone",
@@ -6538,7 +7168,25 @@ dependencies = [
 [[package]]
 name = "sc-informant"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "ansi_term 0.12.1",
+ "futures 0.3.13",
+ "log",
+ "parity-util-mem",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-network 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-transaction-pool 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "wasm-timer",
+]
+
+[[package]]
+name = "sc-informant"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "ansi_term 0.12.1",
  "futures 0.3.13",
@@ -6577,7 +7225,27 @@ dependencies = [
 [[package]]
 name = "sc-keystore"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "async-trait",
+ "derive_more",
+ "futures 0.3.13",
+ "futures-util",
+ "hex",
+ "merlin",
+ "parking_lot 0.11.1",
+ "rand 0.7.3",
+ "serde_json",
+ "sp-application-crypto 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-keystore 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "subtle 2.4.0",
+]
+
+[[package]]
+name = "sc-keystore"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "async-trait",
  "derive_more",
@@ -6617,7 +7285,26 @@ dependencies = [
 [[package]]
 name = "sc-light"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "hash-db",
+ "lazy_static",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-executor 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-externalities 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-state-machine 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-light"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "hash-db",
  "lazy_static",
@@ -6690,7 +7377,60 @@ dependencies = [
 [[package]]
 name = "sc-network"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "async-std",
+ "async-trait",
+ "asynchronous-codec 0.5.0",
+ "bitflags",
+ "bs58",
+ "bytes 1.0.1",
+ "cid",
+ "derive_more",
+ "either",
+ "erased-serde",
+ "fnv",
+ "fork-tree 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "futures 0.3.13",
+ "futures-timer 3.0.2",
+ "hex",
+ "ip_network",
+ "libp2p 0.35.1",
+ "linked-hash-map",
+ "linked_hash_set",
+ "log",
+ "lru",
+ "nohash-hasher",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "pin-project 1.0.5",
+ "prost",
+ "prost-build",
+ "rand 0.7.3",
+ "sc-block-builder 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-peerset 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "serde",
+ "serde_json",
+ "smallvec 1.6.1",
+ "sp-arithmetic 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "thiserror",
+ "unsigned-varint 0.6.0",
+ "void",
+ "wasm-timer",
+ "zeroize",
+]
+
+[[package]]
+name = "sc-network"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "async-std",
  "async-trait",
@@ -6760,7 +7500,23 @@ dependencies = [
 [[package]]
 name = "sc-network-gossip"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "futures 0.3.13",
+ "futures-timer 3.0.2",
+ "libp2p 0.35.1",
+ "log",
+ "lru",
+ "sc-network 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "wasm-timer",
+]
+
+[[package]]
+name = "sc-network-gossip"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "futures 0.3.13",
  "futures-timer 3.0.2",
@@ -6804,7 +7560,35 @@ dependencies = [
 [[package]]
 name = "sc-offchain"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "bytes 0.5.6",
+ "fnv",
+ "futures 0.3.13",
+ "futures-timer 3.0.2",
+ "hex",
+ "hyper 0.13.10",
+ "hyper-rustls",
+ "log",
+ "num_cpus",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "rand 0.7.3",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-keystore 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-network 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-offchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "threadpool",
+]
+
+[[package]]
+name = "sc-offchain"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "bytes 0.5.6",
  "fnv",
@@ -6846,7 +7630,20 @@ dependencies = [
 [[package]]
 name = "sc-peerset"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "futures 0.3.13",
+ "libp2p 0.35.1",
+ "log",
+ "serde_json",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "wasm-timer",
+]
+
+[[package]]
+name = "sc-peerset"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "futures 0.3.13",
  "libp2p 0.35.1",
@@ -6859,7 +7656,7 @@ dependencies = [
 [[package]]
 name = "sc-proposer-metrics"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "log",
  "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git)",
@@ -6873,8 +7670,8 @@ checksum = "750397c6aa5a4f922cac99599ad74a4082e3e87553d51ceb4c48abfa056ff32c"
 dependencies = [
  "futures 0.3.13",
  "hash-db",
- "jsonrpc-core",
- "jsonrpc-pubsub",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-pubsub 15.1.0",
  "log",
  "parity-scale-codec 2.0.1",
  "parking_lot 0.11.1",
@@ -6903,12 +7700,46 @@ dependencies = [
 [[package]]
 name = "sc-rpc"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "futures 0.3.13",
  "hash-db",
- "jsonrpc-core",
- "jsonrpc-pubsub",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-pubsub 15.1.0",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "sc-block-builder 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-executor 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-keystore 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-rpc-api 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-tracing 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "serde_json",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-chain-spec 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-keystore 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-offchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-rpc 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-session 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-state-machine 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-transaction-pool 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-version 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-rpc"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
+dependencies = [
+ "futures 0.3.13",
+ "hash-db",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-pubsub 15.1.0",
  "log",
  "parity-scale-codec 2.0.1",
  "parking_lot 0.11.1",
@@ -6942,10 +7773,10 @@ checksum = "dc8393410297df2885efec20d0629a9833b4fd9e4ad83a92471e1ea0c11a0a54"
 dependencies = [
  "derive_more",
  "futures 0.3.13",
- "jsonrpc-core",
- "jsonrpc-core-client",
- "jsonrpc-derive",
- "jsonrpc-pubsub",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-core-client 15.1.0",
+ "jsonrpc-derive 15.1.0",
+ "jsonrpc-pubsub 15.1.0",
  "log",
  "parity-scale-codec 2.0.1",
  "parking_lot 0.11.1",
@@ -6962,14 +7793,38 @@ dependencies = [
 [[package]]
 name = "sc-rpc-api"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "derive_more",
  "futures 0.3.13",
- "jsonrpc-core",
- "jsonrpc-core-client",
- "jsonrpc-derive",
- "jsonrpc-pubsub",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-core-client 15.1.0",
+ "jsonrpc-derive 15.1.0",
+ "jsonrpc-pubsub 15.1.0",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "serde",
+ "serde_json",
+ "sp-chain-spec 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-rpc 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-transaction-pool 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-version 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-rpc-api"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
+dependencies = [
+ "derive_more",
+ "futures 0.3.13",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-core-client 15.1.0",
+ "jsonrpc-derive 15.1.0",
+ "jsonrpc-pubsub 15.1.0",
  "log",
  "parity-scale-codec 2.0.1",
  "parking_lot 0.11.1",
@@ -6990,10 +7845,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "17c76164897bd3b0d04c2d6aeeb4d3492c86e324b0b08f408b847ea35421b589"
 dependencies = [
  "futures 0.1.31",
- "jsonrpc-core",
+ "jsonrpc-core 15.1.0",
  "jsonrpc-http-server",
  "jsonrpc-ipc-server",
- "jsonrpc-pubsub",
+ "jsonrpc-pubsub 15.1.0",
  "jsonrpc-ws-server",
  "log",
  "serde",
@@ -7005,13 +7860,31 @@ dependencies = [
 [[package]]
 name = "sc-rpc-server"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "futures 0.1.31",
- "jsonrpc-core",
+ "jsonrpc-core 15.1.0",
  "jsonrpc-http-server",
  "jsonrpc-ipc-server",
- "jsonrpc-pubsub",
+ "jsonrpc-pubsub 15.1.0",
+ "jsonrpc-ws-server",
+ "log",
+ "serde",
+ "serde_json",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sc-rpc-server"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
+dependencies = [
+ "futures 0.1.31",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-http-server",
+ "jsonrpc-ipc-server",
+ "jsonrpc-pubsub 15.1.0",
  "jsonrpc-ws-server",
  "log",
  "serde",
@@ -7032,8 +7905,8 @@ dependencies = [
  "futures 0.3.13",
  "futures-timer 3.0.2",
  "hash-db",
- "jsonrpc-core",
- "jsonrpc-pubsub",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-pubsub 15.1.0",
  "lazy_static",
  "log",
  "parity-scale-codec 2.0.1",
@@ -7087,7 +7960,7 @@ dependencies = [
 [[package]]
 name = "sc-service"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "directories",
  "exit-future",
@@ -7095,8 +7968,71 @@ dependencies = [
  "futures 0.3.13",
  "futures-timer 3.0.2",
  "hash-db",
- "jsonrpc-core",
- "jsonrpc-pubsub",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-pubsub 15.1.0",
+ "lazy_static",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "parity-util-mem",
+ "parking_lot 0.11.1",
+ "pin-project 1.0.5",
+ "rand 0.7.3",
+ "sc-block-builder 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-chain-spec 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-client-db 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-executor 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-informant 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-keystore 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-light 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-network 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-offchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-rpc 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-rpc-server 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-telemetry 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-tracing 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-transaction-pool 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "serde",
+ "serde_json",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-application-crypto 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-block-builder 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-externalities 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-keystore 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-session 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-state-machine 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-tracing 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-transaction-pool 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-trie 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-version 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "tempfile",
+ "thiserror",
+ "tracing",
+ "tracing-futures",
+ "wasm-timer",
+]
+
+[[package]]
+name = "sc-service"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
+dependencies = [
+ "directories",
+ "exit-future",
+ "futures 0.1.31",
+ "futures 0.3.13",
+ "futures-timer 3.0.2",
+ "hash-db",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-pubsub 15.1.0",
  "lazy_static",
  "log",
  "parity-scale-codec 2.0.1",
@@ -7166,7 +8102,22 @@ dependencies = [
 [[package]]
 name = "sc-state-db"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "log",
+ "parity-scale-codec 2.0.1",
+ "parity-util-mem",
+ "parity-util-mem-derive",
+ "parking_lot 0.11.1",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "thiserror",
+]
+
+[[package]]
+name = "sc-state-db"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "log",
  "parity-scale-codec 2.0.1",
@@ -7204,7 +8155,27 @@ dependencies = [
 [[package]]
 name = "sc-telemetry"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "chrono",
+ "futures 0.3.13",
+ "libp2p 0.35.1",
+ "log",
+ "parking_lot 0.11.1",
+ "pin-project 1.0.5",
+ "rand 0.7.3",
+ "serde",
+ "serde_json",
+ "take_mut",
+ "thiserror",
+ "void",
+ "wasm-timer",
+]
+
+[[package]]
+name = "sc-telemetry"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "chrono",
  "futures 0.3.13",
@@ -7253,7 +8224,34 @@ dependencies = [
 [[package]]
 name = "sc-tracing"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "ansi_term 0.12.1",
+ "atty",
+ "erased-serde",
+ "lazy_static",
+ "log",
+ "once_cell",
+ "parking_lot 0.11.1",
+ "regex",
+ "rustc-hash",
+ "sc-tracing-proc-macro 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "serde",
+ "serde_json",
+ "sp-tracing 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "thiserror",
+ "tracing",
+ "tracing-core",
+ "tracing-log",
+ "tracing-subscriber",
+ "wasm-bindgen",
+ "web-sys",
+]
+
+[[package]]
+name = "sc-tracing"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "ansi_term 0.12.1",
  "atty",
@@ -7292,7 +8290,18 @@ dependencies = [
 [[package]]
 name = "sc-tracing-proc-macro"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "proc-macro-crate 1.0.0",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "sc-tracing-proc-macro"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "proc-macro-crate 1.0.0",
  "proc-macro2",
@@ -7326,7 +8335,29 @@ dependencies = [
 [[package]]
 name = "sc-transaction-graph"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "derive_more",
+ "futures 0.3.13",
+ "linked-hash-map",
+ "log",
+ "parity-util-mem",
+ "parking_lot 0.11.1",
+ "retain_mut",
+ "serde",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-transaction-pool 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "thiserror",
+ "wasm-timer",
+]
+
+[[package]]
+name = "sc-transaction-graph"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "derive_more",
  "futures 0.3.13",
@@ -7375,7 +8406,33 @@ dependencies = [
 [[package]]
 name = "sc-transaction-pool"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "futures 0.3.13",
+ "futures-diagnose",
+ "intervalier",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "parity-util-mem",
+ "parking_lot 0.11.1",
+ "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sc-transaction-graph 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-tracing 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-transaction-pool 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "thiserror",
+ "wasm-timer",
+]
+
+[[package]]
+name = "sc-transaction-pool"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "futures 0.3.13",
  "futures-diagnose",
@@ -7656,7 +8713,7 @@ version = "0.0.1"
 dependencies = [
  "frame-benchmarking 3.1.0 (git+https://github.com/paritytech/substrate.git)",
  "frame-benchmarking-cli",
- "jsonrpc-core",
+ "jsonrpc-core 15.1.0",
  "pallet-transaction-payment-rpc",
  "sc-basic-authorship",
  "sc-cli 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -7773,7 +8830,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fb931b1367faadea6b1ab1c306a860ec17aaa5fa39f367d0c744e69d971a1fb2"
 dependencies = [
  "approx",
- "num-complex",
+ "num-complex 0.2.4",
  "num-traits",
  "paste 0.1.18",
 ]
@@ -7860,7 +8917,19 @@ dependencies = [
 [[package]]
 name = "sp-allocator"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "log",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-wasm-interface 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "thiserror",
+]
+
+[[package]]
+name = "sp-allocator"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "log",
  "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -7906,7 +8975,7 @@ dependencies = [
 [[package]]
 name = "sp-api"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "hash-db",
  "log",
@@ -7948,7 +9017,7 @@ dependencies = [
 [[package]]
 name = "sp-api-proc-macro"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "blake2-rfc",
  "proc-macro-crate 1.0.0",
@@ -7985,7 +9054,7 @@ dependencies = [
 [[package]]
 name = "sp-application-crypto"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "serde",
@@ -8024,7 +9093,7 @@ dependencies = [
 [[package]]
 name = "sp-arithmetic"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "integer-sqrt",
  "num-traits",
@@ -8049,7 +9118,18 @@ dependencies = [
 [[package]]
 name = "sp-authorship"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "parity-scale-codec 2.0.1",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sp-authorship"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -8073,7 +9153,19 @@ dependencies = [
 [[package]]
 name = "sp-block-builder"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "parity-scale-codec 2.0.1",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sp-block-builder"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -8104,7 +9196,25 @@ dependencies = [
 [[package]]
 name = "sp-blockchain"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "futures 0.3.13",
+ "log",
+ "lru",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-database 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-state-machine 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "thiserror",
+]
+
+[[package]]
+name = "sp-blockchain"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "futures 0.3.13",
  "log",
@@ -8132,7 +9242,16 @@ dependencies = [
 [[package]]
 name = "sp-chain-spec"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "sp-chain-spec"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "serde",
  "serde_json",
@@ -8168,7 +9287,33 @@ dependencies = [
 [[package]]
 name = "sp-consensus"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "futures 0.3.13",
+ "futures-timer 3.0.2",
+ "libp2p 0.35.1",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "parking_lot 0.11.1",
+ "serde",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-state-machine 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-trie 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-utils 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-version 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "substrate-prometheus-endpoint 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "thiserror",
+ "wasm-timer",
+]
+
+[[package]]
+name = "sp-consensus"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "futures 0.3.13",
  "futures-timer 3.0.2",
@@ -8194,7 +9339,7 @@ dependencies = [
 [[package]]
 name = "sp-consensus-aura"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -8230,7 +9375,28 @@ dependencies = [
 [[package]]
 name = "sp-consensus-babe"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "merlin",
+ "parity-scale-codec 2.0.1",
+ "serde",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-application-crypto 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus-slots 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-consensus-vrf 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-inherents 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-keystore 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-timestamp 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sp-consensus-babe"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "merlin",
  "parity-scale-codec 2.0.1",
@@ -8262,7 +9428,17 @@ dependencies = [
 [[package]]
 name = "sp-consensus-slots"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "parity-scale-codec 2.0.1",
+ "sp-arithmetic 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sp-consensus-slots"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "sp-arithmetic 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -8285,7 +9461,19 @@ dependencies = [
 [[package]]
 name = "sp-consensus-vrf"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "parity-scale-codec 2.0.1",
+ "schnorrkel",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sp-consensus-vrf"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "schnorrkel",
@@ -8386,7 +9574,7 @@ dependencies = [
 [[package]]
 name = "sp-core"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "base58",
  "blake2-rfc",
@@ -8440,7 +9628,16 @@ dependencies = [
 [[package]]
 name = "sp-database"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "kvdb",
+ "parking_lot 0.11.1",
+]
+
+[[package]]
+name = "sp-database"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "kvdb",
  "parking_lot 0.11.1",
@@ -8470,7 +9667,7 @@ dependencies = [
 [[package]]
 name = "sp-debug-derive"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -8503,7 +9700,7 @@ dependencies = [
 [[package]]
 name = "sp-externalities"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "environmental",
  "parity-scale-codec 2.0.1",
@@ -8532,7 +9729,24 @@ dependencies = [
 [[package]]
 name = "sp-finality-grandpa"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "finality-grandpa 0.14.0",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "serde",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-application-crypto 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-keystore 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sp-finality-grandpa"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "finality-grandpa 0.14.0",
  "log",
@@ -8574,7 +9788,7 @@ dependencies = [
 [[package]]
 name = "sp-inherents"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "parking_lot 0.11.1",
@@ -8635,7 +9849,7 @@ dependencies = [
 [[package]]
 name = "sp-io"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "futures 0.3.13",
  "hash-db",
@@ -8671,7 +9885,7 @@ dependencies = [
 [[package]]
 name = "sp-keyring"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "lazy_static",
  "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -8709,6 +9923,7 @@ dependencies = [
  "parity-scale-codec 2.0.1",
  "parking_lot 0.11.1",
  "schnorrkel",
+ "serde",
  "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
  "sp-externalities 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
 ]
@@ -8716,7 +9931,7 @@ dependencies = [
 [[package]]
 name = "sp-keystore"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "async-trait",
  "derive_more",
@@ -8744,7 +9959,17 @@ dependencies = [
 [[package]]
 name = "sp-offchain"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sp-offchain"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git)",
  "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -8771,7 +9996,7 @@ dependencies = [
 [[package]]
 name = "sp-panic-handler"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "backtrace",
 ]
@@ -8789,7 +10014,16 @@ dependencies = [
 [[package]]
 name = "sp-rpc"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "serde",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sp-rpc"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "serde",
  "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -8841,7 +10075,7 @@ dependencies = [
 [[package]]
 name = "sp-runtime"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "either",
  "hash256-std-hasher",
@@ -8897,7 +10131,7 @@ dependencies = [
 [[package]]
 name = "sp-runtime-interface"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "impl-trait-for-tuples 0.2.1",
  "parity-scale-codec 2.0.1",
@@ -8939,7 +10173,7 @@ dependencies = [
 [[package]]
 name = "sp-runtime-interface-proc-macro"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "Inflector",
  "proc-macro-crate 1.0.0",
@@ -8961,7 +10195,16 @@ dependencies = [
 [[package]]
 name = "sp-serializer"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "sp-serializer"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "serde",
  "serde_json",
@@ -8984,7 +10227,20 @@ dependencies = [
 [[package]]
 name = "sp-session"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "parity-scale-codec 2.0.1",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-staking 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sp-session"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -9018,7 +10274,7 @@ dependencies = [
 [[package]]
 name = "sp-staking"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -9073,7 +10329,7 @@ dependencies = [
 [[package]]
 name = "sp-state-machine"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "hash-db",
  "log",
@@ -9106,7 +10362,7 @@ source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b313
 [[package]]
 name = "sp-std"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 
 [[package]]
 name = "sp-storage"
@@ -9138,7 +10394,7 @@ dependencies = [
 [[package]]
 name = "sp-storage"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "impl-serde",
  "parity-scale-codec 2.0.1",
@@ -9165,7 +10421,20 @@ dependencies = [
 [[package]]
 name = "sp-tasks"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "log",
+ "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-externalities 0.9.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-io 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime-interface 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-std 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+]
+
+[[package]]
+name = "sp-tasks"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "log",
  "sp-core 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -9206,7 +10475,7 @@ dependencies = [
 [[package]]
 name = "sp-timestamp"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "parity-scale-codec 2.0.1",
  "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -9246,7 +10515,7 @@ dependencies = [
 [[package]]
 name = "sp-tracing"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "log",
  "parity-scale-codec 2.0.1",
@@ -9276,7 +10545,23 @@ dependencies = [
 [[package]]
 name = "sp-transaction-pool"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "derive_more",
+ "futures 0.3.13",
+ "log",
+ "parity-scale-codec 2.0.1",
+ "serde",
+ "sp-api 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-blockchain 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "sp-runtime 3.0.0 (git+https://github.com/paritytech/substrate.git?branch=frontier)",
+ "thiserror",
+]
+
+[[package]]
+name = "sp-transaction-pool"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "derive_more",
  "futures 0.3.13",
@@ -9321,7 +10606,7 @@ dependencies = [
 [[package]]
 name = "sp-trie"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "hash-db",
  "memory-db",
@@ -9348,7 +10633,19 @@ dependencies = [
 [[package]]
 name = "sp-utils"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "futures 0.3.13",
+ "futures-core",
+ "futures-timer 3.0.2",
+ "lazy_static",
+ "prometheus",
+]
+
+[[package]]
+name = "sp-utils"
+version = "3.0.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "futures 0.3.13",
  "futures-core",
@@ -9385,7 +10682,7 @@ dependencies = [
 [[package]]
 name = "sp-version"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "impl-serde",
  "parity-scale-codec 2.0.1",
@@ -9420,7 +10717,7 @@ dependencies = [
 [[package]]
 name = "sp-wasm-interface"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "impl-trait-for-tuples 0.2.1",
  "parity-scale-codec 2.0.1",
@@ -9539,6 +10836,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "substrate-bn"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "acb439bec2318e98b83f1e12ddaaf2082d6fc29becc3117714ccb575fa343bc1"
+dependencies = [
+ "byteorder",
+ "crunchy",
+ "lazy_static",
+ "rand 0.5.6",
+ "rustc-hex",
+]
+
+[[package]]
 name = "substrate-build-script-utils"
 version = "3.0.0"
 source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
@@ -9549,13 +10859,13 @@ dependencies = [
 [[package]]
 name = "substrate-frame-rpc-system"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "frame-system-rpc-runtime-api",
  "futures 0.3.13",
- "jsonrpc-core",
- "jsonrpc-core-client",
- "jsonrpc-derive",
+ "jsonrpc-core 15.1.0",
+ "jsonrpc-core-client 15.1.0",
+ "jsonrpc-derive 15.1.0",
  "log",
  "parity-scale-codec 2.0.1",
  "sc-client-api 3.0.0 (git+https://github.com/paritytech/substrate.git)",
@@ -9587,7 +10897,21 @@ dependencies = [
 [[package]]
 name = "substrate-prometheus-endpoint"
 version = "0.9.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=master#18ab0903c23eabbe53860b810314e8d4102091d8"
+source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+dependencies = [
+ "async-std",
+ "derive_more",
+ "futures-util",
+ "hyper 0.13.10",
+ "log",
+ "prometheus",
+ "tokio 0.2.25",
+]
+
+[[package]]
+name = "substrate-prometheus-endpoint"
+version = "0.9.0"
+source = "git+https://github.com/paritytech/substrate.git?branch=master#3f434dff0c870718aa24288530987b45863b1a55"
 dependencies = [
  "async-std",
  "derive_more",
@@ -10542,7 +11866,7 @@ checksum = "bf617d864d25af3587aa745529f7aaa541066c876d57e050c0d0c85c61c92aff"
 dependencies = [
  "libc",
  "memory_units",
- "num-rational",
+ "num-rational 0.2.4",
  "num-traits",
  "parity-wasm 0.41.0",
  "wasmi-validation",
