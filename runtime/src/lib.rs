@@ -309,6 +309,8 @@ construct_runtime!(
 		// Include the custom logic from the template pallet in the runtime.
 		TemplateModule: template::{Module, Call, Storage, Event<T>},
 		pallet_evm: {Event<T>, Module, Call, Storage, Config},
+		Ethereum: pallet_ethereum::{Module, Call, Storage, Event, Config, ValidateUnsigned},
+
 	}
 );
 
@@ -324,13 +326,13 @@ pub type SignedBlock = generic::SignedBlock<Block>;
 pub type BlockId = generic::BlockId<Block>;
 /// The SignedExtension to the basic transaction logic.
 pub type SignedExtra = (
-frame_system::CheckSpecVersion<Runtime>,
-frame_system::CheckTxVersion<Runtime>,
-frame_system::CheckGenesis<Runtime>,
-frame_system::CheckEra<Runtime>,
-frame_system::CheckNonce<Runtime>,
-frame_system::CheckWeight<Runtime>,
-pallet_transaction_payment::ChargeTransactionPayment<Runtime>
+	frame_system::CheckSpecVersion<Runtime>,
+	frame_system::CheckTxVersion<Runtime>,
+	frame_system::CheckGenesis<Runtime>,
+	frame_system::CheckEra<Runtime>,
+	frame_system::CheckNonce<Runtime>,
+	frame_system::CheckWeight<Runtime>,
+	pallet_transaction_payment::ChargeTransactionPayment<Runtime>
 );
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signature, SignedExtra>;
@@ -338,176 +340,176 @@ pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signatu
 pub type CheckedExtrinsic = generic::CheckedExtrinsic<AccountId, Call, SignedExtra>;
 /// Executive: handles dispatch to the various modules.
 pub type Executive = frame_executive::Executive<
-Runtime,
-Block,
-frame_system::ChainContext<Runtime>,
-Runtime,
-AllModules,
+	Runtime,
+	Block,
+	frame_system::ChainContext<Runtime>,
+	Runtime,
+	AllModules,
 >;
 
 impl_runtime_apis! {
-impl sp_api::Core<Block> for Runtime {
-fn version() -> RuntimeVersion {
-VERSION
-}
+	impl sp_api::Core<Block> for Runtime {
+		fn version() -> RuntimeVersion {
+		VERSION
+		}
 
-fn execute_block(block: Block) {
-Executive::execute_block(block);
-}
+		fn execute_block(block: Block) {
+			Executive::execute_block(block);
+		}
 
-fn initialize_block(header: &<Block as BlockT>::Header) {
-Executive::initialize_block(header)
-}
-}
+		fn initialize_block(header: &<Block as BlockT>::Header) {
+			Executive::initialize_block(header)
+		}
+	}
 
-impl sp_api::Metadata<Block> for Runtime {
-fn metadata() -> OpaqueMetadata {
-Runtime::metadata().into()
-}
-}
+	impl sp_api::Metadata<Block> for Runtime {
+		fn metadata() -> OpaqueMetadata {
+			Runtime::metadata().into()
+		}
+	}
 
-impl sp_block_builder::BlockBuilder<Block> for Runtime {
-fn apply_extrinsic(extrinsic: <Block as BlockT>::Extrinsic) -> ApplyExtrinsicResult {
-Executive::apply_extrinsic(extrinsic)
-}
+	impl sp_block_builder::BlockBuilder<Block> for Runtime {
+		fn apply_extrinsic(extrinsic: <Block as BlockT>::Extrinsic) -> ApplyExtrinsicResult {
+			Executive::apply_extrinsic(extrinsic)
+		}
 
-fn finalize_block() -> <Block as BlockT>::Header {
-Executive::finalize_block()
-}
+		fn finalize_block() -> <Block as BlockT>::Header {
+			Executive::finalize_block()
+		}
 
-fn inherent_extrinsics(data: sp_inherents::InherentData) -> Vec<<Block as BlockT>::Extrinsic> {
-data.create_extrinsics()
-}
+		fn inherent_extrinsics(data: sp_inherents::InherentData) -> Vec<<Block as BlockT>::Extrinsic> {
+			data.create_extrinsics()
+		}
 
-fn check_inherents(
-block: Block,
-data: sp_inherents::InherentData,
-) -> sp_inherents::CheckInherentsResult {
-data.check_extrinsics(&block)
-}
+		fn check_inherents(
+			block: Block,
+			data: sp_inherents::InherentData,
+		) -> sp_inherents::CheckInherentsResult {
+			data.check_extrinsics(&block)
+		}
 
-fn random_seed() -> <Block as BlockT>::Hash {
-RandomnessCollectiveFlip::random_seed().0
-}
-}
+		fn random_seed() -> <Block as BlockT>::Hash {
+			RandomnessCollectiveFlip::random_seed().0
+		}
+	}
 
-impl sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block> for Runtime {
-fn validate_transaction(
-source: TransactionSource,
-tx: <Block as BlockT>::Extrinsic,
-) -> TransactionValidity {
-Executive::validate_transaction(source, tx)
-}
-}
+	impl sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block> for Runtime {
+		fn validate_transaction(
+			source: TransactionSource,
+			tx: <Block as BlockT>::Extrinsic,
+		) -> TransactionValidity {
+			Executive::validate_transaction(source, tx)
+		}
+	}
 
-impl sp_offchain::OffchainWorkerApi<Block> for Runtime {
-fn offchain_worker(header: &<Block as BlockT>::Header) {
-Executive::offchain_worker(header)
-}
-}
+	impl sp_offchain::OffchainWorkerApi<Block> for Runtime {
+		fn offchain_worker(header: &<Block as BlockT>::Header) {
+			Executive::offchain_worker(header)
+		}
+	}
 
-impl sp_consensus_aura::AuraApi<Block, AuraId> for Runtime {
-fn slot_duration() -> u64 {
-Aura::slot_duration()
-}
+	impl sp_consensus_aura::AuraApi<Block, AuraId> for Runtime {
+		fn slot_duration() -> u64 {
+			Aura::slot_duration()
+		}
 
-fn authorities() -> Vec<AuraId> {
-Aura::authorities()
-}
-}
+		fn authorities() -> Vec<AuraId> {
+			Aura::authorities()
+		}
+	}
 
-impl sp_session::SessionKeys<Block> for Runtime {
-fn generate_session_keys(seed: Option<Vec<u8>>) -> Vec<u8> {
-opaque::SessionKeys::generate(seed)
-}
+	impl sp_session::SessionKeys<Block> for Runtime {
+		fn generate_session_keys(seed: Option<Vec<u8>>) -> Vec<u8> {
+			opaque::SessionKeys::generate(seed)
+		}
 
-fn decode_session_keys(
-encoded: Vec<u8>,
-) -> Option<Vec<(Vec<u8>, KeyTypeId)>> {
-opaque::SessionKeys::decode_into_raw_public_keys(&encoded)
-}
-}
+		fn decode_session_keys(
+			encoded: Vec<u8>,
+		) -> Option<Vec<(Vec<u8>, KeyTypeId)>> {
+			opaque::SessionKeys::decode_into_raw_public_keys(&encoded)
+		}
+	}
 
-impl fg_primitives::GrandpaApi<Block> for Runtime {
-fn grandpa_authorities() -> GrandpaAuthorityList {
-Grandpa::grandpa_authorities()
-}
+	impl fg_primitives::GrandpaApi<Block> for Runtime {
+		fn grandpa_authorities() -> GrandpaAuthorityList {
+			Grandpa::grandpa_authorities()
+		}
 
-fn submit_report_equivocation_unsigned_extrinsic(
-_equivocation_proof: fg_primitives::EquivocationProof<
-<Block as BlockT>::Hash,
-NumberFor<Block>,
->,
-_key_owner_proof: fg_primitives::OpaqueKeyOwnershipProof,
-) -> Option<()> {
-None
-}
+		fn submit_report_equivocation_unsigned_extrinsic(
+			_equivocation_proof: fg_primitives::EquivocationProof<
+				<Block as BlockT>::Hash,
+				NumberFor<Block>,
+			>,
+			_key_owner_proof: fg_primitives::OpaqueKeyOwnershipProof,
+		) -> Option<()> {
+			None
+		}
 
-fn generate_key_ownership_proof(
-_set_id: fg_primitives::SetId,
-_authority_id: GrandpaId,
-) -> Option<fg_primitives::OpaqueKeyOwnershipProof> {
-// NOTE: this is the only implementation possible since we've
-// defined our key owner proof type as a bottom type (i.e. a type
-// with no values).
-None
-}
-}
+		fn generate_key_ownership_proof(
+			_set_id: fg_primitives::SetId,
+			_authority_id: GrandpaId,
+		) -> Option<fg_primitives::OpaqueKeyOwnershipProof> {
+			// NOTE: this is the only implementation possible since we've
+			// defined our key owner proof type as a bottom type (i.e. a type
+			// with no values).
+			None
+			}
+		}
 
-impl frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Index> for Runtime {
-fn account_nonce(account: AccountId) -> Index {
-System::account_nonce(account)
-}
-}
+	impl frame_system_rpc_runtime_api::AccountNonceApi<Block, AccountId, Index> for Runtime {
+		fn account_nonce(account: AccountId) -> Index {
+			System::account_nonce(account)
+		}
+	}
 
-impl pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance> for Runtime {
-fn query_info(
-uxt: <Block as BlockT>::Extrinsic,
-len: u32,
-) -> pallet_transaction_payment_rpc_runtime_api::RuntimeDispatchInfo<Balance> {
-TransactionPayment::query_info(uxt, len)
-}
-fn query_fee_details(
-uxt: <Block as BlockT>::Extrinsic,
-len: u32,
-) -> pallet_transaction_payment::FeeDetails<Balance> {
-TransactionPayment::query_fee_details(uxt, len)
-}
-}
+	impl pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance> for Runtime {
+		fn query_info(
+			uxt: <Block as BlockT>::Extrinsic,
+			len: u32,
+		) -> pallet_transaction_payment_rpc_runtime_api::RuntimeDispatchInfo<Balance> {
+			TransactionPayment::query_info(uxt, len)
+		}
+		fn query_fee_details(
+			uxt: <Block as BlockT>::Extrinsic,
+			len: u32,
+		) -> pallet_transaction_payment::FeeDetails<Balance> {
+			TransactionPayment::query_fee_details(uxt, len)
+		}
+	}
 
-#[cfg(feature = "runtime-benchmarks")]
-impl frame_benchmarking::Benchmark<Block> for Runtime {
-fn dispatch_benchmark(
-config: frame_benchmarking::BenchmarkConfig
-) -> Result<Vec<frame_benchmarking::BenchmarkBatch>, sp_runtime::RuntimeString> {
-use frame_benchmarking::{Benchmarking, BenchmarkBatch, add_benchmark, TrackedStorageKey};
+	#[cfg(feature = "runtime-benchmarks")]
+	impl frame_benchmarking::Benchmark<Block> for Runtime {
+		fn dispatch_benchmark(
+			config: frame_benchmarking::BenchmarkConfig
+		) -> Result<Vec<frame_benchmarking::BenchmarkBatch>, sp_runtime::RuntimeString> {
+			use frame_benchmarking::{Benchmarking, BenchmarkBatch, add_benchmark, TrackedStorageKey};
 
-use frame_system_benchmarking::Module as SystemBench;
-impl frame_system_benchmarking::Config for Runtime {}
+			use frame_system_benchmarking::Module as SystemBench;
+			impl frame_system_benchmarking::Config for Runtime {}
 
-let whitelist: Vec<TrackedStorageKey> = vec![
-// Block Number
-hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef702a5c1b19ab7a04f536c519aca4983ac").to_vec().into(),
-// Total Issuance
-hex_literal::hex!("c2261276cc9d1f8598ea4b6a74b15c2f57c875e4cff74148e4628f264b974c80").to_vec().into(),
-// Execution Phase
-hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef7ff553b5a9862a516939d82b3d3d8661a").to_vec().into(),
-// Event Count
-hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef70a98fdbe9ce6c55837576c60c7af3850").to_vec().into(),
-// System Events
-hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef780d41e5e16056765bc8461851072c9d7").to_vec().into(),
-];
+			let whitelist: Vec<TrackedStorageKey> = vec![
+			// Block Number
+			hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef702a5c1b19ab7a04f536c519aca4983ac").to_vec().into(),
+			// Total Issuance
+			hex_literal::hex!("c2261276cc9d1f8598ea4b6a74b15c2f57c875e4cff74148e4628f264b974c80").to_vec().into(),
+			// Execution Phase
+			hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef7ff553b5a9862a516939d82b3d3d8661a").to_vec().into(),
+			// Event Count
+			hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef70a98fdbe9ce6c55837576c60c7af3850").to_vec().into(),
+			// System Events
+			hex_literal::hex!("26aa394eea5630e07c48ae0c9558cef780d41e5e16056765bc8461851072c9d7").to_vec().into(),
+			];
 
-let mut batches = Vec::<BenchmarkBatch>::new();
-let params = (&config, &whitelist);
+			let mut batches = Vec::<BenchmarkBatch>::new();
+			let params = (&config, &whitelist);
 
-add_benchmark!(params, batches, frame_system, SystemBench::<Runtime>);
-add_benchmark!(params, batches, pallet_balances, Balances);
-add_benchmark!(params, batches, pallet_timestamp, Timestamp);
-add_benchmark!(params, batches, template, TemplateModule);
+			add_benchmark!(params, batches, frame_system, SystemBench::<Runtime>);
+			add_benchmark!(params, batches, pallet_balances, Balances);
+			add_benchmark!(params, batches, pallet_timestamp, Timestamp);
+			add_benchmark!(params, batches, template, TemplateModule);
 
-if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
-Ok(batches)
-}
-}
+			if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
+			Ok(batches)
+		}
+	}
 }
