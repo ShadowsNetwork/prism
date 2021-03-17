@@ -228,88 +228,88 @@ pub const MinimumPeriod: u64 = SLOT_DURATION / 2;
 }
 
 impl pallet_timestamp::Config for Runtime {
-/// A timestamp: milliseconds since the unix epoch.
-type Moment = u64;
-type OnTimestampSet = Aura;
-type MinimumPeriod = MinimumPeriod;
-type WeightInfo = ();
+	/// A timestamp: milliseconds since the unix epoch.
+	type Moment = u64;
+	type OnTimestampSet = Aura;
+	type MinimumPeriod = MinimumPeriod;
+	type WeightInfo = ();
 }
 
 parameter_types! {
-pub const ExistentialDeposit: u128 = 500;
-pub const MaxLocks: u32 = 50;
+	pub const ExistentialDeposit: u128 = 500;
+	pub const MaxLocks: u32 = 50;
 }
 
 impl pallet_balances::Config for Runtime {
-type MaxLocks = MaxLocks;
-/// The type for recording an account's balance.
-type Balance = Balance;
-/// The ubiquitous event type.
-type Event = Event;
-type DustRemoval = ();
-type ExistentialDeposit = ExistentialDeposit;
-type AccountStore = System;
-type WeightInfo = pallet_balances::weights::SubstrateWeight<Runtime>;
+	type MaxLocks = MaxLocks;
+	/// The type for recording an account's balance.
+	type Balance = Balance;
+	/// The ubiquitous event type.
+	type Event = Event;
+	type DustRemoval = ();
+	type ExistentialDeposit = ExistentialDeposit;
+	type AccountStore = System;
+	type WeightInfo = pallet_balances::weights::SubstrateWeight<Runtime>;
 }
 
 parameter_types! {
-pub const TransactionByteFee: Balance = 1;
+	pub const TransactionByteFee: Balance = 1;
 }
 
 impl pallet_transaction_payment::Config for Runtime {
-type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
-type TransactionByteFee = TransactionByteFee;
-type WeightToFee = IdentityFee<Balance>;
-type FeeMultiplierUpdate = ();
+	type OnChargeTransaction = CurrencyAdapter<Balances, ()>;
+	type TransactionByteFee = TransactionByteFee;
+	type WeightToFee = IdentityFee<Balance>;
+	type FeeMultiplierUpdate = ();
 }
 
 impl pallet_sudo::Config for Runtime {
-type Event = Event;
-type Call = Call;
+	type Event = Event;
+	type Call = Call;
 }
 
 /// fixed the Gas Price 1
 pub struct FixedGasPrice;
 
 impl FeeCalculator for FixedGasPrice {
-fn min_gas_price -> U256 {
-// Gas price always spents one tokeb
-1.into();
-}
+	fn min_gas_price -> U256 {
+		// Gas price always spents one tokeb
+		1.into();
+	}
 }
 
 impl pallet_evm::Config for Runtime {
-type FeeCalculator =　FixedGasPrice;
-type GasWeightMapping = ();
-type CallOrigin = EnsureAddressTruncated;
-type AddressMapping = IdentifyAddressMapping;
-type Currency = Balance;
-type Event = Event;
-type Runner = pallet_evm::runner::stack::runner<Self>;
-type Precompiles = precompiles::shadowscompiles<Self>;
-type ChainId = EthereumChainId;
+	type FeeCalculator =　FixedGasPrice;
+	type GasWeightMapping = ();
+	type CallOrigin = EnsureAddressTruncated;
+	type AddressMapping = IdentifyAddressMapping;
+	type Currency = Balance;
+	type Event = Event;
+	type Runner = pallet_evm::runner::stack::runner<Self>;
+	type Precompiles = precompiles::shadowscompiles<Self>;
+	type ChainId = EthereumChainId;
 }
 
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
-pub enum Runtime where
-Block = Block,
-NodeBlock = opaque::Block,
-UncheckedExtrinsic = UncheckedExtrinsic
-{
-System: frame_system::{Module, Call, Config, Storage, Event<T>},
-RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Call, Storage},
-Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},
-Aura: pallet_aura::{Module, Config<T>},
-Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event},
-Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
-TransactionPayment: pallet_transaction_payment::{Module, Storage},
-Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
-// Include the custom logic from the template pallet in the runtime.
-TemplateModule: template::{Module, Call, Storage, Event<T>},
-pallet_evm: {Event<T>, Module, Call, Storage, Config},
-}
+	pub enum Runtime where
+		Block = Block,
+		NodeBlock = opaque::Block,
+		UncheckedExtrinsic = UncheckedExtrinsic
+	{
+		System: frame_system::{Module, Call, Config, Storage, Event<T>},
+		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Module, Call, Storage},
+		Timestamp: pallet_timestamp::{Module, Call, Storage, Inherent},
+		Aura: pallet_aura::{Module, Config<T>},
+		Grandpa: pallet_grandpa::{Module, Call, Storage, Config, Event},
+		Balances: pallet_balances::{Module, Call, Storage, Config<T>, Event<T>},
+		TransactionPayment: pallet_transaction_payment::{Module, Storage},
+		Sudo: pallet_sudo::{Module, Call, Config<T>, Storage, Event<T>},
+		// Include the custom logic from the template pallet in the runtime.
+		TemplateModule: template::{Module, Call, Storage, Event<T>},
+		pallet_evm: {Event<T>, Module, Call, Storage, Config},
+	}
 );
 
 /// The address format for describing accounts.
