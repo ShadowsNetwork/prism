@@ -15,56 +15,46 @@ targets = ["x86_64-unknown-linux-gnu"]
 futures = "0.3.4"
 log = "0.4.8"
 structopt = "0.3.8"
-jsonrpc-pubsub = "15.0.0"
-jsonrpc-core = "15.0.0"
+parking_lot = "0.10.0"
+jsonrpc-core = "14.0.3"
 
-sc-cli = {git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sc-executor = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sc-service = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-core = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sc-telemetry = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sc-keystore =  { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-inherents = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sc-transaction-pool = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-transaction-pool = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sc-consensus-aura = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-consensus-aura = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-consensus = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sc-consensus = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sc-finality-grandpa = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-finality-grandpa = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sc-client-api = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-runtime = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sp-api = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master#9b5a9cb9" }
+sc-cli = {  git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-executor = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-service = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-core = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-telemetry = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-keystore =  { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-inherents = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-transaction-pool = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-transaction-pool = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-consensus-aura = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-consensus-aura = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-consensus = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-consensus = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-finality-grandpa = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-finality-grandpa = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-client-api = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-runtime = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 
 # These dependencies are used for the node template's RPCs
 
-sc-rpc = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-api = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sc-rpc-api = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-blockchain = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-block-builder = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sc-basic-authorship = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-substrate-frame-rpc-system = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-pallet-transaction-payment-rpc = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sc-rpc = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-rpc-api = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-blockchain = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-block-builder = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-basic-authorship = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+substrate-frame-rpc-system = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+pallet-transaction-payment-rpc = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 
-# These dependencies are used for runtime benchmarking
-frame-benchmarking = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-frame-benchmarking-cli = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
 
-pallet-evm = { path = "../../frame/evm" }
-pallet-ethereum = { path = "../../frame/ethereum" }
-fc-consensus = { path = "../../client/consensus" }
-fc-rpc = { path = "../../client/rpc" }
-fc-rpc-core = { path = "../../client/rpc-core" }
 shadows-runtime = { path = "../runtime", default-features = false, features = ["std"] }
+frontier-rpc = { version = "0.1.0", path = "../../rpc" }
+frontier-rpc-primitives = { version = "0.1.0", path = "../../rpc/primitives" }
 
-fp-consensus = { path = "../../primitives/consensus" }
-fp-rpc = { path = "../../primitives/rpc" }
-fc-db = { path = "../../client/db" }
-fc-mapping-sync = { path = "../../client/mapping-sync" }
 
 [build-dependencies]
-substrate-build-script-utils = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+substrate-build-script-utils = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 
 [features]
 default = ["aura"]
