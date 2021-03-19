@@ -19,7 +19,7 @@
 
 use std::{sync::Arc, fmt};
 
-use frontier_template_runtime::{Hash, AccountId, Index, opaque::Block, Balance, UncheckedExtrinsic};
+use shadows_runtime::{Hash, AccountId, Index, opaque::Block, Balance, UncheckedExtrinsic};
 use sp_api::ProvideRuntimeApi;
 use sp_transaction_pool::TransactionPool;
 use sp_blockchain::{Error as BlockChainError, HeaderMetadata, HeaderBackend};
@@ -97,7 +97,7 @@ pub fn create_full<C, P, M, SC, BE>(
 			client.clone(),
 			select_chain,
 			pool.clone(),
-			frontier_template_runtime::TransactionConverter,
+			shadows_runtime::TransactionConverter,
 			is_authority,
 		))
 	);

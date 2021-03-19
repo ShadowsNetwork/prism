@@ -21,7 +21,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use sc_client_api::ExecutorProvider;
 use sc_consensus::LongestChain;
-use frontier_template_runtime::{self, opaque::Block, RuntimeApi};
+use shadows_runtime::{self, opaque::Block, RuntimeApi};
 use sc_service::{
 	error::{Error as ServiceError}, Configuration, ServiceBuilder, ServiceComponents,
 	TaskManager,
@@ -37,8 +37,8 @@ use sc_finality_grandpa::{
 // Our native executor instance.
 native_executor_instance!(
 	pub Executor,
-	frontier_template_runtime::api::dispatch,
-	frontier_template_runtime::native_version,
+	shadows_runtime::api::dispatch,
+	shadows_runtime::native_version,
 );
 
 /// Starts a `ServiceBuilder` for a full service.
@@ -54,7 +54,7 @@ macro_rules! new_full_start {
 		let inherent_data_providers = sp_inherents::InherentDataProviders::new();
 
 		let builder = sc_service::ServiceBuilder::new_full::<
-			frontier_template_runtime::opaque::Block, frontier_template_runtime::RuntimeApi, crate::service::Executor
+			shadows_runtime::opaque::Block, shadows_runtime::RuntimeApi, crate::service::Executor
 		>($config)?
 			.with_select_chain(|_config, backend| {
 				Ok(sc_consensus::LongestChain::new(backend.clone()))

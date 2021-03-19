@@ -15,9 +15,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use sp_core::{U256, Pair, Public, sr25519};
+use sp_core::{U256, Pair, Public, sr25519, H160};
 use evm::{ConvertAccountId, HashTruncateConvertAccountId};
-use frontier_template_runtime::{
+use shadows_runtime::{
 	AccountId, AuraConfig, BalancesConfig, EVMConfig, GenesisConfig, GrandpaConfig, Signature,
 	SudoConfig, SystemConfig, WASM_BINARY,
 };
