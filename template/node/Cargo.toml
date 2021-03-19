@@ -18,29 +18,29 @@ structopt = "0.3.8"
 parking_lot = "0.10.0"
 jsonrpc-core = "14.0.3"
 
-
+evm = { version = "2.0.0-dev", package = "pallet-evm", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sp-api = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-core = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-runtime = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-inherents = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-blockchain = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-transaction-pool = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-transaction-pool = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sp-finality-grandpa = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+substrate-frame-rpc-system = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+pallet-transaction-payment-rpc = { version = "2.0.0-dev",git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sc-cli = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sc-executor = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sc-service = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-core = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-inherents = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sc-transaction-pool = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-transaction-pool = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sc-consensus-aura = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sp-consensus-aura = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sp-consensus = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sc-consensus = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sc-finality-grandpa = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-finality-grandpa = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sc-network = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master"  }
-sc-client-api = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-runtime = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-pallet-transaction-payment-rpc = { version = "2.0.0-dev",git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-evm = { version = "2.0.0-dev", package = "pallet-evm", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sc-rpc-api = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-blockchain = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-substrate-frame-rpc-system = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+sc-client-api = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master"  }
+
 sp-block-builder = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 sc-basic-authorship = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 shadows-runtime = { version = "0.0.1", path = "../runtime" }
