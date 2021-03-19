@@ -1,19 +1,18 @@
-// SPDX-License-Identifier: Apache-2.0
+// Copyright 2017-2020 Parity Technologies (UK) Ltd.
 // This file is part of Frontier.
-//
-// Copyright (c) 2020 Parity Technologies (UK) Ltd.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// 	http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+
+// Substrate is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// Substrate is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with Substrate.  If not, see <http://www.gnu.org/licenses/>.
 
 //! # Ethereum pallet
 //!
@@ -24,30 +23,21 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use frame_support::{
-	decl_module, decl_storage, decl_error, decl_event,
-	traits::Get, traits::FindAuthor, weights::Weight,
-	dispatch::DispatchResultWithPostInfo,
+	decl_module, decl_storage, decl_error, decl_event, ensure,
+	weights::Weight, traits::Get, traits::FindAuthor
 };
 use sp_std::prelude::*;
 use frame_system::ensure_none;
-use frame_support::{ensure, traits::UnfilteredDispatchable};
-use ethereum_types::{H160, H64, H256, U256, Bloom, BloomInput};
+use ethereum_types::{H160, H64, H256, U256, Bloom};
 use sp_runtime::{
-	transaction_validity::{
-		TransactionValidity, TransactionSource, InvalidTransaction, ValidTransactionBuilder,
-	},
-	generic::DigestItem, traits::UniqueSaturatedInto, DispatchError,
+	traits::UniqueSaturatedInto,
+	transaction_validity::{TransactionValidity, TransactionSource, ValidTransaction}
 };
-use evm::ExitReason;
-use fp_evm::CallOrCreateInfo;
-use pallet_evm::{Runner, GasWeightMapping, FeeCalculator};
+use rlp;
 use sha3::{Digest, Keccak256};
-use codec::{Encode, Decode};
-use fp_consensus::{FRONTIER_ENGINE_ID, PostLog, PreLog};
-use fp_storage::PALLET_ETHEREUM_SCHEMA;
 
-pub use fp_rpc::TransactionStatus;
-pub use ethereum::{Transaction, Log, Block, Receipt, TransactionAction, TransactionMessage};
+pub use frontier_rpc_primitives::TransactionStatus;
+pub use ethereum::{Transaction, Log, Block, Receipt};
 
 #[cfg(all(feature = "std", test))]
 mod tests;
@@ -55,409 +45,378 @@ mod tests;
 #[cfg(all(feature = "std", test))]
 mod mock;
 
-#[derive(Eq, PartialEq, Clone, sp_runtime::RuntimeDebug)]
-pub enum ReturnValue {
-	Bytes(Vec<u8>),
-	Hash(H160),
-}
-
-/// The schema version for Pallet Ethereum's storage
-#[derive(Clone, Debug, Encode, Decode, PartialEq, Eq, PartialOrd, Ord)]
-pub enum EthereumStorageSchema {
-	Undefined,
-	V1,
-}
-
-impl Default for EthereumStorageSchema {
-	fn default() -> Self {
-		Self::Undefined
-	}
-}
-
 /// A type alias for the balance type from this pallet's point of view.
-pub type BalanceOf<T> = <T as pallet_balances::Config>::Balance;
+pub type BalanceOf<T> = <T as pallet_balances::Trait>::Balance;
 
-pub struct IntermediateStateRoot;
-
-impl Get<H256> for IntermediateStateRoot {
-	fn get() -> H256 {
-		H256::decode(&mut &sp_io::storage::root()[..])
-			.expect("Node is configured to use the same hash; qed")
-	}
-}
-
-/// Configuration trait for Ethereum pallet.
-pub trait Config: frame_system::Config<Hash=H256> + pallet_balances::Config + pallet_timestamp::Config + pallet_evm::Config {
+/// Our pallet's configuration trait. All our types and constants go in here. If the
+/// pallet is dependent on specific other pallets, then their configuration traits
+/// should be added to our implied traits list.
+///
+/// `frame_system::Trait` should always be included in our implied traits.
+pub trait Trait: frame_system::Trait<Hash=H256> + pallet_balances::Trait + pallet_timestamp::Trait + pallet_evm::Trait {
 	/// The overarching event type.
-	type Event: From<Event> + Into<<Self as frame_system::Config>::Event>;
-	/// Find author for Ethereum.
+	type Event: From<Event<Self>> + Into<<Self as frame_system::Trait>::Event>;
 	type FindAuthor: FindAuthor<H160>;
-	/// How Ethereum state root is calculated.
-	type StateRoot: Get<H256>;
-	/// The block gas limit. Can be a simple constant, or an adjustment algorithm in another pallet.
-	type BlockGasLimit: Get<U256>;
 }
 
 decl_storage! {
-	trait Store for Module<T: Config> as Ethereum {
-		/// Current building block's transactions and receipts.
-		Pending: Vec<(ethereum::Transaction, TransactionStatus, ethereum::Receipt)>;
-
-		/// The current Ethereum block.
-		CurrentBlock: Option<ethereum::Block>;
-		/// The current Ethereum receipts.
-		CurrentReceipts: Option<Vec<ethereum::Receipt>>;
-		/// The current transaction statuses.
-		CurrentTransactionStatuses: Option<Vec<TransactionStatus>>;
-	}
-	add_extra_genesis {
-		build(|_config: &GenesisConfig| {
-			// Calculate the ethereum genesis block
-			<Module<T>>::store_block(false);
-
-			// Initialize the storage schema at the well known key.
-			frame_support::storage::unhashed::put::<EthereumStorageSchema>(&PALLET_ETHEREUM_SCHEMA, &EthereumStorageSchema::V1);
-		});
+	// A macro for the Storage trait, and its implementation, for this pallet.
+	// This allows for type-safe usage of the Substrate storage database, so you can
+	// keep things around between blocks.
+	//
+	// It is important to update your storage name so that your pallet's
+	// storage items are isolated from other pallets.
+	// ---------------------------------vvvvvvv
+	trait Store for Module<T: Trait> as Example {
+		BlocksAndReceipts: map hasher(blake2_128_concat) H256 => Option<(ethereum::Block, Vec<ethereum::Receipt>)>;
+		BlockNumbers: map hasher(blake2_128_concat) T::BlockNumber => H256;
+		PendingTransactionsAndReceipts: Vec<(ethereum::Transaction, ethereum::Receipt)>;
+		TransactionStatuses: map hasher(blake2_128_concat) H256 => Option<TransactionStatus>;
+		Transactions: map hasher(blake2_128_concat) H256 => Option<(H256, u32)>;
 	}
 }
 
 decl_event!(
-	/// Ethereum pallet events.
-	pub enum Event {
-		/// An ethereum transaction was successfully executed. [from, to/contract_address, transaction_hash, exit_reason]
-		Executed(H160, H160, H256, ExitReason),
+	/// Events are a simple means of reporting specific conditions and
+	/// circumstances that have happened that users, Dapps and/or chain explorers would find
+	/// interesting and otherwise difficult to detect.
+	pub enum Event<T> where B = <T as pallet_balances::Trait>::Balance {
+		// Just a normal `enum`, here's a dummy event to ensure it compiles.
+		/// Dummy event, just here so there's a generic type that's used.
+		Dummy(B),
 	}
 );
 
+// The module declaration. This states the entry points that we handle. The
+// macro takes care of the marshalling of arguments and dispatch.
+//
+// Anyone can have these functions execute by signing and submitting
+// an extrinsic. Ensure that calls into each of these execute in a time, memory and
+// using storage space proportional to any costs paid for by the caller or otherwise the
+// difficulty of forcing the call to happen.
+//
+// Generally you'll want to split these into three groups:
+// - Public calls that are signed by an external account.
+// - Root calls that are allowed to be made only by the governance system.
+// - Unsigned calls that can be of two kinds:
+//   * "Inherent extrinsics" that are opinions generally held by the block
+//     authors that build child blocks.
+//   * Unsigned Transactions that are of intrinsic recognizable utility to the
+//     network, and are validated by the runtime.
+//
+// Information about where this dispatch initiated from is provided as the first argument
+// "origin". As such functions must always look like:
+//
+// `fn foo(origin, bar: Bar, baz: Baz) -> Result;`
+//
+// The `Result` is required as part of the syntax (and expands to the conventional dispatch
+// result of `Result<(), &'static str>`).
+//
+// When you come to `impl` them later in the pallet, you must specify the full type for `origin`:
+//
+// `fn foo(origin: T::Origin, bar: Bar, baz: Baz) { ... }`
+//
+// There are three entries in the `frame_system::Origin` enum that correspond
+// to the above bullets: `::Signed(AccountId)`, `::Root` and `::None`. You should always match
+// against them as the first thing you do in your function. There are three convenience calls
+// in system that do the matching for you and return a convenient result: `ensure_signed`,
+// `ensure_root` and `ensure_none`.
+
 
 decl_error! {
-	/// Ethereum pallet errors.
-	pub enum Error for Module<T: Config> {
-		/// Signature is invalid.
-		InvalidSignature,
-		/// Pre-log is present, therefore transact is not allowed.
-		PreLogExists,
+	pub enum Error for Module<T: Trait> {
+		/// Transaction signed with wrong chain id
+		InvalidChainId,
 	}
 }
 
 decl_module! {
-	/// Ethereum pallet module.
-	pub struct Module<T: Config> for enum Call where origin: T::Origin {
+	// Simple declaration of the `Module` type. Lets the macro know what its working on.
+	pub struct Module<T: Trait> for enum Call where origin: T::Origin {
 		/// Deposit one of this pallet's events by using the default implementation.
+		/// It is also possible to provide a custom implementation.
+		/// For non-generic events, the generic parameter just needs to be dropped, so that it
+		/// looks like: `fn deposit_event() = default;`.
 		fn deposit_event() = default;
 
 		/// Transact an Ethereum transaction.
-		#[weight = <T as pallet_evm::Config>::GasWeightMapping::gas_to_weight(transaction.gas_limit.unique_saturated_into())]
-		fn transact(origin, transaction: ethereum::Transaction) -> DispatchResultWithPostInfo {
+		#[weight = 0]
+		fn transact(origin, transaction: ethereum::Transaction) {
 			ensure_none(origin)?;
 
-			Self::do_transact(transaction)
-		}
-
-		fn on_finalize(n: T::BlockNumber) {
-			<Module<T>>::store_block(
-				fp_consensus::find_pre_log(&frame_system::Module::<T>::digest()).is_err(),
+			ensure!(
+				transaction.signature.chain_id().unwrap_or_default() == T::ChainId::get(),
+				Error::<T>::InvalidChainId
 			);
+			let mut sig = [0u8; 65];
+			let mut msg = [0u8; 32];
+			sig[0..32].copy_from_slice(&transaction.signature.r()[..]);
+			sig[32..64].copy_from_slice(&transaction.signature.s()[..]);
+			sig[64] = transaction.signature.standard_v();
+			msg.copy_from_slice(&transaction.message_hash(Some(T::ChainId::get()))[..]);
+
+			let pubkey = sp_io::crypto::secp256k1_ecdsa_recover(&sig, &msg)
+				.map_err(|_| "Recover public key failed")?;
+			let source = H160::from(H256::from_slice(Keccak256::digest(&pubkey).as_slice()));
+
+			Self::execute(source, transaction);
 		}
 
-		fn on_initialize(n: T::BlockNumber) -> Weight {
-			Pending::kill();
-
-			if let Ok(log) = fp_consensus::find_pre_log(&frame_system::Module::<T>::digest()) {
-				let PreLog::Block(block) = log;
-
-				for transaction in block.transactions {
-					Self::do_transact(transaction)
-						.expect("pre-block transaction verification failed; the block cannot be built");
-				}
-			}
+		// The signature could also look like: `fn on_initialize()`.
+		// This function could also very well have a weight annotation, similar to any other. The
+		// only difference is that it mut be returned, not annotated.
+		fn on_initialize(_n: T::BlockNumber) -> Weight {
+			// Anything that needs to be done at the start of the block.
+			// We don't do anything here.
 
 			0
 		}
+
+		// The signature could also look like: `fn on_finalize()`
+		fn on_finalize(n: T::BlockNumber) {
+			let transactions_and_receipts = PendingTransactionsAndReceipts::take();
+			let (transactions, receipts): (Vec<_>, Vec<_>) =
+				transactions_and_receipts.into_iter().unzip();
+			let ommers = Vec::<ethereum::Header>::new();
+
+			let header = ethereum::Header {
+				parent_hash: frame_system::Module::<T>::parent_hash(),
+				ommers_hash: H256::from_slice(
+					Keccak256::digest(&rlp::encode_list(&ommers)[..]).as_slice(),
+				), // TODO: check ommers hash.
+				beneficiary: <Module<T>>::find_author(),
+				state_root: H256::default(), // TODO: figure out if there's better way to get a sort-of-valid state root.
+				transactions_root: H256::from_slice(
+					Keccak256::digest(&rlp::encode_list(&transactions)[..]).as_slice(),
+				), // TODO: check transactions hash.
+				receipts_root: H256::from_slice(
+					Keccak256::digest(&rlp::encode_list(&receipts)[..]).as_slice(),
+				), // TODO: check receipts hash.
+				logs_bloom: Bloom::default(), // TODO: gather the logs bloom from receipts.
+				difficulty: U256::zero(),
+				number: U256::from(
+					UniqueSaturatedInto::<u128>::unique_saturated_into(
+						frame_system::Module::<T>::block_number()
+					)
+				),
+				gas_limit: U256::zero(), // TODO: set this using Ethereum's gas limit change algorithm.
+				gas_used: U256::zero(), // TODO: get this from receipts.
+				timestamp: UniqueSaturatedInto::<u64>::unique_saturated_into(
+					pallet_timestamp::Module::<T>::get()
+				),
+				extra_data: H256::default(),
+				mix_hash: H256::default(),
+				nonce: H64::default(),
+			};
+			let hash = H256::from_slice(Keccak256::digest(&rlp::encode(&header)).as_slice());
+
+			let block = ethereum::Block {
+				header,
+				transactions: transactions.clone(),
+				ommers,
+			};
+
+			for t in &transactions {
+				let transaction_hash = H256::from_slice(
+					Keccak256::digest(&rlp::encode(t)).as_slice()
+				);
+				if let Some(status) = TransactionStatuses::get(transaction_hash) {
+					Transactions::insert(
+						transaction_hash,
+						(hash, status.transaction_index)
+					);
+				}
+			}
+
+			BlocksAndReceipts::insert(hash, (block, receipts));
+			BlockNumbers::<T>::insert(n, hash);
+		}
+
+		// A runtime code run after every block and have access to extended set of APIs.
+		//
+		// For instance you can generate extrinsics for the upcoming produced block.
+		fn offchain_worker(_n: T::BlockNumber) {
+			// We don't do anything here.
+			// but we could dispatch extrinsic (transaction/unsigned/inherent) using
+			// sp_io::submit_extrinsic
+		}
 	}
 }
 
-#[repr(u8)]
-enum TransactionValidationError {
-	#[allow(dead_code)]
-	UnknownError,
-	InvalidChainId,
-	InvalidSignature,
-}
-
-impl<T: Config> frame_support::unsigned::ValidateUnsigned for Module<T> {
+impl<T: Trait> frame_support::unsigned::ValidateUnsigned for Module<T> {
 	type Call = Call<T>;
 
 	fn validate_unsigned(_source: TransactionSource, call: &Self::Call) -> TransactionValidity {
-		if let Call::transact(transaction) = call {
-			if let Some(chain_id) = transaction.signature.chain_id() {
-				if chain_id != T::ChainId::get() {
-					return InvalidTransaction::Custom(TransactionValidationError::InvalidChainId as u8).into();
-				}
-			}
-
-			let origin = Self::recover_signer(&transaction)
-				.ok_or_else(|| InvalidTransaction::Custom(TransactionValidationError::InvalidSignature as u8))?;
-
-			let account_data = pallet_evm::Module::<T>::account_basic(&origin);
-
-			if transaction.nonce < account_data.nonce {
-				return InvalidTransaction::Stale.into();
-			}
-
-			let fee = transaction.gas_price.saturating_mul(transaction.gas_limit);
-			let total_payment = transaction.value.saturating_add(fee);
-			if account_data.balance < total_payment {
-				return InvalidTransaction::Payment.into();
-			}
-
-			if transaction.gas_price < T::FeeCalculator::min_gas_price() {
-				return InvalidTransaction::Payment.into();
-			}
-
-			let mut builder = ValidTransactionBuilder::default()
-				.and_provides((origin, transaction.nonce));
-
-			if transaction.nonce > account_data.nonce {
-				if let Some(prev_nonce) = transaction.nonce.checked_sub(1.into()) {
-					builder = builder.and_requires((origin, prev_nonce))
-				}
-			}
-
-			builder.build()
-		} else {
-			Err(InvalidTransaction::Call.into())
-		}
+		ValidTransaction::with_tag_prefix("Ethereum")
+			.and_provides(call)
+			.build()
 	}
 }
 
-impl<T: Config> Module<T> {
-	fn recover_signer(transaction: &ethereum::Transaction) -> Option<H160> {
-		let mut sig = [0u8; 65];
-		let mut msg = [0u8; 32];
-		sig[0..32].copy_from_slice(&transaction.signature.r()[..]);
-		sig[32..64].copy_from_slice(&transaction.signature.s()[..]);
-		sig[64] = transaction.signature.standard_v();
-		msg.copy_from_slice(&TransactionMessage::from(transaction.clone()).hash()[..]);
-
-		let pubkey = sp_io::crypto::secp256k1_ecdsa_recover(&sig, &msg).ok()?;
-		Some(H160::from(H256::from_slice(Keccak256::digest(&pubkey).as_slice())))
-	}
-
-	fn store_block(post_log: bool) {
-		let mut transactions = Vec::new();
-		let mut statuses = Vec::new();
-		let mut receipts = Vec::new();
-		let mut logs_bloom = Bloom::default();
-		for (transaction, status, receipt) in Pending::get() {
-			transactions.push(transaction);
-			statuses.push(status);
-			receipts.push(receipt.clone());
-			Self::logs_bloom(
-				receipt.logs.clone(),
-				&mut logs_bloom
-			);
-		}
-
-		let ommers = Vec::<ethereum::Header>::new();
-		let partial_header = ethereum::PartialHeader {
-			parent_hash: Self::current_block_hash().unwrap_or_default(),
-			beneficiary: <Module<T>>::find_author(),
-			// TODO: figure out if there's better way to get a sort-of-valid state root.
-			state_root: H256::default(),
-			receipts_root: H256::from_slice(
-				Keccak256::digest(&rlp::encode_list(&receipts)[..]).as_slice(),
-			), // TODO: check receipts hash.
-			logs_bloom,
-			difficulty: U256::zero(),
-			number: U256::from(
-				UniqueSaturatedInto::<u128>::unique_saturated_into(
-					frame_system::Module::<T>::block_number()
-				)
-			),
-			gas_limit: T::BlockGasLimit::get(),
-			gas_used: receipts.clone().into_iter().fold(U256::zero(), |acc, r| acc + r.used_gas),
-			timestamp: UniqueSaturatedInto::<u64>::unique_saturated_into(
-				pallet_timestamp::Module::<T>::get()
-			),
-			extra_data: Vec::new(),
-			mix_hash: H256::default(),
-			nonce: H64::default(),
-		};
-		let mut block = ethereum::Block::new(partial_header, transactions.clone(), ommers);
-		block.header.state_root = T::StateRoot::get();
-
-		CurrentBlock::put(block.clone());
-		CurrentReceipts::put(receipts.clone());
-		CurrentTransactionStatuses::put(statuses.clone());
-
-		if post_log {
-			let digest = DigestItem::<T::Hash>::Consensus(
-				FRONTIER_ENGINE_ID,
-				PostLog::Hashes(fp_consensus::Hashes::from_block(block)).encode(),
-			);
-			frame_system::Module::<T>::deposit_log(digest.into());
-		}
-	}
-
-	fn logs_bloom(logs: Vec<Log>, bloom: &mut Bloom) {
-		for log in logs {
-			bloom.accrue(BloomInput::Raw(&log.address[..]));
-			for topic in log.topics {
-				bloom.accrue(BloomInput::Raw(&topic[..]));
-			}
-		}
-	}
-
-	fn do_transact(transaction: ethereum::Transaction) -> DispatchResultWithPostInfo {
-		ensure!(
-			fp_consensus::find_pre_log(&frame_system::Module::<T>::digest()).is_err(),
-			Error::<T>::PreLogExists,
-		);
-
-		let source = Self::recover_signer(&transaction)
-			.ok_or_else(|| Error::<T>::InvalidSignature)?;
-
-		let transaction_hash = H256::from_slice(
-			Keccak256::digest(&rlp::encode(&transaction)).as_slice()
-		);
-		let transaction_index = Pending::get().len() as u32;
-
-		let (to, contract_address, info) = Self::execute(
-			source,
-			transaction.input.clone(),
-			transaction.value,
-			transaction.gas_limit,
-			Some(transaction.gas_price),
-			Some(transaction.nonce),
-			transaction.action,
-			None,
-		)?;
-
-		let (reason, status, used_gas) = match info {
-			CallOrCreateInfo::Call(info) => {
-				(info.exit_reason, TransactionStatus {
-					transaction_hash,
-					transaction_index,
-					from: source,
-					to,
-					contract_address: None,
-					logs: info.logs.clone(),
-					logs_bloom: {
-						let mut bloom: Bloom = Bloom::default();
-						Self::logs_bloom(
-							info.logs,
-							&mut bloom
-						);
-						bloom
-					},
-				}, info.used_gas)
-			},
-			CallOrCreateInfo::Create(info) => {
-				(info.exit_reason, TransactionStatus {
-					transaction_hash,
-					transaction_index,
-					from: source,
-					to,
-					contract_address: Some(info.value),
-					logs: info.logs.clone(),
-					logs_bloom: {
-						let mut bloom: Bloom = Bloom::default();
-						Self::logs_bloom(
-							info.logs,
-							&mut bloom
-						);
-						bloom
-					},
-				}, info.used_gas)
-			},
-		};
-
-		let receipt = ethereum::Receipt {
-			state_root: match reason {
-				ExitReason::Succeed(_) => H256::from_low_u64_be(1),
-				ExitReason::Error(_) => H256::from_low_u64_le(0),
-				ExitReason::Revert(_) => H256::from_low_u64_le(0),
-				ExitReason::Fatal(_) => H256::from_low_u64_le(0),
-			},
-			used_gas,
-			logs_bloom: status.clone().logs_bloom,
-			logs: status.clone().logs,
-		};
-
-		Pending::append((transaction, status, receipt));
-
-		Self::deposit_event(Event::Executed(source, contract_address.unwrap_or_default(), transaction_hash, reason));
-		Ok(Some(T::GasWeightMapping::gas_to_weight(used_gas.unique_saturated_into())).into())
-	}
-
-	/// Get the author using the FindAuthor trait.
+// The main implementation block for the pallet. Functions here fall into three broad
+// categories:
+// - Public interface. These are functions that are `pub` and generally fall into inspector
+// functions that do not write to storage and operation functions that do.
+// - Private functions. These are your usual private utilities unavailable to other pallets.
+impl<T: Trait> Module<T> {
 	pub fn find_author() -> H160 {
 		let digest = <frame_system::Module<T>>::digest();
 		let pre_runtime_digests = digest.logs.iter().filter_map(|d| d.as_pre_runtime());
-
-		T::FindAuthor::find_author(pre_runtime_digests).unwrap_or_default()
+		if let Some(authority_id) = T::FindAuthor::find_author(pre_runtime_digests) {
+			authority_id
+		} else {
+			H160::default()
+		}
 	}
 
-	/// Get the transaction status with given index.
-	pub fn current_transaction_statuses() -> Option<Vec<TransactionStatus>> {
-		CurrentTransactionStatuses::get()
+	pub fn transaction_status(hash: H256) -> Option<TransactionStatus> {
+		TransactionStatuses::get(hash)
 	}
 
-	/// Get current block.
-	pub fn current_block() -> Option<ethereum::Block> {
-		CurrentBlock::get()
+	// Requires returning a Vec<Receipt> to enable cumulative calculations in the rpc-end.
+	//
+	// - `cumulative_gas_used`: the sum of `used_gas` for this and all previous transactions
+	// in the block.
+	// - `log_index`: each Log's index, block wise.
+	pub fn transaction_by_hash(hash: H256) -> Option<(
+		ethereum::Transaction,
+		ethereum::Block,
+		TransactionStatus,
+		Vec<ethereum::Receipt>
+	)> {
+		let (block_hash, transaction_index) = Transactions::get(hash)?;
+		let transaction_status = TransactionStatuses::get(hash)?;
+		let (block, receipts) = BlocksAndReceipts::get(block_hash)?;
+		let transaction = &block.transactions[transaction_index as usize];
+		Some((transaction.clone(), block, transaction_status, receipts))
 	}
 
-	/// Get current block hash
-	pub fn current_block_hash() -> Option<H256> {
-		Self::current_block().map(|block| block.header.hash())
+	pub fn transaction_by_block_hash_and_index(
+		hash: H256,
+		index: u32
+	) -> Option<(
+		ethereum::Transaction,
+		ethereum::Block,
+		TransactionStatus
+	)> {
+		let (block,_receipt) = BlocksAndReceipts::get(hash)?;
+		if index < block.transactions.len() as u32 {
+			let transaction = &block.transactions[index as usize];
+			let transaction_hash = H256::from_slice(
+				Keccak256::digest(&rlp::encode(transaction)).as_slice()
+			);
+			let transaction_status = TransactionStatuses::get(transaction_hash)?;
+			Some((transaction.clone(), block, transaction_status))
+		} else {
+			None
+		}
 	}
 
-	/// Get receipts by number.
-	pub fn current_receipts() -> Option<Vec<ethereum::Receipt>> {
-		CurrentReceipts::get()
+	pub fn transaction_by_block_number_and_index(
+		number: T::BlockNumber,
+		index: u32
+	) -> Option<(
+		ethereum::Transaction,
+		ethereum::Block,
+		TransactionStatus
+	)> {
+		if <BlockNumbers<T>>::contains_key(number) {
+			let hash = <BlockNumbers<T>>::get(number);
+			return <Module<T>>::transaction_by_block_hash_and_index(hash, index);
+		}
+		None
 	}
 
-	/// Execute an Ethereum transaction.
-	pub fn execute(
-		from: H160,
-		input: Vec<u8>,
-		value: U256,
-		gas_limit: U256,
-		gas_price: Option<U256>,
-		nonce: Option<U256>,
-		action: TransactionAction,
-		config: Option<evm::Config>,
-	) -> Result<(Option<H160>, Option<H160>, CallOrCreateInfo), DispatchError> {
-		match action {
+	pub fn block_by_number(number: T::BlockNumber) -> Option<ethereum::Block> {
+		if <BlockNumbers<T>>::contains_key(number) {
+			let hash = <BlockNumbers<T>>::get(number);
+			if let Some((block, _receipt)) = BlocksAndReceipts::get(hash) {
+				return Some(block)
+			}
+		}
+		None
+	}
+
+	pub fn block_by_hash(hash: H256) -> Option<ethereum::Block> {
+		if let Some((block, _receipt)) = BlocksAndReceipts::get(hash) {
+			return Some(block)
+		}
+		None
+	}
+
+	pub fn block_transaction_statuses(
+		block: &Block
+	) -> Vec<Option<TransactionStatus>> {
+		block.transactions.iter().map(|transaction|{
+			let transaction_hash = H256::from_slice(
+				Keccak256::digest(&rlp::encode(transaction)).as_slice()
+			);
+			<Module<T>>::transaction_status(transaction_hash)
+		}).collect()
+	}
+
+	/// Execute an Ethereum transaction, ignoring transaction signatures.
+	pub fn execute(source: H160, transaction: ethereum::Transaction) {
+		let transaction_hash = H256::from_slice(
+			Keccak256::digest(&rlp::encode(&transaction)).as_slice()
+		);
+		let transaction_index = PendingTransactionsAndReceipts::get().len() as u32;
+
+		let status = match transaction.action {
 			ethereum::TransactionAction::Call(target) => {
-				let res = T::Runner::call(
-					from,
+				pallet_evm::Module::<T>::execute_call(
+					source,
 					target,
-					input.clone(),
-					value,
-					gas_limit.low_u64(),
-					gas_price,
-					nonce,
-					config.as_ref().unwrap_or(T::config()),
-				).map_err(Into::into)?;
+					transaction.input.clone(),
+					transaction.value,
+					transaction.gas_limit.low_u32(),
+					transaction.gas_price,
+					Some(transaction.nonce),
+					true,
+				).unwrap(); // TODO: handle error
 
-				Ok((Some(target), None, CallOrCreateInfo::Call(res)))
+				TransactionStatus {
+					transaction_hash,
+					transaction_index,
+					from: source,
+					to: Some(target),
+					contract_address: None,
+					logs: Vec::new(), // TODO: feed in logs.
+					logs_bloom: Bloom::default(), // TODO: feed in bloom.
+				}
 			},
 			ethereum::TransactionAction::Create => {
-				let res = T::Runner::create(
-					from,
-					input.clone(),
-					value,
-					gas_limit.low_u64(),
-					gas_price,
-					nonce,
-					config.as_ref().unwrap_or(T::config()),
-				).map_err(Into::into)?;
+				let contract_address = pallet_evm::Module::<T>::execute_create(
+					source,
+					transaction.input.clone(),
+					transaction.value,
+					transaction.gas_limit.low_u32(),
+					transaction.gas_price,
+					Some(transaction.nonce),
+					true,
+				).unwrap().1; // TODO: handle error
 
-				Ok((None, Some(res.value), CallOrCreateInfo::Create(res)))
+				TransactionStatus {
+					transaction_hash,
+					transaction_index,
+					from: source,
+					to: None,
+					contract_address: Some(contract_address),
+					logs: Vec::new(), // TODO: feed in logs.
+					logs_bloom: Bloom::default(), // TODO: feed in bloom.
+				}
 			},
-		}
+		};
+
+		TransactionStatuses::insert(transaction_hash, status);
+
+		let receipt = ethereum::Receipt {
+			state_root: H256::default(), // TODO: should be okay / error status.
+			used_gas: U256::default(), // TODO: set this.
+			logs_bloom: Bloom::default(), // TODO: set this.
+			logs: Vec::new(), // TODO: set this.
+		};
+
+		PendingTransactionsAndReceipts::append((transaction, receipt));
 	}
 }

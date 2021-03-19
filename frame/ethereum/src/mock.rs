@@ -1,52 +1,38 @@
-// SPDX-License-Identifier: Apache-2.0
+// Copyright 2017-2020 Parity Technologies (UK) Ltd.
 // This file is part of Frontier.
-//
-// Copyright (c) 2020 Parity Technologies (UK) Ltd.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// 	http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+
+// Substrate is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// Substrate is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with Substrate.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Test utilities
 
 use super::*;
-use crate::{Module, Config, IntermediateStateRoot};
+use crate::{Module, Trait};
 use ethereum::{TransactionAction, TransactionSignature};
 use frame_support::{
-	impl_outer_origin, parameter_types, ConsensusEngineId
+	impl_outer_origin, parameter_types, weights::Weight, ConsensusEngineId
 };
-use pallet_evm::{FeeCalculator, AddressMapping, EnsureAddressTruncated};
+use pallet_evm::{FeeCalculator, HashTruncateConvertAccountId};
 use rlp::*;
 use sp_core::{H160, H256, U256};
 use sp_runtime::{
 	testing::Header,
 	traits::{BlakeTwo256, IdentityLookup},
-	ModuleId,
+	ModuleId, Perbill,
 };
-use sp_runtime::AccountId32;
 
 impl_outer_origin! {
 	pub enum Origin for Test where system = frame_system {}
-}
-
-pub struct PalletInfo;
-
-impl frame_support::traits::PalletInfo for PalletInfo {
-	fn index<P: 'static>() -> Option<usize> {
-		return Some(0)
-	}
-
-	fn name<P: 'static>() -> Option<&'static str> {
-		return Some("TestName")
-	}
 }
 
 // For testing the pallet, we construct most of a mock runtime. This means
@@ -56,43 +42,43 @@ impl frame_support::traits::PalletInfo for PalletInfo {
 pub struct Test;
 parameter_types! {
 	pub const BlockHashCount: u64 = 250;
-	pub BlockWeights: frame_system::limits::BlockWeights =
-		frame_system::limits::BlockWeights::simple_max(1024);
+	pub const MaximumBlockWeight: Weight = 1024;
+	pub const MaximumBlockLength: u32 = 2 * 1024;
+	pub const AvailableBlockRatio: Perbill = Perbill::from_percent(75);
 }
-impl frame_system::Config for Test {
+impl frame_system::Trait for Test {
 	type BaseCallFilter = ();
-	type BlockWeights = ();
-	type BlockLength = ();
-	type DbWeight = ();
+	type SystemWeightInfo = ();
 	type Origin = Origin;
+	type Call = ();
 	type Index = u64;
 	type BlockNumber = u64;
 	type Hash = H256;
-	type Call = ();
 	type Hashing = BlakeTwo256;
-	type AccountId = AccountId32;
+	type AccountId = H160;
 	type Lookup = IdentityLookup<Self::AccountId>;
 	type Header = Header;
 	type Event = ();
 	type BlockHashCount = BlockHashCount;
+	type MaximumBlockWeight = MaximumBlockWeight;
+	type DbWeight = ();
+	type BlockExecutionWeight = ();
+	type ExtrinsicBaseWeight = ();
+	type MaximumExtrinsicWeight = MaximumBlockWeight;
+	type MaximumBlockLength = MaximumBlockLength;
+	type AvailableBlockRatio = AvailableBlockRatio;
 	type Version = ();
-	type PalletInfo = PalletInfo;
+	type ModuleToIndex = ();
 	type AccountData = pallet_balances::AccountData<u64>;
 	type OnNewAccount = ();
 	type OnKilledAccount = ();
-	type SystemWeightInfo = ();
-	type SS58Prefix = ();
 }
 
 parameter_types! {
-	// For weight estimation, we assume that the most locks on an individual account will be 50.
-	// This number may need to be adjusted in the future if this assumption no longer holds true.
-	pub const MaxLocks: u32 = 50;
 	pub const ExistentialDeposit: u64 = 500;
 }
 
-impl pallet_balances::Config for Test {
-	type MaxLocks = MaxLocks;
+impl pallet_balances::Trait for Test {
 	type Balance = u64;
 	type Event = ();
 	type DustRemoval = ();
@@ -105,7 +91,7 @@ parameter_types! {
 	pub const MinimumPeriod: u64 = 6000 / 2;
 }
 
-impl pallet_timestamp::Config for Test {
+impl pallet_timestamp::Trait for Test {
 	type Moment = u64;
 	type OnTimestampSet = ();
 	type MinimumPeriod = MinimumPeriod;
@@ -124,7 +110,7 @@ impl FindAuthor<H160> for EthereumFindAuthor {
 	fn find_author<'a, I>(_digests: I) -> Option<H160> where
 		I: 'a + IntoIterator<Item=(ConsensusEngineId, &'a [u8])>
 	{
-		Some(address_build(0).address)
+		Some(address_build(0).1)
 	}
 }
 
@@ -134,39 +120,19 @@ parameter_types! {
 	pub const EVMModuleId: ModuleId = ModuleId(*b"py/evmpa");
 }
 
-pub struct HashedAddressMapping;
-
-impl AddressMapping<AccountId32> for HashedAddressMapping {
-	fn into_account_id(address: H160) -> AccountId32 {
-		let mut data = [0u8; 32];
-		data[0..20].copy_from_slice(&address[..]);
-		AccountId32::from(Into::<[u8; 32]>::into(data))
-	}
-}
-
-impl pallet_evm::Config for Test {
+impl pallet_evm::Trait for Test {
+	type ModuleId = EVMModuleId;
 	type FeeCalculator = FixedGasPrice;
-	type GasWeightMapping = ();
-	type CallOrigin = EnsureAddressTruncated;
-	type WithdrawOrigin = EnsureAddressTruncated;
-	type AddressMapping = HashedAddressMapping;
+	type ConvertAccountId = HashTruncateConvertAccountId<BlakeTwo256>;
 	type Currency = Balances;
 	type Event = ();
 	type Precompiles = ();
-	type Runner = pallet_evm::runner::stack::Runner<Self>;
 	type ChainId = ChainId;
-	type OnChargeTransaction = ();
 }
 
-parameter_types! {
-	pub const BlockGasLimit: U256 = U256::MAX;
-}
-
-impl Config for Test {
+impl Trait for Test {
 	type Event = ();
 	type FindAuthor = EthereumFindAuthor;
-	type StateRoot = IntermediateStateRoot;
-	type BlockGasLimit = BlockGasLimit;
 }
 
 pub type System = frame_system::Module<Test>;
@@ -176,53 +142,38 @@ pub type Evm = pallet_evm::Module<Test>;
 
 pub struct AccountInfo {
 	pub address: H160,
-	pub account_id: AccountId32,
 	pub private_key: H256,
 }
 
-fn address_build(seed: u8) -> AccountInfo {
+fn address_build(seed: u8) -> (H256, H160) {
 	let private_key = H256::from_slice(&[(seed + 1) as u8; 32]); //H256::from_low_u64_be((i + 1) as u64);
 	let secret_key = secp256k1::SecretKey::parse_slice(&private_key[..]).unwrap();
-	let public_key = &secp256k1::PublicKey::from_secret_key(&secret_key).serialize()[1..65];
+	let public_key = secp256k1::PublicKey::from_secret_key(&secret_key);
 	let address = H160::from(H256::from_slice(
-		&Keccak256::digest(public_key)[..],
+		&Keccak256::digest(&public_key.serialize()[1..])[..],
 	));
-
-	let mut data = [0u8; 32];
-	data[0..20].copy_from_slice(&address[..]);
-
-	AccountInfo {
-		private_key,
-		account_id: AccountId32::from(Into::<[u8; 32]>::into(data)),
-		address
-	}
+	(private_key, address)
 }
-
 
 // This function basically just builds a genesis storage key/value store according to
 // our desired mockup.
 pub fn new_test_ext(accounts_len: usize) -> (Vec<AccountInfo>, sp_io::TestExternalities) {
-	// sc_cli::init_logger("");
-	let mut ext = frame_system::GenesisConfig::default()
+	let ext = frame_system::GenesisConfig::default()
 		.build_storage::<Test>()
-		.unwrap();
+		.unwrap()
+		.into();
 
 	let pairs = (0..accounts_len)
-		.map(|i| address_build(i as u8))
+		.map(|i| {
+			let (private_key, address) = address_build(i as u8);
+			AccountInfo {
+				private_key: private_key,
+				address: address,
+			}
+		})
 		.collect::<Vec<_>>();
 
-
-	let balances: Vec<_> = (0..accounts_len)
-		.map(|i| {
-			(pairs[i].account_id.clone(), 10_000_000)
-		})
-		.collect();
-
-	pallet_balances::GenesisConfig::<Test> { balances }
-			.assimilate_storage(&mut ext)
-			.unwrap();
-
-	(pairs, ext.into())
+	(pairs, ext)
 }
 
 pub fn contract_address(sender: H160, nonce: u64) -> H160 {
@@ -230,7 +181,7 @@ pub fn contract_address(sender: H160, nonce: u64) -> H160 {
 	rlp.append(&sender);
 	rlp.append(&nonce);
 
-	H160::from_slice(&Keccak256::digest(&rlp.out())[12..])
+	H160::from_slice(&Keccak256::digest(rlp.out().as_slice())[12..])
 }
 
 pub fn storage_address(sender: H160, slot: H256) -> H256 {
@@ -257,7 +208,7 @@ impl UnsignedTransaction {
 		s.append(&self.action);
 		s.append(&self.value);
 		s.append(&self.input);
-		s.append(&ChainId::get());
+		s.append(&42u8); // TODO: move this chain id into the frame ethereum configuration
 		s.append(&0u8);
 		s.append(&0u8);
 	}
@@ -265,17 +216,23 @@ impl UnsignedTransaction {
 	fn signing_hash(&self) -> H256 {
 		let mut stream = RlpStream::new();
 		self.signing_rlp_append(&mut stream);
-		H256::from_slice(&Keccak256::digest(&stream.out()).as_slice())
+		H256::from_slice(&Keccak256::digest(&stream.drain()).as_slice())
 	}
 
-	pub fn sign(&self, key: &H256) -> Transaction {
+	pub fn sign(self, key: &H256) -> Transaction {
 		let hash = self.signing_hash();
-		let msg = secp256k1::Message::parse(hash.as_fixed_bytes());
+		let msg = {
+			let mut a = [0u8; 32];
+			for i in 0..32 {
+				a[i] = hash[i];
+			}
+			secp256k1::Message::parse(&a)
+		};
 		let s = secp256k1::sign(&msg, &secp256k1::SecretKey::parse_slice(&key[..]).unwrap());
 		let sig = s.0.serialize();
 
 		let sig = TransactionSignature::new(
-			s.1.serialize() as u64 % 2 + ChainId::get() * 2 + 35,
+			0x78,
 			H256::from_slice(&sig[0..32]),
 			H256::from_slice(&sig[32..64]),
 		)
@@ -287,7 +244,7 @@ impl UnsignedTransaction {
 			gas_limit: self.gas_limit,
 			action: self.action,
 			value: self.value,
-			input: self.input.clone(),
+			input: self.input,
 			signature: sig,
 		}
 	}
