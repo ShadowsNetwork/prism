@@ -306,21 +306,21 @@ pub fn new_light(config: Configuration) -> Result<TaskManager, ServiceError> {
 			let provider = client as Arc<dyn StorageAndProofProvider<_, _>>;
 			Ok(Arc::new(GrandpaFinalityProofProvider::new(backend, provider)) as _)
 		})?
-		.with_rpc_extensions(|builder| {
-			let fetcher = builder.fetcher()
-				.ok_or_else(|| "Trying to start node RPC without active fetcher")?;
-			let remote_blockchain = builder.remote_backend()
-				.ok_or_else(|| "Trying to start node RPC without active remote blockchain")?;
+	.with_rpc_extensions(|builder| {
+		let fetcher = builder.fetcher()
+		.ok_or_else(|| "Trying to start node RPC without active fetcher")?;
+		let remote_blockchain = builder.remote_backend()
+		.ok_or_else(|| "Trying to start node RPC without active remote blockchain")?;
 
-			let light_deps = crate::rpc::LightDeps {
-				remote_blockchain,
-				fetcher,
-				client: builder.client().clone(),
-				pool: builder.pool(),
-			};
+		let light_deps = crate::rpc::LightDeps {
+		remote_blockchain,
+		fetcher,
+		client: builder.client().clone(),
+		pool: builder.pool(),
+		};
 
-			Ok(crate::rpc::create_light(light_deps))
-		})?
+		Ok(crate::rpc::create_light(light_deps))
+	})?
 		.build_light()
 		.map(|ServiceComponents { task_manager, .. }| task_manager)
 }

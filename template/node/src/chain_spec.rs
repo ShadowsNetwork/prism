@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use sp_core::{U256, Pair, Public, sr25519, H160};
+use sp_core::{U256, Pair, Public, sr25519};
 use evm::{ConvertAccountId, HashTruncateConvertAccountId};
 use frontier_template_runtime::{
 	AccountId, AuraConfig, BalancesConfig, EVMConfig, GenesisConfig, GrandpaConfig, Signature,
@@ -44,8 +44,8 @@ type AccountPublic = <Signature as Verify>::Signer;
 
 /// Helper function to generate an account ID from seed
 pub fn get_account_id_from_seed<TPublic: Public>(seed: &str) -> AccountId
-	where
-		AccountPublic: From<<TPublic::Pair as Pair>::Public>,
+where
+	AccountPublic: From<<TPublic::Pair as Pair>::Public>,
 {
 	AccountPublic::from(get_from_seed::<TPublic>(seed)).into_account()
 }
@@ -144,7 +144,7 @@ fn testnet_genesis(
 		built_in_evm_account,
 		evm::GenesisAccount {
 			nonce: 0.into(),
-			balance: (2018030320150719 as u128).into(),
+			balance: (211803032013232150719 as u128).into(),
 			storage: BTreeMap::new(),
 			code: WASM_BINARY.to_vec(),
 		},

@@ -118,8 +118,8 @@ pub mod opaque {
 
 /// This runtime version.
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("node-frontier-template"),
-	impl_name: create_runtime_str!("node-frontier-template"),
+	spec_name: create_runtime_str!("node-shadows"),
+	impl_name: create_runtime_str!("node-shadows"),
 	authoring_version: 1,
 	spec_version: 1,
 	impl_version: 1,
@@ -229,7 +229,7 @@ impl grandpa::Trait for Runtime {
 	type KeyOwnerProofSystem = ();
 
 	type KeyOwnerProof =
-	<Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(KeyTypeId, GrandpaId)>>::Proof;
+		<Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(KeyTypeId, GrandpaId)>>::Proof;
 
 	type KeyOwnerIdentification = <Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(
 		KeyTypeId,
@@ -250,20 +250,7 @@ impl timestamp::Trait for Runtime {
 	type MinimumPeriod = MinimumPeriod;
 	type WeightInfo = ();
 }
-parameter_types! {
-    pub const EVMModuleId: ModuleId = ModuleId(*b"py/evmpa");
-    pub const ChainId: u64 = 251;
-}
 
-impl evm::Trait for Runtime {
-	type ModuleId = EVMModuleId;
-	type FeeCalculator = FixedGasPrice;
-	type ConvertAccountId = HashTruncateConvertAccountId<BlakeTwo256>;
-	type Currency = Balances;
-	type Event = Event;
-	type Precompiles = ();
-	type ChainId = ChainId;
-}
 parameter_types! {
 	pub const ExistentialDeposit: u128 = 500;
 }
@@ -304,6 +291,21 @@ impl FeeCalculator for FixedGasPrice {
 		// Gas price is always one token per gas.
 		1.into()
 	}
+}
+
+parameter_types! {
+	pub const EVMModuleId: ModuleId = ModuleId(*b"py/evmpa");
+	pub const ChainId: u64 = 42;
+}
+
+impl evm::Trait for Runtime {
+	type ModuleId = EVMModuleId;
+	type FeeCalculator = FixedGasPrice;
+	type ConvertAccountId = HashTruncateConvertAccountId<BlakeTwo256>;
+	type Currency = Balances;
+	type Event = Event;
+	type Precompiles = ();
+	type ChainId = ChainId;
 }
 
 pub struct EthereumFindAuthor<F>(PhantomData<F>);
@@ -386,7 +388,7 @@ pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signatu
 pub type CheckedExtrinsic = generic::CheckedExtrinsic<AccountId, Call, SignedExtra>;
 /// Executive: handles dispatch to the various modules.
 pub type Executive =
-frame_executive::Executive<Runtime, Block, system::ChainContext<Runtime>, Runtime, AllModules>;
+	frame_executive::Executive<Runtime, Block, system::ChainContext<Runtime>, Runtime, AllModules>;
 
 impl_runtime_apis! {
 	impl sp_api::Core<Block> for Runtime {

@@ -18,35 +18,34 @@ structopt = "0.3.8"
 parking_lot = "0.10.0"
 jsonrpc-core = "14.0.3"
 
-evm = { version = "2.0.0-dev", package = "pallet-evm", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-api = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-core = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-runtime = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-inherents = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-blockchain = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sc-transaction-pool = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-transaction-pool = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-finality-grandpa = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-substrate-frame-rpc-system = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-pallet-transaction-payment-rpc = { version = "2.0.0-dev",git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sc-cli = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sc-executor = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sc-service = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sc-consensus-aura = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-consensus-aura = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sp-consensus = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sc-consensus = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sc-finality-grandpa = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sc-network = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master"  }
-sc-rpc-api = { version = "0.8.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sc-client-api = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master"  }
+sp-api = { version = "2.0.0-dev", path = "../../vendor/substrate/primitives/api" }
+sp-blockchain = { version = "2.0.0-dev", path = "../../vendor/substrate/primitives/blockchain" }
+sc-rpc-api = { version = "0.8.0-dev", path = "../../vendor/substrate/client/rpc-api" }
+substrate-frame-rpc-system = { version = "2.0.0-dev", path = "../../vendor/substrate/utils/frame/rpc/system" }
+pallet-transaction-payment-rpc = { version = "2.0.0-dev", path = "../../vendor/substrate/frame/transaction-payment/rpc/" }
+sc-cli = { version = "0.8.0-dev", path = "../../vendor/substrate/client/cli" }
+sp-core = { version = "2.0.0-dev", path = "../../vendor/substrate/primitives/core" }
+sc-executor = { version = "0.8.0-dev", path = "../../vendor/substrate/client/executor" }
+sc-service = { version = "0.8.0-dev", path = "../../vendor/substrate/client/service" }
+sp-inherents = { version = "2.0.0-dev", path = "../../vendor/substrate/primitives/inherents" }
+sc-transaction-pool = { version = "2.0.0-dev", path = "../../vendor/substrate/client/transaction-pool" }
+sp-transaction-pool = { version = "2.0.0-dev", path = "../../vendor/substrate/primitives/transaction-pool" }
+sc-network = { version = "0.8.0-dev", path = "../../vendor/substrate/client/network" }
+sc-consensus-aura = { version = "0.8.0-dev", path = "../../vendor/substrate/client/consensus/aura" }
+sp-consensus-aura = { version = "0.8.0-dev", path = "../../vendor/substrate/primitives/consensus/aura" }
+sp-consensus = { version = "0.8.0-dev", path = "../../vendor/substrate/primitives/consensus/common" }
+sc-consensus = { version = "0.8.0-dev", path = "../../vendor/substrate/client/consensus/common" }
+evm = { version = "2.0.0-dev", package = "pallet-evm", path = "../../vendor/substrate/frame/evm" }
+sc-finality-grandpa = { version = "0.8.0-dev", path = "../../vendor/substrate/client/finality-grandpa" }
+sp-finality-grandpa = { version = "2.0.0-dev", path = "../../vendor/substrate/primitives/finality-grandpa" }
+sc-client-api = { version = "2.0.0-dev", path = "../../vendor/substrate/client/api" }
+sp-runtime = { version = "2.0.0-dev", path = "../../vendor/substrate/primitives/runtime" }
+sc-basic-authorship = { path = "../../vendor/substrate/client/basic-authorship" }
+sp-block-builder = { path = "../../vendor/substrate/primitives/block-builder" }
 
-sp-block-builder = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
-sc-basic-authorship = { git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
 shadows-runtime = { version = "0.0.1", path = "../runtime" }
 frontier-rpc = { version = "0.1.0", path = "../../rpc" }
 frontier-rpc-primitives = { version = "0.1.0", path = "../../rpc/primitives" }
 
-
 [build-dependencies]
-substrate-build-script-utils = { version = "2.0.0-dev", git = "https://github.com/jinfeixibi990910/substrate.git", branch= "master" }
+substrate-build-script-utils = { version = "2.0.0-dev", path = "../../vendor/substrate/utils/build-script-utils" }
