@@ -35,7 +35,7 @@ cargo build --release
 Purge any existing dev chain state:
 
 ```bash
-./target/release/shadows-node  --dev --ws-external --rpc-external --rpc-cors=all
+./target/release/shadows purge-chain --dev
 ```
 
 Start a dev chain:
