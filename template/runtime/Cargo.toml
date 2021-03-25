@@ -1,7 +1,7 @@
 [package]
 name = "shadows-runtime"
 version = "0.0.1"
-authors = ["Anonymous"]
+authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 license = "Unlicense"
 homepage = "https://substrate.dev"
@@ -11,51 +11,69 @@ repository = "https://github.com/paritytech/substrate/"
 targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
-codec = { package = "parity-scale-codec", version = "1.3.0", default-features = false, features = ["derive"] }
-
-aura = { version = "2.0.0-dev", default-features = false, package = "pallet-aura", path = "../../vendor/substrate/frame/aura" }
-balances = { version = "2.0.0-dev", default-features = false, package = "pallet-balances", path = "../../vendor/substrate/frame/balances" }
-frame-support = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/frame/support" }
-grandpa = { version = "2.0.0-dev", default-features = false, package = "pallet-grandpa", path = "../../vendor/substrate/frame/grandpa" }
-randomness-collective-flip = { version = "2.0.0-dev", default-features = false, package = "pallet-randomness-collective-flip", path = "../../vendor/substrate/frame/randomness-collective-flip" }
-sudo = { version = "2.0.0-dev", default-features = false, package = "pallet-sudo", path = "../../vendor/substrate/frame/sudo" }
-system = { version = "2.0.0-dev", default-features = false, package = "frame-system", path = "../../vendor/substrate/frame/system" }
-timestamp = { version = "2.0.0-dev", default-features = false, package = "pallet-timestamp", path = "../../vendor/substrate/frame/timestamp" }
-transaction-payment = { version = "2.0.0-dev", default-features = false, package = "pallet-transaction-payment", path = "../../vendor/substrate/frame/transaction-payment" }
-ethereum = { version = "0.1.0", default-features = false, package = "pallet-ethereum", path = "../../frame/ethereum" }
-evm = { version = "2.0.0-dev", default-features = false, package = "pallet-evm", path = "../../vendor/substrate/frame/evm" }
-frame-executive = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/frame/executive" }
+codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false, features = ["derive"] }
 serde = { version = "1.0.101", optional = true, features = ["derive"] }
-sp-api = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/primitives/api" }
-sp-block-builder = { path = "../../vendor/substrate/primitives/block-builder", default-features = false, version = "2.0.0-dev"}
-sp-consensus-aura = { version = "0.8.0-dev", default-features = false, path = "../../vendor/substrate/primitives/consensus/aura" }
-sp-core = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/primitives/core" }
-sp-inherents = { path = "../../vendor/substrate/primitives/inherents", default-features = false, version = "2.0.0-dev"}
-sp-io = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/primitives/io" }
-sp-offchain = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/primitives/offchain" }
-sp-runtime = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/primitives/runtime" }
-sp-session = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/primitives/session" }
-sp-std = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/primitives/std" }
-sp-transaction-pool = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/primitives/transaction-pool" }
-sp-version = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/primitives/version" }
-frame-system-rpc-runtime-api = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/frame/system/rpc/runtime-api/" }
-pallet-transaction-payment-rpc-runtime-api = { version = "2.0.0-dev", default-features = false, path = "../../vendor/substrate/frame/transaction-payment/rpc/runtime-api/" }
-frontier-rpc-primitives = { default-features = false, path = "../../rpc/primitives" }
+frame-executive = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+frame-support = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+frame-system = { version = "3.0.0-dev", default-features = false, package = "frame-system", git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+frame-system-rpc-runtime-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+pallet-evm-precompile-simple = { version = "3.0.0-dev", default-features = false, path = "../../frame/evm/precompile/simple" }
+pallet-evm-precompile-sha3fips = { version = "3.0.0-dev", default-features = false, path = "../../frame/evm/precompile/sha3fips" }
+pallet-aura = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+pallet-balances = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+pallet-grandpa = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+pallet-randomness-collective-flip = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+pallet-sudo = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+pallet-timestamp = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+pallet-transaction-payment = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+pallet-transaction-payment-rpc-runtime-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sp-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sp-block-builder = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier"}
+sp-consensus-aura = { version = "0.9.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sp-core = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sp-inherents = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier"}
+sp-io = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sp-offchain = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sp-runtime = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sp-session = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sp-std = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sp-transaction-pool = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+sp-version = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+
+fp-rpc = { default-features = false, path = "../../primitives/rpc" }
+pallet-ethereum = { version = "0.1.0", default-features = false, path = "../../frame/ethereum" }
+pallet-evm = { version = "3.0.0-dev", default-features = false, path = "../../frame/evm" }
 
 [build-dependencies]
-wasm-builder-runner = { version = "1.0.5", package = "substrate-wasm-builder-runner", path = "../../vendor/substrate/utils/wasm-builder-runner" }
+substrate-wasm-builder = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
 
 [features]
-default = ["std"]
+default = ["std", "aura"]
+aura = []
+manual-seal = []
 std = [
-	"aura/std",
-	"balances/std",
 	"codec/std",
+	"serde",
+
 	"frame-executive/std",
 	"frame-support/std",
-	"grandpa/std",
-	"randomness-collective-flip/std",
-	"serde",
+	"frame-system-rpc-runtime-api/std",
+	"frame-system/std",
+	"fp-rpc/std",
+
+	"pallet-ethereum/std",
+	"pallet-evm/std",
+	"pallet-evm-precompile-simple/std",
+	"pallet-evm-precompile-sha3fips/std",
+	"pallet-aura/std",
+	"pallet-balances/std",
+	"pallet-grandpa/std",
+	"pallet-randomness-collective-flip/std",
+	"pallet-sudo/std",
+	"pallet-timestamp/std",
+	"pallet-transaction-payment-rpc-runtime-api/std",
+	"pallet-transaction-payment/std",
+
 	"sp-api/std",
 	"sp-block-builder/std",
 	"sp-consensus-aura/std",
@@ -68,13 +86,4 @@ std = [
 	"sp-std/std",
 	"sp-transaction-pool/std",
 	"sp-version/std",
-	"sudo/std",
-	"system/std",
-	"timestamp/std",
-	"transaction-payment/std",
-	"ethereum/std",
-	"evm/std",
-	"frame-system-rpc-runtime-api/std",
-	"pallet-transaction-payment-rpc-runtime-api/std",
-	"frontier-rpc-primitives/std",
 ]
