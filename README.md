@@ -1,8 +1,26 @@
-# Shadows
+
+# Shadows Network
+
+Run an Ethereum compatible parachain based on Substrate.
+
+*See [www.substrate.io](https://www.substrate.io/) for substrate information.*
+
+*See [shadows.link](https://shadows.link/) for the shadows blockchain description.*
 
 # Local Development
 
 Follow these steps to prepare a local Substrate development environment :hammer_and_wrench:
+
+## Install (linux)
+
+### Get the code
+
+Get the master branch of shadows：
+
+```bash
+git clone https://github.com/ShadowsNetwork/shadows
+cd shadows
+```
 
 ### Simple Setup
 
@@ -11,18 +29,19 @@ minutes).
 
 ```bash
 curl https://getsubstrate.io -sSf | bash -s -- --fast
+source $HOME/.cargo/env
 ```
 
-### Manual Setup
+Run the initialization script, which checks the correct rust nightly version and adds the `wasm32-unknown-unknown` target to that specific version:
 
-Find manual setup instructions at the
-[Substrate Developer Hub](https://substrate.dev/docs/en/knowledgebase/getting-started/#manual-installation).
+```bash
+./scripts/init.sh
+```
 
-### Build
+### Build  the Shadows Node
 
 Once the development environment is set up, build the node template. This command will build the
-[Wasm](https://substrate.dev/docs/en/knowledgebase/advanced/executor#wasm-execution) and
-[native](https://substrate.dev/docs/en/knowledgebase/advanced/executor#native-execution) code:
+[Wasm](https://substrate.dev/docs/en/knowledgebase/advanced/executor#wasm-execution) and [native](https://substrate.dev/docs/en/knowledgebase/advanced/executor#native-execution) code:
 
 ```bash
 cargo build --release
@@ -50,7 +69,21 @@ Or, start a dev chain with detailed logging:
 RUST_LOG=debug RUST_BACKTRACE=1 ./target/release/shadows-node -lruntime=debug --dev
 ```
 
-## Template Structure
+ 
 
-A Substrate project such as this consists of a number of components that are spread across a few
-directories.
+
+
+Local TestNet:  127.0.0.1:9933 ,
+
+ChainId: 888 ,
+
+Account:
+
+- Address:0xAA7358886fd6FEc1d64323D9da340FD3c0B9a9E4
+- PriKey:665c5c10437cc1220b805b3b6d015c82f476e1d8144f08ba85840eddf4b903a5
+
+if you want to deployment contract on the testnet,this will help you.
+
+
+
+
