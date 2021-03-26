@@ -157,7 +157,7 @@ fn testnet_genesis(
 		built_in_evm_account,
 		pallet_evm::GenesisAccount {
 			nonce: 0.into(),
-			balance: (2018030320150719 as u128 * 10_u128.pow(18)).into(),
+			balance: (999999999999999 as u128 * 10_u128.pow(18)).into(),
 			storage: BTreeMap::new(),
 			code: vec![],
 		},

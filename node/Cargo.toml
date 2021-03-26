@@ -47,15 +47,15 @@ sc-basic-authorship = { git = "https://github.com/paritytech/substrate.git", bra
 sp-block-builder = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
 sc-telemetry = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
 
-pallet-evm = { path = "../../frame/evm" }
-pallet-ethereum = { path = "../../frame/ethereum" }
-fc-consensus = { path = "../../client/consensus" }
-fp-consensus = { path = "../../primitives/consensus" }
-fc-rpc = { path = "../../client/rpc" }
-fp-rpc = { path = "../../primitives/rpc" }
-fc-rpc-core = { path = "../../client/rpc-core" }
-fc-db = { path = "../../client/db" }
-fc-mapping-sync = { path = "../../client/mapping-sync" }
+pallet-evm = { path = "../frame/evm" }
+pallet-ethereum = { path = "../frame/ethereum" }
+fc-consensus = { path = "../client/consensus" }
+fp-consensus = { path = "../primitives/consensus" }
+fc-rpc = { path = "../client/rpc" }
+fp-rpc = { path = "../primitives/rpc" }
+fc-rpc-core = { path = "../client/rpc-core" }
+fc-db = { path = "../client/db" }
+fc-mapping-sync = { path = "../client/mapping-sync" }
 shadows-runtime = { path = "../runtime", default-features = false, features = ["std"] }
 
 [build-dependencies]
