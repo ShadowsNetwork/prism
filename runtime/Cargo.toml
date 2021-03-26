@@ -5,7 +5,7 @@ authors = ["Parity Technologies <admin@parity.io>"]
 edition = "2018"
 license = "Unlicense"
 homepage = "https://substrate.dev"
-repository = "https://github.com/paritytech/substrate/"
+repository = "https://github.com/ShadowsNetwork/substrate/"
 
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
@@ -13,30 +13,30 @@ targets = ["x86_64-unknown-linux-gnu"]
 [dependencies]
 codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false, features = ["derive"] }
 serde = { version = "1.0.101", optional = true, features = ["derive"] }
-frame-executive = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-frame-support = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-frame-system = { version = "3.0.0-dev", default-features = false, package = "frame-system", git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-frame-system-rpc-runtime-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-pallet-aura = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-pallet-balances = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-pallet-grandpa = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-pallet-randomness-collective-flip = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-pallet-sudo = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-pallet-timestamp = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-pallet-transaction-payment = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-pallet-transaction-payment-rpc-runtime-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-block-builder = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier"}
-sp-consensus-aura = { version = "0.9.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-core = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-inherents = { default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier"}
-sp-io = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-offchain = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-runtime = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-session = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-std = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-transaction-pool = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-version = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+frame-executive = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+frame-support = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+frame-system = { version = "3.0.0-dev", default-features = false, package = "frame-system", git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+frame-system-rpc-runtime-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-aura = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-balances = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-grandpa = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-randomness-collective-flip = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-sudo = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-timestamp = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-transaction-payment = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-transaction-payment-rpc-runtime-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-block-builder = { default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier"}
+sp-consensus-aura = { version = "0.9.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-core = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-inherents = { default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier"}
+sp-io = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-offchain = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-runtime = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-session = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-std = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-transaction-pool = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-version = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
 
 fp-rpc = { default-features = false, path = "../primitives/rpc" }
 pallet-ethereum = { version = "0.1.0", default-features = false, path = "../frame/ethereum" }
@@ -45,7 +45,7 @@ pallet-evm-precompile-simple = { version = "3.0.0-dev", default-features = false
 pallet-evm-precompile-sha3fips = { version = "3.0.0-dev", default-features = false, path = "../frame/evm/precompile/sha3fips" }
 
 [build-dependencies]
-substrate-wasm-builder = { git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+substrate-wasm-builder = { git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
 
 [features]
 default = ["std", "aura"]

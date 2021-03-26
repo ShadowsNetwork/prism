@@ -1481,7 +1481,7 @@ checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 [[package]]
 name = "fork-tree"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "parity-scale-codec",
 ]
@@ -1543,7 +1543,7 @@ dependencies = [
 [[package]]
 name = "frame-benchmarking"
 version = "3.1.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -1562,7 +1562,7 @@ dependencies = [
 [[package]]
 name = "frame-executive"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -1578,7 +1578,7 @@ dependencies = [
 [[package]]
 name = "frame-metadata"
 version = "13.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "parity-scale-codec",
  "serde",
@@ -1589,7 +1589,7 @@ dependencies = [
 [[package]]
 name = "frame-support"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "bitflags",
  "frame-metadata",
@@ -1615,7 +1615,7 @@ dependencies = [
 [[package]]
 name = "frame-support-procedural"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "Inflector",
  "frame-support-procedural-tools",
@@ -1627,7 +1627,7 @@ dependencies = [
 [[package]]
 name = "frame-support-procedural-tools"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-support-procedural-tools-derive",
  "proc-macro-crate 1.0.0",
@@ -1639,7 +1639,7 @@ dependencies = [
 [[package]]
 name = "frame-support-procedural-tools-derive"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1649,7 +1649,7 @@ dependencies = [
 [[package]]
 name = "frame-system"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-support",
  "impl-trait-for-tuples 0.2.1",
@@ -1666,7 +1666,7 @@ dependencies = [
 [[package]]
 name = "frame-system-rpc-runtime-api"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "parity-scale-codec",
  "sp-api",
@@ -3718,7 +3718,7 @@ dependencies = [
 [[package]]
 name = "pallet-aura"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3735,7 +3735,7 @@ dependencies = [
 [[package]]
 name = "pallet-authorship"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3750,7 +3750,7 @@ dependencies = [
 [[package]]
 name = "pallet-balances"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3909,7 +3909,7 @@ dependencies = [
 [[package]]
 name = "pallet-grandpa"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3931,7 +3931,7 @@ dependencies = [
 [[package]]
 name = "pallet-randomness-collective-flip"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3944,7 +3944,7 @@ dependencies = [
 [[package]]
 name = "pallet-session"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3964,7 +3964,7 @@ dependencies = [
 [[package]]
 name = "pallet-sudo"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -3978,7 +3978,7 @@ dependencies = [
 [[package]]
 name = "pallet-timestamp"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -3996,7 +3996,7 @@ dependencies = [
 [[package]]
 name = "pallet-transaction-payment"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "frame-support",
  "frame-system",
@@ -4012,7 +4012,7 @@ dependencies = [
 [[package]]
 name = "pallet-transaction-payment-rpc"
 version = "3.0.0"
-source = "git+https://github.com/paritytech/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
+source = "git+https://github.com/ShadowsNetwork/substrate.git?branch=frontier#39b31316815ec6d709e7ad7c1a31c436d14c53e6"
 dependencies = [
  "jsonrpc-core 15.1.0",
  "jsonrpc-core-client 15.1.0",
