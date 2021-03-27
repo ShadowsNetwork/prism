@@ -412,7 +412,7 @@ pub fn new_full(
 			};
 
 		}
-		log::info!("Manual Seal Ready");
+		log::info!("Shadows severce Ready");
 	}
 
 	#[cfg(feature = "aura")] {
