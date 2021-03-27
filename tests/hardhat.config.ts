@@ -17,7 +17,7 @@ const config: HardhatUserConfig = {
         },
         dev: {
             url: `http://119.45.201.48:9933`,
-            chainId: 888,
+            chainId: 9909,
             accounts: [`0x${ROPSTEN_PRIVATE_KEY}`]
         },
         moonbase: {
