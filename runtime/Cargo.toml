@@ -48,7 +48,7 @@ pallet-evm-precompile-sha3fips = { version = "3.0.0-dev", default-features = fal
 substrate-wasm-builder = { git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
 
 [features]
-default = ["std", "aura"]
+default = ["std", "manual-seal"]
 aura = []
 manual-seal = []
 std = [
