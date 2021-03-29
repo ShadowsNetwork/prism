@@ -11,9 +11,9 @@ Run an Ethereum compatible parachain based on Substrate.
 
 Follow these steps to prepare a local Substrate development environment :hammer_and_wrench:
 
-## Install (linux)
+# Install (linux)
 
-### Get the code
+## Get the code
 
 Get the master branch of shadows：
 
@@ -22,7 +22,7 @@ git clone https://github.com/ShadowsNetwork/shadows
 cd shadows
 ```
 
-### Simple Setup
+## Simple Setup
 
 Install all the required dependencies with a single command (be patient, this can take up to 30
 minutes).
@@ -72,17 +72,23 @@ RUST_LOG=debug RUST_BACKTRACE=1 ./target/release/shadows-node -lruntime=debug --
  
 
 
-
+##deployment contract
 Local TestNet:  127.0.0.1:9933 ,
 
 ChainId: 888 ,
 
 Account:
 
-- Address:0xAA7358886fd6FEc1d64323D9da340FD3c0B9a9E4
-- PriKey:665c5c10437cc1220b805b3b6d015c82f476e1d8144f08ba85840eddf4b903a5
+- Address: 0xAA7358886fd6FEc1d64323D9da340FD3c0B9a9E4
+- PriKey: 0x665c5c10437cc1220b805b3b6d015c82f476e1d8144f08ba85840eddf4b903a5
+- contractAddress: 0x22b7265E52943D5A2F610bCf075F6AC307BcC706
 
 if you want to deployment contract on the testnet,this will help you.
+
+
+##TEST
+if you want to test, it is a good idea to use  https://hardhat.org/tutorial/
+
 
 
 
