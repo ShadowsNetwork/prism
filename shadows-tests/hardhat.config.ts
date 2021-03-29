@@ -12,12 +12,12 @@ const config: HardhatUserConfig = {
     networks: {
         devlocalhost: {
             url: `http://127.0.0.1:9933`,
-            chainId: 9909,
+            chainId: 888,
             accounts: [`0x${ROPSTEN_PRIVATE_KEY}`]
         },
         dev: {
             url: `http://119.45.201.48:9933`,
-            chainId: 9909,
+            chainId: 888,
             accounts: [`0x${ROPSTEN_PRIVATE_KEY}`]
         }
     }

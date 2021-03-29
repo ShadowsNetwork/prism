@@ -412,7 +412,7 @@ pub fn new_full(
 			};
 
 		}
-		log::info!("Shadows severce Ready");
+		log::info!("Shadows service Ready");
 	}
 
 	#[cfg(feature = "aura")] {
