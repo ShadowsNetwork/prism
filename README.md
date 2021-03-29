@@ -72,7 +72,7 @@ RUST_LOG=debug RUST_BACKTRACE=1 ./target/release/shadows-node -lruntime=debug --
  
 
 
-##deployment contract
+## deployment contract
 Local TestNet:  127.0.0.1:9933 ,
 
 ChainId: 888 ,
@@ -86,9 +86,10 @@ Account:
 if you want to deployment contract on the testnet,this will help you.
 
 
-##TEST
+## TEST
 if you want to test, it is a good idea to use  https://hardhat.org/tutorial/
 
+if you want to test with sealing, you should change from "aura" into "manual-seal"
 
 
 
