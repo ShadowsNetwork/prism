@@ -1,13 +1,14 @@
-use sp_core::{Pair, Public, sr25519};
-use node_template_runtime::{
-	AccountId, AuraConfig, BalancesConfig, GenesisConfig, GrandpaConfig,
+use sp_core::{Pair, Public, sr25519, U256, H160};
+use shadows_runtime::{
+	AccountId, AuraConfig, BalancesConfig, EVMConfig, EthereumConfig, GenesisConfig, GrandpaConfig,
 	SudoConfig, SystemConfig, WASM_BINARY, Signature
 };
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_finality_grandpa::AuthorityId as GrandpaId;
-use sp_runtime::traits::{Verify, IdentifyAccount};
+use sp_runtime::traits::{Verify, IdentifyAccount,BlakeTwo256};
 use sc_service::ChainType;
-
+use std::collections::BTreeMap;
+use std::str::FromStr;
 // The URL for the telemetry server.
 // const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 
@@ -39,11 +40,11 @@ pub fn authority_keys_from_seed(s: &str) -> (AuraId, GrandpaId) {
 }
 
 pub fn development_config() -> Result<ChainSpec, String> {
-	let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
+	let wasm_binary = WASM_BINARY.ok_or("Development wasm binary not available".to_string())?;
 
 	Ok(ChainSpec::from_genesis(
 		// Name
-		"Development",
+		"Shadows",
 		// ID
 		"dev",
 		ChainType::Development,
@@ -78,7 +79,7 @@ pub fn development_config() -> Result<ChainSpec, String> {
 }
 
 pub fn local_testnet_config() -> Result<ChainSpec, String> {
-	let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
+	let wasm_binary = WASM_BINARY.ok_or("Development wasm binary not available".to_string())?;
 
 	Ok(ChainSpec::from_genesis(
 		// Name
@@ -133,6 +134,18 @@ fn testnet_genesis(
 	endowed_accounts: Vec<AccountId>,
 	_enable_println: bool,
 ) -> GenesisConfig {
+
+	let built_in_evm_account = H160::from_str("AA7358886fd6FEc1d64323D9da340FD3c0B9a9E4").unwrap();
+	let mut evm_accounts = BTreeMap::new();
+	evm_accounts.insert(
+		built_in_evm_account,
+		pallet_evm::GenesisAccount {
+			nonce: 0.into(),
+			balance: (999999999999999 as u128 * 10_u128.pow(18)).into(),
+			storage: BTreeMap::new(),
+			code: vec![],
+		},
+	);
 	GenesisConfig {
 		frame_system: SystemConfig {
 			// Add Wasm runtime to storage.
@@ -153,5 +166,9 @@ fn testnet_genesis(
 			// Assign network admin rights.
 			key: root_key,
 		},
+		pallet_evm: EVMConfig {
+			accounts: evm_accounts,
+		},
+		pallet_ethereum: EthereumConfig {},
 	}
 }
