@@ -40,11 +40,11 @@ Run the initialization script, which checks the correct rust nightly version and
 
 ### Build  the Shadows Node
 
-Once the development environment is set up, build the node template. This command will build the
+Once the development environment is set up, build the shadows-node. This command will build the
 [Wasm](https://substrate.dev/docs/en/knowledgebase/advanced/executor#wasm-execution) and [native](https://substrate.dev/docs/en/knowledgebase/advanced/executor#native-execution) code:
 
 ```bash
-cargo build --release
+cargo build --release --features "aura"
 ```
 
 ## Run
@@ -87,10 +87,17 @@ if you want to deployment contract on the testnet,this will help you.
 
 
 ## TEST
+
+Start a test chain with "manual-seal":
+```bash
+cargo build --release --features "manual-seal"
+```
+
 if you want to test, it is a good idea to use  https://hardhat.org/tutorial/
 
-if you want to test with sealing, you should change from "aura" into "manual-seal"
+After setting up the hardhat test environment
 
-
-
+```bash
+npx hardhat test
+```
 
