@@ -4,7 +4,6 @@ version = "0.0.1"
 edition = "2018"
 license = "Unlicense"
 build = "build.rs"
-homepage = "https://substrate.dev"
 
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
