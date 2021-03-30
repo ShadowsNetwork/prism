@@ -4,7 +4,6 @@ version = "0.0.1"
 edition = "2018"
 license = "Unlicense"
 build = "build.rs"
-
 [package.metadata.docs.rs]
 targets = ["x86_64-unknown-linux-gnu"]
 
@@ -42,6 +41,17 @@ sp-runtime = { git = "https://github.com/ShadowsNetwork/substrate.git", branch =
 sc-basic-authorship = { git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
 sp-block-builder = { git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
 sc-telemetry = { git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+
+pallet-evm = { path = "../frame/evm" }
+pallet-ethereum = { path = "../frame/ethereum" }
+fc-consensus = { path = "../client/consensus" }
+fp-consensus = { path = "../primitives/consensus" }
+fc-rpc = { path = "../client/rpc" }
+fp-rpc = { path = "../primitives/rpc" }
+fc-rpc-core = { path = "../client/rpc-core" }
+fc-db = { path = "../client/db" }
+fc-mapping-sync = { path = "../client/mapping-sync" }
+shadows-runtime = { path = "../runtime", default-features = false, features = ["std"] }
 
 [build-dependencies]
 substrate-build-script-utils = { git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
