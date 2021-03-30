@@ -18,7 +18,7 @@ Follow these steps to prepare a local Substrate development environment :hammer_
 Get the master branch of shadows：
 
 ```bash
-git clone https://github.com/ShadowsNetwork/shadows
+git clone https://github.com/ShadowsNetwork/shadows.git
 cd shadows
 ```
 
