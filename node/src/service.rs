@@ -21,6 +21,21 @@ use sp_timestamp::InherentError;
 use sc_telemetry::{Telemetry, TelemetryWorker};
 use sc_cli::SubstrateCli;
 use futures::StreamExt;
+use sp_core::Pair;
+use sp_runtime::traits::BlakeTwo256;
+use sp_trie::PrefixedMemoryDB;
+use std::sync::Arc;
+
+use cumulus_client_consensus_relay_chain::{
+	build_relay_chain_consensus, BuildRelayChainConsensusParams,
+};
+use cumulus_client_network::build_block_announce_validator;
+use cumulus_client_service::{
+	prepare_node_config, start_collator, start_full_node, StartCollatorParams, StartFullNodeParams,
+};
+use cumulus_primitives_core::ParaId;
+use polkadot_primitives::v0::CollatorPair;
+use shadows_runtime::{RuntimeApi, opaque::Block};
 
 use crate::cli::Cli;
 #[cfg(feature = "manual-seal")]
@@ -100,7 +115,7 @@ pub fn open_shadows_backend(config: &Configuration) -> Result<Arc<fc_db::Backend
 	})?))
 }
 
-pub fn new_partial(config: &Configuration, #[allow(unused_variables)] cli: &Cli) -> Result<
+pub fn new_partial(config: &Configuration, #[allow(unused_variables)] cli: &Cli,dev_service: bool) -> Result<
 	sc_service::PartialComponents<
 		FullClient, FullBackend, FullSelectChain,
 		sp_consensus::import_queue::BasicQueue<Block, sp_api::TransactionFor<FullClient, Block>>,
@@ -131,8 +146,6 @@ pub fn new_partial(config: &Configuration, #[allow(unused_variables)] cli: &Cli)
 			telemetry
 		});
 
-	let select_chain = sc_consensus::LongestChain::new(backend.clone());
-
 	let transaction_pool = sc_transaction_pool::BasicPool::new_full(
 		config.transaction_pool.clone(),
 		config.role.is_authority().into(),
@@ -141,6 +154,30 @@ pub fn new_partial(config: &Configuration, #[allow(unused_variables)] cli: &Cli)
 		client.clone(),
 	);
 
+	let import_queue = if dev_service {
+			//TODO
+	}else {
+		cumulus_client_consensus_relay_chain::import_queue(
+			client.clone(),
+			client.clone(),
+			inherent_data_providers.clone(),
+			&task_manager.spawn_essential_handle(),
+			registry.clone(),
+		)?;
+	};
+
+	let params = PartialComponents {
+		backend,
+		client,
+		import_queue,
+		keystore_container,
+		task_manager,
+		transaction_pool,
+		inherent_data_providers,
+		select_chain: (),
+		other: (),
+	};
+
 	let pending_transactions: PendingTransactions
 		= Some(Arc::new(Mutex::new(HashMap::new())));
 
@@ -148,6 +185,7 @@ pub fn new_partial(config: &Configuration, #[allow(unused_variables)] cli: &Cli)
 		= Some(Arc::new(Mutex::new(BTreeMap::new())));
 
 	let shadows_backend = open_shadows_backend(config)?;
+
 
 	#[cfg(feature = "manual-seal")] {
 		let sealing = cli.run.sealing;

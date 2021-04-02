@@ -112,6 +112,7 @@ pub struct RunCmd {
 
 	/// Id of the parachain this collator collates for.
 	#[structopt(long)]
+	pub dev_service: bool,
 	pub parachain_id: Option<u32>,
 }
 

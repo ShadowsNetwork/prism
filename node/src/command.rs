@@ -14,7 +14,7 @@ use codec::Encode;
 use cumulus_client_service::genesis::generate_genesis_block;
 use cumulus_primitives_core::ParaId;
 use log::info;
-use parachain_runtime::Block;
+use shadows_runtime::Block;
 use polkadot_parachain::primitives::AccountIdConversion;
 use sp_core::hexdisplay::HexDisplay;
 use sp_runtime::traits::Block as BlockT;
@@ -129,7 +129,7 @@ pub fn run() -> sc_cli::Result<()> {
 			let runner = cli.create_runner(cmd)?;
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, import_queue, ..}
-					= new_partial(&config, &cli)?;
+					= new_partial(&config, &cli, dev_service)?;
 				Ok((cmd.run(client, import_queue), task_manager))
 			})
 		},
@@ -137,7 +137,7 @@ pub fn run() -> sc_cli::Result<()> {
 			let runner = cli.create_runner(cmd)?;
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, ..}
-					= new_partial(&config, &cli)?;
+					= new_partial(&config, &cli, dev_service)?;
 				Ok((cmd.run(client, config.database), task_manager))
 			})
 		},
@@ -145,7 +145,7 @@ pub fn run() -> sc_cli::Result<()> {
 			let runner = cli.create_runner(cmd)?;
 			runner.async_run(|config| {
 				let PartialComponents { client, task_manager, ..}
-					= new_partial(&config, &cli)?;
+					= new_partial(&config, &cli,false)?;
 				Ok((cmd.run(client, config.chain_spec), task_manager))
 			})
 		},
