@@ -3,23 +3,44 @@ use shadows_runtime::{
 	AccountId, AuraConfig, BalancesConfig, EVMConfig, EthereumConfig, GenesisConfig, GrandpaConfig,
 	SudoConfig, SystemConfig, WASM_BINARY, Signature
 };
+use sc_chain_spec::{ChainSpecExtension, ChainSpecGroup};
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_finality_grandpa::AuthorityId as GrandpaId;
 use sp_runtime::traits::{Verify, IdentifyAccount,BlakeTwo256};
 use sc_service::ChainType;
 use std::collections::BTreeMap;
 use std::str::FromStr;
+use cumulus_primitives_core::ParaId;
+use serde::{Deserialize, Serialize};
+
 // The URL for the telemetry server.
 // const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 
 /// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
-pub type ChainSpec = sc_service::GenericChainSpec<GenesisConfig>;
+pub type ChainSpec = sc_service::GenericChainSpec<shadows_runtime::GenesisConfig, Extensions>;
 
 /// Generate a crypto pair from seed.
 pub fn get_from_seed<TPublic: Public>(seed: &str) -> <TPublic::Pair as Pair>::Public {
 	TPublic::Pair::from_string(&format!("//{}", seed), None)
 		.expect("static values are valid; qed")
 		.public()
+}
+
+/// The extensions for the [`ChainSpec`].
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, ChainSpecGroup, ChainSpecExtension)]
+#[serde(deny_unknown_fields)]
+pub struct Extensions {
+	/// The relay chain of the Parachain.
+	pub relay_chain: String,
+	/// The id of the Parachain.
+	pub para_id: u32,
+}
+
+impl Extensions {
+	/// Try to get the extension from the given `ChainSpec`.
+	pub fn try_get(chain_spec: &dyn sc_service::ChainSpec) -> Option<&Self> {
+		sc_chain_spec::get_extension(chain_spec.extensions())
+	}
 }
 
 type AccountPublic = <Signature as Verify>::Signer;
@@ -44,10 +65,10 @@ pub fn development_config() -> Result<ChainSpec, String> {
 
 	Ok(ChainSpec::from_genesis(
 		// Name
-		"Shadows",
+		"Shadows-Development",
 		// ID
 		"dev",
-		ChainType::Development,
+		ChainType::Local,
 		move || testnet_genesis(
 			wasm_binary,
 			// Initial PoA authorities
@@ -74,7 +95,10 @@ pub fn development_config() -> Result<ChainSpec, String> {
 		// Properties
 		None,
 		// Extensions
-		None,
+		Extensions {
+			relay_chain: "shadows-dev".into(),
+			para_id: id.into(),
+		},
 	))
 }
 
@@ -122,7 +146,10 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 		// Properties
 		None,
 		// Extensions
-		None,
+		Extensions {
+			relay_chain: "shadows-local".into(),
+			para_id: id.into(),
+		},
 	))
 }
 
@@ -170,5 +197,6 @@ fn testnet_genesis(
 			accounts: evm_accounts,
 		},
 		pallet_ethereum: EthereumConfig {},
+		parachain_info: ParachainInfoConfig { parachain_id: id },
 	}
 }
