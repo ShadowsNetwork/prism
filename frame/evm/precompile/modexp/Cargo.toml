@@ -10,7 +10,7 @@ sp-io = { version = "3.0.0", default-features = false, git = "https://github.com
 fp-evm = { version = "0.8.0", default-features = false, path = "../../../../primitives/evm" }
 evm = { version = "0.26.0", default-features = false, features = ["with-codec"] }
 num = { version = "0.3", features = ["alloc"], default-features = false }
-getrandom = { version = "0.2", features = ["js"], optional = true }
+
 [dev-dependencies]
 hex = "0.4.0"
 

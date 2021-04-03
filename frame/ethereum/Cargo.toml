@@ -26,7 +26,7 @@ libsecp256k1 = { version = "0.3", default-features = false }
 fp-consensus = { path = "../../primitives/consensus", default-features = false }
 fp-rpc = { path = "../../primitives/rpc", default-features = false }
 fp-storage = { path = "../../primitives/storage", default-features = false}
-getrandom = { version = "0.2", features = ["js"], optional = true }
+
 
 [dev-dependencies]
 sp-core = { version = "3.0.0-dev", git = "https://github.com/paritytech/substrate.git", branch = "frontier" }

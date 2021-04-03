@@ -14,7 +14,7 @@ codec = { package = "parity-scale-codec", version = "2.0.0", default-features = 
 sp-runtime = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
 sp-std = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
 sp-io = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-getrandom = { version = "0.2", features = ["js"], optional = true }
+
 [features]
 default = ["std"]
 std = [

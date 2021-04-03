@@ -16,4 +16,3 @@ fp-rpc = { path = "../../primitives/rpc" }
 futures = { version = "0.3.1", features = ["compat"] }
 futures-timer = "3.0.1"
 log = "0.4.8"
-getrandom = { version = "0.2", features = ["js"], optional = true }

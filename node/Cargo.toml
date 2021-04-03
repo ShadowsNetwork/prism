@@ -74,7 +74,7 @@ polkadot-cli = {git = "https://github.com/paritytech/polkadot", branch = 'rococo
 polkadot-test-service = {git = "https://github.com/paritytech/polkadot", branch = 'rococo-v1'}
 
 polkadot-parachain = {git = "https://github.com/paritytech/polkadot", branch = 'rococo-v1'}
-getrandom = { version = "0.2", features = ["js"], optional = true }
+
 
 [build-dependencies]
 substrate-build-script-utils = { git = "https://github.com/paritytech/substrate.git", branch = "rococo-v1" }
