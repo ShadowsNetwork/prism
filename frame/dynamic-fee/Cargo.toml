@@ -13,6 +13,7 @@ sp-runtime = { version = "3.0.0-dev", default-features = false, git = "https://g
 sp-inherents = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
 frame-system = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
 frame-support = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+getrandom = { version = "0.2", features = ["js"], optional = true }
 
 [features]
 default = ["std"]
