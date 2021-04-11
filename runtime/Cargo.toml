@@ -1,89 +1,55 @@
 [package]
-authors = ['Anonymous']
-edition = '2018'
-homepage = 'https://shadows.link/'
-name = 'shadows-runtime'
-version = '0.0.1'
+name = "shadows-runtime"
+version = "0.0.1"
+edition = "2018"
+license = "Unlicense"
+homepage = "https://substrate.dev"
+repository = "https://github.com/ShadowsNetwork/substrate/"
 
 [package.metadata.docs.rs]
-targets = ['x86_64-unknown-linux-gnu']
-
-[build-dependencies.substrate-wasm-builder]
-git = 'https://github.com/paritytech/substrate.git'
-branch = 'rococo-v1'
-version = '4.0.0'
-
-
+targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
-
-codec = { default-features = false, features = ['derive'], package = 'parity-scale-codec', version = '2.0.0' }
-
-frame-benchmarking = { default-features = false, git = 'https://github.com/paritytech/substrate.git', optional = true, branch = 'rococo-v1', version = '3.0.0' }
-frame-executive = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-frame-support = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-frame-system = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-frame-system-benchmarking = { optional = true, default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-frame-system-rpc-runtime-api = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-hex-literal = { optional = true, version = '0.3.1' }
-pallet-balances = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-
-pallet-randomness-collective-flip = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-pallet-sudo = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-pallet-timestamp = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-pallet-transaction-payment = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-pallet-transaction-payment-rpc-runtime-api = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-serde = { features = ['derive'], optional = true, version = '1.0.119' }
-sp-api = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-sp-block-builder = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-sp-core = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-sp-inherents = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-sp-io = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-sp-offchain = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-sp-runtime = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-sp-session = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-sp-std = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-sp-transaction-pool = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-sp-version = { default-features = false, git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' ,version = '3.0.0' }
-
-
-parachain-info = { git = 'https://github.com/paritytech/cumulus.git', default-features = false, branch = 'rococo-v1', version = '0.1.0' }
-cumulus-pallet-parachain-system= { git = 'https://github.com/paritytech/cumulus.git', default-features = false, branch = 'rococo-v1'}
-cumulus-primitives-core = { git = "https://github.com/paritytech/cumulus", branch = "rococo-v1",default-features = false}
-cumulus-pallet-xcm-handler =  { git = "https://github.com/paritytech/cumulus", branch = "rococo-v1",default-features = false}
-polkadot-parachain = { default-features = false, git = "https://github.com/paritytech/polkadot", branch = "rococo-v1" }
-xcm = { default-features = false, git = "https://github.com/paritytech/polkadot", branch = "rococo-v1" }
-xcm-builder = { default-features = false, git = "https://github.com/paritytech/polkadot", branch = "rococo-v1" }
-xcm-executor = { default-features = false, git = "https://github.com/paritytech/polkadot", branch = "rococo-v1" }
-
-
-pallet-aura = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-pallet-grandpa = { version = "3.0.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
-sp-consensus-aura = { version = "0.9.0-dev", default-features = false, git = "https://github.com/paritytech/substrate.git", branch = "frontier" }
+codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false, features = ["derive"] }
+serde = { version = "1.0.101", optional = true, features = ["derive"] }
+frame-executive = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+frame-support = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+frame-system = { version = "3.0.0-dev", default-features = false, package = "frame-system", git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+frame-system-rpc-runtime-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-aura = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-balances = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-grandpa = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-randomness-collective-flip = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-sudo = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-timestamp = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-transaction-payment = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+pallet-transaction-payment-rpc-runtime-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-api = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-block-builder = { default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier"}
+sp-consensus-aura = { version = "0.9.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-core = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-inherents = { default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier"}
+sp-io = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-offchain = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-runtime = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-session = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-std = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-transaction-pool = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
+sp-version = { version = "3.0.0-dev", default-features = false, git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
 
 fp-rpc = { default-features = false, path = "../primitives/rpc" }
 pallet-ethereum = { version = "0.1.0", default-features = false, path = "../frame/ethereum" }
-pallet-evm = { version = "3.0.0", default-features = false, path = "../frame/evm" }
-pallet-evm-precompile-simple = { version = "3.0.0", default-features = false, path = "../frame/evm/precompile/simple" }
-pallet-evm-precompile-sha3fips = { version = "3.0.0", default-features = false, path = "../frame/evm/precompile/sha3fips" }
+pallet-evm = { version = "3.0.0-dev", default-features = false, path = "../frame/evm" }
+pallet-evm-precompile-simple = { version = "3.0.0-dev", default-features = false, path = "../frame/evm/precompile/simple" }
+pallet-evm-precompile-sha3fips = { version = "3.0.0-dev", default-features = false, path = "../frame/evm/precompile/sha3fips" }
 
-substrate-wasm-builder = {version = '4.0.0', git = 'https://github.com/paritytech/substrate.git', branch = 'rococo-v1' }
-
+[build-dependencies]
+substrate-wasm-builder = { git = "https://github.com/ShadowsNetwork/substrate.git", branch = "frontier" }
 
 [features]
-default = ['std']
+default = ["std"]
 aura = []
 manual-seal = []
-runtime-benchmarks = [
-	'sp-runtime/runtime-benchmarks',
-	'frame-benchmarking',
-	'frame-support/runtime-benchmarks',
-	'frame-system-benchmarking',
-	'hex-literal',
-	'frame-system/runtime-benchmarks',
-	'pallet-balances/runtime-benchmarks',
-	'pallet-timestamp/runtime-benchmarks',
-]
 std = [
 	"codec/std",
 	"serde",
@@ -119,23 +85,4 @@ std = [
 	"sp-std/std",
 	"sp-transaction-pool/std",
 	"sp-version/std",
-
-
-	"frame-support/std",
-	"frame-executive/std",
-	"frame-system/std",
-	"pallet-balances/std",
-	"pallet-randomness-collective-flip/std",
-	"pallet-timestamp/std",
-	"pallet-sudo/std",
-	"pallet-transaction-payment/std",
-	"parachain-info/std",
-	"cumulus-pallet-parachain-system/std",
-	"cumulus-primitives-core/std",
-	"xcm/std",
-	"xcm-builder/std",
-	"xcm-executor/std",
-	"cumulus-pallet-xcm-handler/std",
-
-
 ]
