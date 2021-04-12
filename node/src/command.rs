@@ -7,7 +7,7 @@ use crate::service::new_partial;
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
-		"Shadows Node".into()
+		"Prism Node".into()
 	}
 
 	fn impl_version() -> String {

@@ -9,6 +9,7 @@ use sp_runtime::traits::{Verify, IdentifyAccount,BlakeTwo256};
 use sc_service::ChainType;
 use std::collections::BTreeMap;
 use std::str::FromStr;
+use serde_json::json;
 // The URL for the telemetry server.
 // const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 
@@ -44,9 +45,9 @@ pub fn development_config() -> Result<ChainSpec, String> {
 
 	Ok(ChainSpec::from_genesis(
 		// Name
-		"Shadows",
+		"Prism Testnet",
 		// ID
-		"dev",
+		"prism_testnet",
 		ChainType::Development,
 		move || testnet_genesis(
 			wasm_binary,
@@ -72,7 +73,15 @@ pub fn development_config() -> Result<ChainSpec, String> {
 		// Protocol ID
 		None,
 		// Properties
-		None,
+		Some(
+			json!({
+              "tokenDecimals": 18,
+              "tokenSymbol": "PSM"
+            })
+				.as_object()
+				.expect("Provided valid json map")
+				.clone(),
+		),
 		// Extensions
 		None,
 	))
@@ -120,7 +129,15 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 		// Protocol ID
 		None,
 		// Properties
-		None,
+		Some(
+			json!({
+              "tokenDecimals": 18,
+              "tokenSymbol": "PSM"
+            })
+				.as_object()
+				.expect("Provided valid json map")
+				.clone(),
+		),
 		// Extensions
 		None,
 	))
