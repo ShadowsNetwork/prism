@@ -15,11 +15,11 @@ Follow these steps to prepare a local Substrate development environment :hammer_
 
 ## Get the code
 
-Get the master branch of shadows：
+Get the master branch of prism：
 
 ```bash
 git clone https://github.com/ShadowsNetwork/prism
-cd shadows
+cd prism
 ```
 
 ## Simple Setup
@@ -38,9 +38,9 @@ Run the initialization script, which checks the correct rust nightly version and
 ./scripts/init.sh
 ```
 
-### Build  the Shadows Node
+### Build  the Prism Node
 
-Once the development environment is set up, build the shadows-node. This command will build the
+Once the development environment is set up, build the prism-node. This command will build the
 [Wasm](https://substrate.dev/docs/en/knowledgebase/advanced/executor#wasm-execution) and [native](https://substrate.dev/docs/en/knowledgebase/advanced/executor#native-execution) code:
 
 ```bash
@@ -54,7 +54,7 @@ cargo build --release --features "aura"
 Purge any existing dev chain state:
 
 ```bash
-./target/release/shadows-node purge-chain --dev
+./target/release/prism-node purge-chain --dev
 ```
 
 Start a dev chain:
