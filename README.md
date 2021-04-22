@@ -5,7 +5,7 @@ Run an Ethereum compatible parachain based on Substrate.
 
 *See [www.substrate.io](https://www.substrate.io/) for substrate information.*
 
-*See [shadows.link](https://psm.link/) for the shadows blockchain description.*
+*See [psm.link](https://psm.link/) for the prism chain description.*
 
 # Local Development
 
@@ -18,7 +18,7 @@ Follow these steps to prepare a local Substrate development environment :hammer_
 Get the master branch of shadows：
 
 ```bash
-git clone https://github.com/ShadowsNetwork/shadows
+git clone https://github.com/ShadowsNetwork/prism
 cd shadows
 ```
 
@@ -60,13 +60,13 @@ Purge any existing dev chain state:
 Start a dev chain:
 
 ```bash
-./target/release/shadows-node  --dev --ws-external --rpc-external --rpc-cors=all
+./target/release/prism-node  --dev --ws-external --rpc-external --rpc-cors=all
 ```
 
 Or, start a dev chain with detailed logging:
 
 ```bash
-RUST_LOG=debug RUST_BACKTRACE=1 ./target/release/shadows-node -lruntime=debug --dev
+RUST_LOG=debug RUST_BACKTRACE=1 ./target/release/prism-node -lruntime=debug --dev
 ```
 
  
