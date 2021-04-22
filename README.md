@@ -1,11 +1,11 @@
 
-# Shadows Network
+# Prism Chain
 
 Run an Ethereum compatible parachain based on Substrate.
 
 *See [www.substrate.io](https://www.substrate.io/) for substrate information.*
 
-*See [shadows.link](https://shadows.link/) for the shadows blockchain description.*
+*See [shadows.link](https://psm.link/) for the shadows blockchain description.*
 
 # Local Development
 
